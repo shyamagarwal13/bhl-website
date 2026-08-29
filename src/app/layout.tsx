@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const sans = Instrument_Sans({
-  variable: "--font-instrument-sans",
+// One family doing display and text. Jakarta has enough character at 800 to carry a
+// headline and stays quiet at 400, which keeps the page from feeling assembled.
+const sans = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Statements only — headlines and section openers. Single weight by design.
-const serif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-// Anything that behaves like an instrument reading: labels, metrics, deltas.
+// Eyebrows, metrics, deltas — anything that behaves like an instrument reading.
 const mono = JetBrains_Mono({
   variable: "--font-mono-face",
   subsets: ["latin"],
@@ -55,7 +49,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body className="min-h-screen">{children}</body>
     </html>
   );

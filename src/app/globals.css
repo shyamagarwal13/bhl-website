@@ -3,160 +3,194 @@
 /*
   Behold Labs — marketing design system.
 
-  Deliberately single-theme. The name is about seeing clearly, and the product is an
-  instrument panel for engineering leaders, so the site reads as one: a dark observatory
-  ground with two signal colours doing distinct jobs — warm gold for the human/insight
-  thread, teal for data and positive movement. Inherited from the product's own tokens so
-  the site and the app feel like one company.
+  Light, vivid, product-forward. The name is about seeing, so the identity is built on
+  light: a dawn gradient (indigo → violet → rose → amber) carrying the hero, then clean
+  white ground beneath it so the product and the copy do the work.
 
-  Type is a designed pair: Instrument Serif for statements, Instrument Sans for the work,
-  a mono for anything that behaves like an instrument reading.
+  The gradient is the brand asset. Everything else stays quiet on purpose — one saturated
+  moment at the top and bottom of the page, calm in between.
 */
 
 :root {
-  /* Ground & surfaces — blue-biased neutrals, chosen not inherited */
-  --ink: #090b10;
-  --ink-2: #0c0f16;
-  --surface: #11141c;
-  --surface-2: #161a24;
-  --surface-3: #1c212d;
-  --hairline: #232936;
-  --hairline-strong: #313949;
+  /* Ground */
+  --white: #ffffff;
+  --paper: #f8f8fc;
+  --paper-2: #f1f1f8;
+  --line: #e6e6f0;
+  --line-2: #d6d6e6;
 
-  /* Text */
-  --text: #e9ecf2;
-  --text-muted: #99a2b3;
-  --text-faint: #616b7d;
+  /* Ink — near-black with an indigo bias so it sits with the brand, not against it */
+  --ink: #14121f;
+  --ink-2: #3a3752;
+  --ink-3: #6b6885;
+  --ink-4: #9a97ae;
 
-  /* Signal — warm gold: insight, the human thread */
-  --gold: #e8a33d;
-  --gold-hi: #f4b459;
-  --gold-dim: #b17d2c;
+  /* Brand */
+  --indigo: #4f3ddb;
+  --indigo-hi: #6350e8;
+  --indigo-lo: #3b2bb3;
+  --violet: #8b5cf6;
+  --rose: #f0568f;
+  --amber: #ffb020;
+  --teal: #0ea894;
 
-  /* Data — teal: measurement, positive delta */
-  --teal: #34c9a4;
-  --teal-hi: #56e0bd;
-  --teal-dim: #1f7d67;
+  /* Semantic */
+  --pos: #0ea894;
+  --neg: #e04f6d;
 
-  --danger: #f2635e;
-  --warn: #e8b13d;
-
-  --radius-sm: 8px;
-  --radius: 12px;
-  --radius-lg: 20px;
-
-  --maxw: 1200px;
+  --maxw: 1220px;
 }
 
 @theme inline {
+  --color-white: var(--white);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-surface-3: var(--surface-3);
-  --color-hairline: var(--hairline);
-  --color-hairline-strong: var(--hairline-strong);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
 
-  --color-text: var(--text);
-  --color-text-muted: var(--text-muted);
-  --color-text-faint: var(--text-faint);
-
-  --color-gold: var(--gold);
-  --color-gold-hi: var(--gold-hi);
-  --color-gold-dim: var(--gold-dim);
+  --color-indigo: var(--indigo);
+  --color-indigo-hi: var(--indigo-hi);
+  --color-indigo-lo: var(--indigo-lo);
+  --color-violet: var(--violet);
+  --color-rose: var(--rose);
+  --color-amber: var(--amber);
   --color-teal: var(--teal);
-  --color-teal-hi: var(--teal-hi);
-  --color-teal-dim: var(--teal-dim);
-  --color-danger: var(--danger);
-  --color-warn: var(--warn);
+  --color-pos: var(--pos);
+  --color-neg: var(--neg);
 
-  --font-sans: var(--font-instrument-sans);
-  --font-display: var(--font-instrument-serif);
+  --font-sans: var(--font-jakarta);
   --font-mono: var(--font-mono-face);
 }
 
 * {
-  border-color: var(--hairline);
+  border-color: var(--line);
 }
 
 html {
   scroll-behavior: smooth;
-  /* Anchor targets clear the sticky header */
-  scroll-padding-top: 5.5rem;
-  background: var(--ink);
+  scroll-padding-top: 6.5rem;
+  background: var(--white);
 }
 
 body {
-  background: var(--ink);
-  color: var(--text);
+  background: var(--white);
+  color: var(--ink);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--gold) 32%, transparent);
-  color: var(--text);
+  background: color-mix(in srgb, var(--violet) 24%, transparent);
+  color: var(--ink);
 }
 
 :where(a, button, input, select, [tabindex]):focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--indigo);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* --- Type utilities ------------------------------------------------------- */
+/* --- type ----------------------------------------------------------------- */
 
-.font-display {
-  font-family: var(--font-display), Georgia, serif;
-  font-weight: 400;
-  letter-spacing: -0.015em;
+.display {
+  font-weight: 800;
+  letter-spacing: -0.034em;
+  line-height: 1.04;
+}
+
+.h2 {
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
 }
 
 .eyebrow {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--gold);
+  letter-spacing: 0.16em;
+  font-weight: 500;
 }
 
 .tabular {
   font-variant-numeric: tabular-nums;
 }
 
-/* --- Ambient ground ------------------------------------------------------- */
+/* --- the brand gradient --------------------------------------------------- */
 
-/* Two light sources, low and wide, so the page has a horizon rather than a spotlight. */
-.aurora {
-  background:
-    radial-gradient(58rem 34rem at 8% -12%, color-mix(in srgb, var(--gold) 11%, transparent), transparent 62%),
-    radial-gradient(52rem 32rem at 96% 4%, color-mix(in srgb, var(--teal) 8%, transparent), transparent 58%);
-}
-
-/* Instrument grid — the faint ruled backdrop of a measuring device. */
-.grid-rule {
+/*
+  Layered radial blobs rather than a linear ramp — a mesh reads as light in a room
+  instead of a colour sweep, and it holds up at any aspect ratio.
+*/
+.dawn {
+  background-color: var(--indigo);
   background-image:
-    linear-gradient(var(--hairline) 1px, transparent 1px),
-    linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(78% 62% at 50% 34%, #000 20%, transparent 76%);
-  mask-image: radial-gradient(78% 62% at 50% 34%, #000 20%, transparent 76%);
-  opacity: 0.42;
+    radial-gradient(60% 78% at 12% 8%, #6d4bf0 0%, transparent 58%),
+    radial-gradient(52% 66% at 88% 4%, #a855f7 0%, transparent 56%),
+    radial-gradient(58% 62% at 74% 82%, #f0568f 0%, transparent 60%),
+    radial-gradient(46% 58% at 22% 92%, #ffb020 0%, transparent 58%),
+    radial-gradient(70% 80% at 50% 46%, #4f3ddb 0%, transparent 72%);
 }
 
-/* Hairline that fades at both ends — used as a section rule. */
-.rule-fade {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--hairline-strong) 18%, var(--hairline-strong) 82%, transparent);
+/* Fades out at the bottom instead of ending on a hard rule, so the product panel reads
+   as emerging from the colour rather than pasted over a coloured box. */
+.dawn-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
 }
 
-/* --- Motion --------------------------------------------------------------- */
+.dawn-soft {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(50% 70% at 10% 10%, color-mix(in srgb, var(--violet) 16%, transparent) 0%, transparent 60%),
+    radial-gradient(46% 62% at 90% 20%, color-mix(in srgb, var(--rose) 13%, transparent) 0%, transparent 58%),
+    radial-gradient(50% 60% at 60% 96%, color-mix(in srgb, var(--amber) 12%, transparent) 0%, transparent 60%);
+}
+
+.text-gradient {
+  background: linear-gradient(96deg, var(--indigo) 0%, var(--violet) 42%, var(--rose) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Fine grain over the gradient — kills banding on wide screens. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* --- elevation ------------------------------------------------------------ */
+
+.lift {
+  box-shadow:
+    0 1px 2px rgba(20, 18, 31, 0.04),
+    0 8px 24px -8px rgba(20, 18, 31, 0.1);
+}
+
+.lift-lg {
+  box-shadow:
+    0 2px 4px rgba(20, 18, 31, 0.05),
+    0 24px 60px -16px rgba(20, 18, 31, 0.22),
+    0 60px 120px -40px rgba(79, 61, 219, 0.28);
+}
+
+/* --- motion --------------------------------------------------------------- */
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -164,39 +198,22 @@ body {
   }
 }
 
-/* Staggered by inline delay at the call site, so a section resolves as one gesture. */
 .rise {
-  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes draw {
+@keyframes grow {
   from {
-    stroke-dashoffset: var(--len, 600);
+    transform: scaleY(0);
   }
   to {
-    stroke-dashoffset: 0;
+    transform: scaleY(1);
   }
 }
 
-.draw {
-  stroke-dasharray: var(--len, 600);
-  animation: draw 1.8s cubic-bezier(0.33, 1, 0.68, 1) both;
-}
-
-@keyframes pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.45;
-    transform: scale(0.82);
-  }
-}
-
-.live-dot {
-  animation: pulse-dot 2.4s ease-in-out infinite;
+.grow {
+  transform-origin: bottom;
+  animation: grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

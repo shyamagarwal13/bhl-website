@@ -1,32 +1,52 @@
 import Link from "next/link";
 
 /*
- * Behold logomark — an aperture. Blades opening around a lit centre: the instrument
- * you look through, and a nod to the product's Observatory. Pure SVG so it stays crisp
- * at any size and needs no asset pipeline.
+ * Behold logomark — an aperture. Blades opening around a lit centre: the instrument you
+ * look through. Pure SVG, so it stays crisp at any size and needs no asset pipeline.
+ * `tone` lets it sit on the gradient (white) or on paper (full colour).
  */
-export function Logomark({ size = 30 }: { size?: number }) {
+export function Logomark({ size = 28, tone = "color" }: { size?: number; tone?: "color" | "white" }) {
+  if (tone === "white") {
+    return (
+      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="12" fill="#fff" fillOpacity="0.16" />
+        <path d="M16 5.5a10.5 10.5 0 0 1 9.09 5.25L16 16Z" fill="#fff" fillOpacity="0.95" />
+        <path d="M25.09 10.75A10.5 10.5 0 0 1 21.7 25.05L16 16Z" fill="#fff" fillOpacity="0.62" />
+        <path d="M21.7 25.05A10.5 10.5 0 0 1 6.9 21.3L16 16Z" fill="#fff" fillOpacity="0.4" />
+        <circle cx="16" cy="16" r="3.4" fill="#fff" />
+      </svg>
+    );
+  }
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <rect width="32" height="32" rx="8.5" fill="#11141c" />
-      <rect x="0.5" y="0.5" width="31" height="31" rx="8" stroke="#2b3242" />
-      <circle cx="16" cy="16" r="8.75" stroke="#394254" strokeWidth="1.15" />
-      <path d="M16 7.5a8.5 8.5 0 0 1 7.36 4.25L16 16Z" fill="#e8a33d" fillOpacity="0.95" />
-      <path d="M23.36 11.75A8.5 8.5 0 0 1 20.6 23.3L16 16Z" fill="#e8a33d" fillOpacity="0.5" />
-      <path d="M20.6 23.3A8.5 8.5 0 0 1 8.64 20.25L16 16Z" fill="#34c9a4" fillOpacity="0.62" />
-      <path d="M8.64 20.25A8.5 8.5 0 0 1 16 7.5L16 16Z" fill="#e8a33d" fillOpacity="0.3" />
-      <circle cx="16" cy="16" r="3" fill="#090b10" />
-      <circle cx="16" cy="16" r="1.7" fill="#f4b459" />
+      <circle cx="16" cy="16" r="12" fill="#4f3ddb" fillOpacity="0.08" />
+      <path d="M16 5.5a10.5 10.5 0 0 1 9.09 5.25L16 16Z" fill="#4f3ddb" />
+      <path d="M25.09 10.75A10.5 10.5 0 0 1 21.7 25.05L16 16Z" fill="#8b5cf6" />
+      <path d="M21.7 25.05A10.5 10.5 0 0 1 6.9 21.3L16 16Z" fill="#f0568f" />
+      <path d="M6.9 21.3A10.5 10.5 0 0 1 16 5.5L16 16Z" fill="#ffb020" fillOpacity="0.9" />
+      <circle cx="16" cy="16" r="3.4" fill="#fff" />
     </svg>
   );
 }
 
-export function Wordmark({ size = 30, href = "/" as string | null }) {
+export function Wordmark({
+  size = 28,
+  tone = "color",
+  href = "/" as string | null,
+}: {
+  size?: number;
+  tone?: "color" | "white";
+  href?: string | null;
+}) {
   const inner = (
-    <span className="flex items-center gap-2.5">
-      <Logomark size={size} />
-      <span className="text-[1.0625rem] font-semibold tracking-tight text-text">
-        Behold<span className="text-text-faint"> Labs</span>
+    <span className="flex items-center gap-2">
+      <Logomark size={size} tone={tone} />
+      <span
+        className={`text-[1.0625rem] font-extrabold tracking-tight ${
+          tone === "white" ? "text-white" : "text-ink"
+        }`}
+      >
+        Behold
       </span>
     </span>
   );

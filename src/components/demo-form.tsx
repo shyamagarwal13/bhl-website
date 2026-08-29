@@ -5,74 +5,49 @@ import { useState } from "react";
 /*
  * Demo request.
  *
- * Deliberately backend-free for now: it composes a prefilled mail draft, so the form
- * works on day one with nothing to deploy and no data sitting in a third party. Swap the
- * submit handler for a POST when there's a CRM to put this in — the markup won't change.
+ * Backend-free by design for now: it composes a prefilled mail draft, so the form works
+ * on day one with nothing deployed and no lead data sitting in a third party. Swap the
+ * submit handler for a POST when there's a CRM — the markup won't change.
  */
 const INBOX = "hello@beholdlabs.com";
 
-export function DemoForm() {
+export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
   const [email, setEmail] = useState("");
-  const [company, setCompany] = useState("");
-  const [size, setSize] = useState("");
+  const onDark = tone === "dark";
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const body = [
-      "I'd like to see Behold Labs.",
-      "",
-      `Work email: ${email}`,
-      `Company: ${company || "—"}`,
-      `Engineering size: ${size || "—"}`,
-    ].join("\n");
     window.location.href = `mailto:${INBOX}?subject=${encodeURIComponent(
       "Demo request",
-    )}&body=${encodeURIComponent(body)}`;
+    )}&body=${encodeURIComponent(`I'd like to see Behold.\n\nWork email: ${email}`)}`;
   }
 
   return (
-    <form onSubmit={submit} className="flex w-full max-w-md flex-col gap-3">
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Work email"
-          aria-label="Work email"
-          className="h-11 flex-1 rounded-lg border border-hairline-strong bg-surface px-3.5 text-sm text-text placeholder:text-text-faint focus:border-gold focus:outline-none"
-        />
-        <button
-          type="submit"
-          className="h-11 shrink-0 rounded-lg bg-gold px-5 text-sm font-semibold text-ink transition-colors hover:bg-gold-hi"
-        >
-          Book a demo
-        </button>
-      </div>
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <input
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          placeholder="Company"
-          aria-label="Company"
-          className="h-11 flex-1 rounded-lg border border-hairline bg-surface px-3.5 text-sm text-text placeholder:text-text-faint focus:border-gold focus:outline-none"
-        />
-        <select
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
-          aria-label="Engineering team size"
-          className="h-11 flex-1 rounded-lg border border-hairline bg-surface px-3 text-sm text-text focus:border-gold focus:outline-none"
-        >
-          <option value="">Engineering size</option>
-          <option>1–25</option>
-          <option>26–100</option>
-          <option>101–500</option>
-          <option>500+</option>
-        </select>
-      </div>
-      <p className="text-xs text-text-faint">
-        We&apos;ll reply within one business day. No cold sequence, no reselling your data.
-      </p>
+    <form
+      onSubmit={submit}
+      className={`flex w-full max-w-[440px] items-center gap-1.5 rounded-full border p-1.5 ${
+        onDark ? "border-white/20 bg-white/12 backdrop-blur-md" : "border-line bg-white lift"
+      }`}
+    >
+      <input
+        type="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="What's your work email?"
+        aria-label="Work email"
+        className={`h-10 min-w-0 flex-1 bg-transparent px-4 text-[14px] focus:outline-none ${
+          onDark ? "text-white placeholder:text-white/60" : "text-ink placeholder:text-ink-4"
+        }`}
+      />
+      <button
+        type="submit"
+        className={`h-10 shrink-0 rounded-full px-5 text-[13.5px] font-bold transition-transform hover:scale-[1.03] ${
+          onDark ? "bg-white text-indigo" : "bg-indigo text-white"
+        }`}
+      >
+        Request a demo
+      </button>
     </form>
   );
 }

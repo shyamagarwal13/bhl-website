@@ -1,15 +1,8 @@
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { DemoForm } from "@/components/demo-form";
-import {
-  AttributionSplit,
-  DxSignals,
-  HeroConsole,
-  HotspotTable,
-  SpendBreakdown,
-} from "@/components/viz";
-
-/* --- small shared bits ---------------------------------------------------- */
+import { ProductShot } from "@/components/product-shot";
+import { AttributionSplit, DxSignals, HotspotTable, SpendBreakdown } from "@/components/viz";
 
 function Section({
   id,
@@ -27,136 +20,68 @@ function Section({
   );
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="eyebrow">{children}</p>;
-}
-
-function H2({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-display mt-4 text-balance text-[2.25rem] leading-[1.12] text-text sm:text-[2.75rem]">
-      {children}
-    </h2>
-  );
-}
-
 /* --- hero ----------------------------------------------------------------- */
 
 function Hero() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="aurora pointer-events-none absolute inset-0" />
-      <div className="grid-rule pointer-events-none absolute inset-0" />
-
-      <Section className="relative pb-20 pt-36 sm:pt-44">
-        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-          <div>
-            <div
-              className="rise inline-flex items-center gap-2 rounded-full border border-hairline bg-surface/70 px-3 py-1.5"
-              style={{ animationDelay: "40ms" }}
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-teal live-dot" />
-              <span className="font-mono text-[11px] tracking-wide text-text-muted">
-                Now in private beta
-              </span>
-            </div>
-
-            <h1
-              className="font-display rise mt-6 text-balance text-[2.9rem] leading-[1.06] text-text sm:text-[3.6rem]"
-              style={{ animationDelay: "90ms" }}
-            >
-              See what your AI investment is{" "}
-              <span className="relative whitespace-nowrap text-gold">
-                actually doing
-                <svg
-                  className="absolute -bottom-1 left-0 w-full"
-                  height="7"
-                  viewBox="0 0 200 7"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M1 5.2C42 2.1 92 1.4 199 3.6"
-                    stroke="var(--gold)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    fill="none"
-                    opacity="0.55"
-                  />
-                </svg>
-              </span>
-              .
-            </h1>
-
-            <p
-              className="rise mt-6 max-w-lg text-[1.0625rem] leading-relaxed text-text-muted"
-              style={{ animationDelay: "150ms" }}
-            >
-              Behold Labs connects what you spend on AI to what your engineers actually ship.
-              Cost per merged pull request, adoption by team, developer experience, and delivery
-              impact — measured from your own systems, not estimated from a survey.
-            </p>
-
-            <div className="rise mt-8" style={{ animationDelay: "210ms" }}>
-              <DemoForm />
-            </div>
-          </div>
-
-          <div className="rise lg:pl-4" style={{ animationDelay: "260ms" }}>
-            <HeroConsole />
+    <div className="relative">
+      <Section className="relative pb-0 pt-16 sm:pt-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <h1
+            className="display rise text-balance text-[2.6rem] text-white sm:text-[3.75rem]"
+            style={{ animationDelay: "40ms" }}
+          >
+            The intelligence layer for AI-native engineering
+          </h1>
+          <p
+            className="rise mx-auto mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-white/80"
+            style={{ animationDelay: "110ms" }}
+          >
+            Behold turns your developer and AI tool data into one honest picture — what you
+            spend, what ships, and whether the two are moving together.
+          </p>
+          <div className="rise mt-9 flex justify-center" style={{ animationDelay: "180ms" }}>
+            <DemoForm tone="dark" />
           </div>
         </div>
 
-        {/* Reads as social proof without borrowing anyone's logo we haven't earned. */}
-        <div
-          className="rise mt-20 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-hairline pt-7"
-          style={{ animationDelay: "320ms" }}
-        >
-          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-text-faint">
-            Reads from
-          </span>
-          {["GitHub", "GitLab", "Claude Code", "Copilot", "Cursor", "Anthropic", "OpenAI", "Bedrock", "Jira", "Linear"].map(
-            (n) => (
-              <span key={n} className="text-sm text-text-muted">
-                {n}
-              </span>
-            ),
-          )}
+        <div className="rise mt-14 sm:mt-16" style={{ animationDelay: "260ms" }}>
+          <ProductShot />
         </div>
       </Section>
     </div>
   );
 }
 
-/* --- the problem ---------------------------------------------------------- */
+/* --- value strip ---------------------------------------------------------- */
 
-function Problem() {
-  const gaps = [
+function ValueStrip() {
+  const items = [
     {
-      q: "“What are we getting for it?”",
-      a: "Provider invoices tell you the total. They can't tell you which team, which repository, or which shipped feature it paid for.",
+      t: "Prove AI ROI",
+      d: "Connect model spend to merged work, so the budget conversation has a number in it.",
     },
     {
-      q: "“Is it actually making us faster?”",
-      a: "Velocity dashboards count commits and pull requests. Neither knows whether an agent wrote the change or whether it survived review.",
+      t: "Accelerate adoption",
+      d: "See real diffusion across teams and find where enablement worked — and where it stalled.",
     },
     {
-      q: "“What is it costing us later?”",
-      a: "Code arrives faster than it is understood. Complexity and rework accumulate quietly, and show up two quarters after the spend.",
+      t: "Unblock developer flow",
+      d: "Locate the friction taxing every sprint, ranked by the hours it is actually costing.",
+    },
+    {
+      t: "Control the AI-SDLC",
+      d: "Watch complexity and rework so speed today doesn't become a rewrite next quarter.",
     },
   ];
   return (
-    <Section className="py-24">
-      <div className="max-w-2xl">
-        <Eyebrow>The gap</Eyebrow>
-        <H2>
-          Every engineering org just added a significant line item nobody can defend with data.
-        </H2>
-      </div>
-      <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline md:grid-cols-3">
-        {gaps.map((g) => (
-          <div key={g.q} className="bg-surface p-7">
-            <p className="font-display text-[1.35rem] leading-snug text-text">{g.q}</p>
-            <p className="mt-3 text-sm leading-relaxed text-text-muted">{g.a}</p>
+    <Section className="pt-14">
+      <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((i, n) => (
+          <div key={i.t} className="bg-white p-6">
+            <div className="mb-3 h-1 w-8 rounded-full" style={{ background: ["var(--indigo)", "var(--violet)", "var(--rose)", "var(--amber)"][n] }} />
+            <h3 className="text-[15px] font-bold text-ink">{i.t}</h3>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-ink-3">{i.d}</p>
           </div>
         ))}
       </div>
@@ -164,73 +89,105 @@ function Problem() {
   );
 }
 
-/* --- platform pillars ----------------------------------------------------- */
+/* --- integrations strip (honest stand-in for a customer logo cloud) -------- */
 
-const PILLARS = [
-  {
-    k: "01",
-    t: "AI spend intelligence",
-    d: "Every dollar mapped to a team, a repository, and a pull request. Model, tool, and provider costs reconciled in one place.",
-    m: ["Cost per merged PR", "Spend by team & repo", "Provider reconciliation", "Budget forecasting"],
-  },
-  {
-    k: "02",
-    t: "Engineering output",
-    d: "Throughput, review depth, and delivery measured from your source systems — never self-reported, never gameable.",
-    m: ["Merged throughput", "Review coverage & latency", "Lead time to production", "Human / agent attribution"],
-  },
-  {
-    k: "03",
-    t: "Developer experience",
-    d: "Where friction actually lives, combining system signals with lightweight surveys so the fix is specific, not a vibe.",
-    m: ["DX index", "Build & test speed", "Deep work time", "Onboarding time"],
-  },
-  {
-    k: "04",
-    t: "Code health",
-    d: "The debt AI velocity leaves behind. Complexity, duplication, and the files where risk and rework concentrate.",
-    m: ["Complexity × churn hotspots", "Duplication rate", "Committed secrets", "Dependency risk"],
-  },
-];
-
-function Platform() {
+function ReadsFrom() {
+  const names = [
+    "GitHub",
+    "GitLab",
+    "Claude Code",
+    "Copilot",
+    "Cursor",
+    "Anthropic",
+    "OpenAI",
+    "Bedrock",
+    "Jira",
+    "Linear",
+  ];
   return (
-    <Section id="platform" className="py-24">
-      <div className="max-w-2xl">
-        <Eyebrow>The platform</Eyebrow>
-        <H2>Four measurements that answer the question together.</H2>
-        <p className="mt-5 text-[1.0625rem] leading-relaxed text-text-muted">
-          Spend without output is a bill. Output without spend is a vanity chart. Behold reads
-          both from the same source of truth, so the connection between them is evidence rather
-          than an argument.
-        </p>
-      </div>
-
-      <div className="mt-14 grid gap-5 md:grid-cols-2">
-        {PILLARS.map((p) => (
-          <div
-            key={p.k}
-            className="group rounded-2xl border border-hairline bg-surface p-7 transition-colors hover:border-hairline-strong"
-          >
-            <div className="flex items-baseline gap-3">
-              <span className="font-mono text-xs text-gold">{p.k}</span>
-              <h3 className="text-lg font-semibold text-text">{p.t}</h3>
-            </div>
-            <p className="mt-3 text-sm leading-relaxed text-text-muted">{p.d}</p>
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {p.m.map((m) => (
-                <li
-                  key={m}
-                  className="rounded-md border border-hairline bg-surface-2 px-2.5 py-1 font-mono text-[11px] text-text-muted"
-                >
-                  {m}
-                </li>
-              ))}
-            </ul>
-          </div>
+    <Section className="py-16">
+      <p className="text-center text-[12.5px] font-semibold uppercase tracking-[0.14em] text-ink-4">
+        Reads from the systems you already run
+      </p>
+      <div className="mt-7 flex flex-wrap items-center justify-center gap-x-9 gap-y-4">
+        {names.map((n) => (
+          <span key={n} className="text-[15px] font-bold text-ink-4">
+            {n}
+          </span>
         ))}
       </div>
     </Section>
+  );
+}
+
+/* --- use cases ------------------------------------------------------------ */
+
+const USE_CASES = [
+  {
+    t: "Optimise AI investment",
+    d: "See where AI spend and engineering effort actually go, across any team or category, so the next dollar lands where it works.",
+    c: "var(--indigo)",
+  },
+  {
+    t: "Prove business impact",
+    d: "Connect spend, effort and delivery outcomes to understand what AI is producing — and whether it is meaningfully changing what you ship.",
+    c: "var(--violet)",
+  },
+  {
+    t: "Mature your metrics",
+    d: "Define engineering metrics that survive scrutiny, with the formula shown next to every number so nobody has to take it on faith.",
+    c: "var(--rose)",
+  },
+  {
+    t: "Improve AI workflows",
+    d: "Understand how engineers actually work with agents across the lifecycle, and which behaviours consistently produce better outcomes.",
+    c: "var(--amber)",
+  },
+  {
+    t: "Improve developer experience",
+    d: "Pair system signals with short, targeted surveys to find the friction worth fixing and prove the fix landed.",
+    c: "var(--teal)",
+  },
+  {
+    t: "Report to finance",
+    d: "Unit economics your CFO will accept without a translation layer: cost per merged change, by team, reconciled to the invoice.",
+    c: "var(--indigo)",
+  },
+];
+
+function UseCases() {
+  return (
+    <div className="dawn-soft border-y border-line">
+      <Section id="platform" className="py-24">
+        <p className="eyebrow text-indigo">Platform use cases</p>
+        <h2 className="h2 mt-4 max-w-2xl text-balance text-[2.25rem] sm:text-[2.9rem]">
+          Engineering intelligence <span className="text-gradient">across your SDLC</span>
+        </h2>
+        <p className="mt-5 max-w-xl text-[1.0625rem] leading-relaxed text-ink-3">
+          Spend without output is a bill. Output without spend is a vanity chart. Behold reads
+          both from the same source of truth, so the link between them is evidence rather than
+          an argument.
+        </p>
+
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {USE_CASES.map((u) => (
+            <div
+              key={u.t}
+              className="group rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:lift"
+            >
+              <span
+                className="flex h-9 w-9 items-center justify-center rounded-xl"
+                style={{ background: `color-mix(in srgb, ${u.c} 12%, transparent)` }}
+              >
+                <span className="h-3 w-3 rounded-md" style={{ background: u.c }} />
+              </span>
+              <h3 className="mt-4 text-[16px] font-bold text-ink">{u.t}</h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-3">{u.d}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+    </div>
   );
 }
 
@@ -252,94 +209,95 @@ function Feature({
   flip?: boolean;
 }) {
   return (
-    <div className="grid items-center gap-12 lg:grid-cols-2">
-      <div className={flip ? "lg:order-2" : ""}>
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <h3 className="font-display mt-4 text-balance text-[1.85rem] leading-tight text-text sm:text-[2.15rem]">
-          {title}
-        </h3>
-        <p className="mt-4 leading-relaxed text-text-muted">{body}</p>
+    <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className={`min-w-0 ${flip ? "lg:order-2" : ""}`}>
+        <p className="eyebrow text-indigo">{eyebrow}</p>
+        <h3 className="h2 mt-4 text-balance text-[1.9rem] sm:text-[2.3rem]">{title}</h3>
+        <p className="mt-4 text-[15.5px] leading-relaxed text-ink-3">{body}</p>
         <ul className="mt-6 flex flex-col gap-3">
           {points.map((p) => (
-            <li key={p} className="flex gap-3 text-sm text-text-muted">
+            <li key={p} className="flex gap-3 text-[14.5px] text-ink-2">
               <svg
-                className="mt-1 shrink-0 text-teal"
-                width="14"
-                height="14"
+                className="mt-[3px] shrink-0 text-indigo"
+                width="16"
+                height="16"
                 viewBox="0 0 16 16"
                 fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
                 aria-hidden="true"
               >
-                <path d="M3 8.5l3.5 3.5L13 5" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="8" cy="8" r="8" fill="currentColor" fillOpacity="0.1" />
+                <path
+                  d="M4.5 8.2l2.4 2.4L11.5 6"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
               <span>{p}</span>
             </li>
           ))}
         </ul>
       </div>
-      <div className={flip ? "lg:order-1" : ""}>{visual}</div>
+      <div className={`min-w-0 ${flip ? "lg:order-1" : ""}`}>{visual}</div>
     </div>
   );
 }
 
 function Features() {
   return (
-    <div className="border-y border-hairline bg-ink-2">
-      <Section className="flex flex-col gap-24 py-24">
-        <Feature
-          eyebrow="Spend → outcome"
-          title="Cost per merged pull request, not cost per seat."
-          body="Seat counts and token totals describe activity. They don't tell you what shipped. Behold attributes model and tool spend down to the change it produced, so you can compare teams honestly and defend the budget with a number."
-          points={[
-            "Attribution by team, repository, branch and pull request",
-            "Reconciled against provider billing so totals match finance",
-            "Cost of abandoned and reverted work, separated from delivered work",
-            "Trends that survive a headcount change or a pricing change",
-          ]}
-          visual={<SpendBreakdown />}
-        />
-        <Feature
-          flip
-          eyebrow="Adoption & attribution"
-          title="Know which work is agent-assisted — without watching anyone."
-          body="Adoption reported by tool vendors counts logins. Behold measures what reached the main branch, so you can see real diffusion across teams and spot where enablement is working and where it stalled."
-          points={[
-            "Agent-assisted share of merged changes, tracked over time",
-            "Diffusion by team, so you can find your internal champions",
-            "Metrics only — we never ingest prompts, completions, or source content",
-            "Aggregate by default; individual surveillance is not a supported use case",
-          ]}
-          visual={<AttributionSplit />}
-        />
-        <Feature
-          eyebrow="Developer experience"
-          title="Find the friction that is quietly taxing every sprint."
-          body="A slow build is a tax charged to every engineer, every day, and it never appears on an invoice. Behold combines system telemetry with short, targeted surveys to locate the friction precisely enough to fix it."
-          points={[
-            "A DX index you can trend, benchmark and act on",
-            "System signals paired with developer sentiment for the why",
-            "Ranked by estimated hours lost, so remediation gets prioritised",
-            "Survey fatigue avoided by asking few questions, rarely",
-          ]}
-          visual={<DxSignals />}
-        />
-        <Feature
-          flip
-          eyebrow="Code health"
-          title="Watch the debt that fast delivery leaves behind."
-          body="Shipping faster is only a win if the codebase survives it. Behold reads the code itself — complexity, duplication, secrets, dependency risk — and weights it by change frequency, because complex code nobody touches is not the problem."
-          points={[
-            "Hotspots ranked by complexity × churn, not raw complexity",
-            "Committed secrets found across full git history",
-            "Known vulnerabilities in the dependencies you actually ship",
-            "Findings overlaid on hotspots, so remediation starts in the right file",
-          ]}
-          visual={<HotspotTable />}
-        />
-      </Section>
-    </div>
+    <Section className="flex flex-col gap-28 py-24">
+      <Feature
+        eyebrow="Spend → outcome"
+        title="Cost per merged pull request, not cost per seat."
+        body="Seat counts and token totals describe activity. They don't tell you what shipped. Behold attributes model and tool spend down to the change it produced, so you can compare teams honestly and defend the budget with a number."
+        points={[
+          "Attribution by team, repository, branch and pull request",
+          "Reconciled against provider billing, so totals match finance",
+          "Cost of abandoned and reverted work, separated from delivered work",
+          "Trends that survive a headcount change or a pricing change",
+        ]}
+        visual={<SpendBreakdown />}
+      />
+      <Feature
+        flip
+        eyebrow="Adoption & attribution"
+        title="Know which work is agent-assisted — without watching anyone."
+        body="Adoption reported by tool vendors counts logins. Behold measures what reached the main branch, so you can see real diffusion across teams and spot where enablement is working and where it stalled."
+        points={[
+          "Agent-assisted share of merged changes, tracked over time",
+          "Diffusion by team, so you can find your internal champions",
+          "Metrics only — we never ingest prompts, completions or source content",
+          "Aggregate by default; individual surveillance is not a supported use case",
+        ]}
+        visual={<AttributionSplit />}
+      />
+      <Feature
+        eyebrow="Developer experience"
+        title="Find the friction quietly taxing every sprint."
+        body="A slow build is a tax charged to every engineer, every day, and it never appears on an invoice. Behold combines system telemetry with short, targeted surveys to locate friction precisely enough to fix it."
+        points={[
+          "A DX index you can trend, benchmark and act on",
+          "System signals paired with developer sentiment for the why",
+          "Ranked by estimated hours lost, so remediation gets prioritised",
+          "Survey fatigue avoided by asking few questions, rarely",
+        ]}
+        visual={<DxSignals />}
+      />
+      <Feature
+        flip
+        eyebrow="Code health"
+        title="Watch the debt that fast delivery leaves behind."
+        body="Shipping faster is only a win if the codebase survives it. Behold reads the code itself — complexity, duplication, secrets, dependency risk — and weights it by change frequency, because complex code nobody touches is not the problem."
+        points={[
+          "Hotspots ranked by complexity × churn, not raw complexity",
+          "Committed secrets found across full git history",
+          "Known vulnerabilities in the dependencies you actually ship",
+          "Findings overlaid on hotspots, so remediation starts in the right file",
+        ]}
+        visual={<HotspotTable />}
+      />
+    </Section>
   );
 }
 
@@ -350,76 +308,45 @@ function How() {
     {
       n: "01",
       t: "Connect",
-      d: "Read-only access to your Git provider and your model providers. A GitHub or GitLab app, an admin API key, and any AI gateway you already run.",
-      foot: "Typically under 30 minutes.",
+      d: "Read-only access to your Git provider and model providers — a GitHub or GitLab app, an admin API key, and any AI gateway you already run.",
+      f: "Under 30 minutes",
     },
     {
       n: "02",
       t: "Measure",
-      d: "We ingest pull requests, reviews, commits and usage, then compute every metric from that source data — with the formula shown next to the number.",
-      foot: "First insights the same day.",
+      d: "We ingest pull requests, reviews, commits and usage, then compute every metric from that source data, with the formula shown beside the number.",
+      f: "Insights the same day",
     },
     {
       n: "03",
       t: "Act",
-      d: "Composable dashboards for each audience, benchmarks against comparable orgs, and reporting your finance team will accept without a translation layer.",
-      foot: "Board-ready by the first review.",
+      d: "Composable dashboards for each audience, benchmarks against comparable orgs, and reporting your finance team will accept as-is.",
+      f: "Board-ready by first review",
     },
   ];
   return (
-    <Section id="how" className="py-24">
-      <div className="max-w-2xl">
-        <Eyebrow>How it works</Eyebrow>
-        <H2>Connected in an afternoon. Useful the same day.</H2>
-      </div>
-      <ol className="mt-14 grid gap-5 md:grid-cols-3">
-        {steps.map((s) => (
-          <li key={s.n} className="relative rounded-2xl border border-hairline bg-surface p-7">
-            <span className="font-mono text-xs text-gold">{s.n}</span>
-            <h3 className="mt-3 text-lg font-semibold text-text">{s.t}</h3>
-            <p className="mt-2.5 text-sm leading-relaxed text-text-muted">{s.d}</p>
-            <p className="mt-5 border-t border-hairline pt-4 font-mono text-[11px] text-teal">
-              {s.foot}
-            </p>
-          </li>
-        ))}
-      </ol>
-    </Section>
-  );
-}
-
-/* --- audiences ------------------------------------------------------------ */
-
-function Audiences() {
-  const who = [
-    {
-      r: "Engineering leadership",
-      q: "Is this investment paying off, and where should the next dollar go?",
-    },
-    {
-      r: "Platform & DevEx teams",
-      q: "Which friction is costing the most engineering hours right now?",
-    },
-    { r: "Finance & FinOps", q: "What is the real unit cost of shipping, by team?" },
-    { r: "Developers", q: "Is the tooling helping me, and is my team's context understood?" },
-  ];
-  return (
-    <Section className="py-24">
-      <div className="max-w-2xl">
-        <Eyebrow>Who it&apos;s for</Eyebrow>
-        <H2>One set of numbers, four different questions.</H2>
-      </div>
-      <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2">
-        {who.map((w) => (
-          <div key={w.r} className="bg-surface p-7">
-            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-gold">
-              {w.r}
-            </div>
-            <p className="font-display mt-3 text-[1.3rem] leading-snug text-text">{w.q}</p>
-          </div>
-        ))}
-      </div>
-    </Section>
+    <div className="border-y border-line bg-paper">
+      <Section id="how" className="py-24">
+        <div className="max-w-2xl">
+          <p className="eyebrow text-indigo">How it works</p>
+          <h2 className="h2 mt-4 text-balance text-[2.25rem] sm:text-[2.75rem]">
+            Connected in an afternoon. Useful the same day.
+          </h2>
+        </div>
+        <ol className="mt-12 grid gap-5 md:grid-cols-3">
+          {steps.map((s) => (
+            <li key={s.n} className="rounded-2xl border border-line bg-white p-7">
+              <span className="font-mono text-xs font-bold text-indigo">{s.n}</span>
+              <h3 className="mt-3 text-[17px] font-bold text-ink">{s.t}</h3>
+              <p className="mt-2.5 text-[14px] leading-relaxed text-ink-3">{s.d}</p>
+              <p className="mt-5 border-t border-line pt-4 font-mono text-[11px] font-semibold text-teal">
+                {s.f}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </Section>
+    </div>
   );
 }
 
@@ -432,29 +359,31 @@ function Integrations() {
     { g: "Model providers", items: ["Anthropic", "OpenAI", "AWS Bedrock", "Google Vertex"] },
     { g: "Gateways", items: ["LiteLLM", "Portkey", "Cloudflare AI Gateway"] },
     { g: "Planning", items: ["Jira", "Linear", "Azure Boards"] },
-    { g: "Delivery & alerting", items: ["Jenkins", "CircleCI", "GitHub Actions", "PagerDuty", "Slack"] },
+    { g: "Delivery", items: ["Jenkins", "CircleCI", "GitHub Actions", "PagerDuty", "Slack"] },
   ];
   return (
     <Section id="integrations" className="py-24">
       <div className="max-w-2xl">
-        <Eyebrow>Integrations</Eyebrow>
-        <H2>Reads the systems you already run.</H2>
-        <p className="mt-5 leading-relaxed text-text-muted">
-          Read-only, least-privilege scopes throughout. If you already route model traffic through
-          a gateway, that single connection covers most of your spend picture on day one.
+        <p className="eyebrow text-indigo">Integrations</p>
+        <h2 className="h2 mt-4 text-balance text-[2.25rem] sm:text-[2.75rem]">
+          Connects to what you have.
+        </h2>
+        <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
+          Read-only, least-privilege scopes throughout. If you already route model traffic
+          through a gateway, that one connection covers most of your spend picture on day one.
         </p>
       </div>
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map((g) => (
-          <div key={g.g} className="rounded-xl border border-hairline bg-surface p-5">
-            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-text-faint">
+          <div key={g.g} className="rounded-2xl border border-line bg-white p-6">
+            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-4">
               {g.g}
             </div>
-            <ul className="mt-3.5 flex flex-wrap gap-2">
+            <ul className="mt-4 flex flex-wrap gap-2">
               {g.items.map((i) => (
                 <li
                   key={i}
-                  className="rounded-md border border-hairline bg-surface-2 px-2.5 py-1 text-[13px] text-text-muted"
+                  className="rounded-lg border border-line bg-paper px-2.5 py-1.5 text-[13px] font-medium text-ink-2"
                 >
                   {i}
                 </li>
@@ -485,37 +414,36 @@ function Security() {
     },
     {
       t: "Aggregate by default",
-      d: "Individual-level views are off unless an admin deliberately enables them. This is not a surveillance tool.",
+      d: "Individual-level views stay off unless an admin deliberately enables them. This is not a surveillance tool.",
     },
-    {
-      t: "SSO and SCIM",
-      d: "SAML single sign-on and directory provisioning, with role-based access control.",
-    },
+    { t: "SSO and SCIM", d: "SAML single sign-on and directory provisioning, with role-based access control." },
     {
       t: "Your deployment, if needed",
       d: "Self-hosted and VPC options for teams whose policy won't allow a third-party clone.",
     },
   ];
   return (
-    <div className="border-y border-hairline bg-ink-2">
+    <div className="border-y border-line bg-paper">
       <Section id="security" className="py-24">
         <div className="max-w-2xl">
-          <Eyebrow>Security & privacy</Eyebrow>
-          <H2>Built to pass the review before you have to ask for it.</H2>
-          <p className="mt-5 leading-relaxed text-text-muted">
-            Engineering telemetry is sensitive, and measurement tools have earned scepticism. Our
+          <p className="eyebrow text-indigo">Security & privacy</p>
+          <h2 className="h2 mt-4 text-balance text-[2.25rem] sm:text-[2.75rem]">
+            Built to pass the review before you have to ask.
+          </h2>
+          <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
+            Engineering telemetry is sensitive and measurement tools have earned scepticism. Our
             answer is to collect as little as possible: the numbers, and nothing readable.
           </p>
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((i) => (
-            <div key={i.t} className="rounded-xl border border-hairline bg-surface p-6">
-              <h3 className="text-sm font-semibold text-text">{i.t}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-text-muted">{i.d}</p>
+            <div key={i.t} className="rounded-2xl border border-line bg-white p-6">
+              <h3 className="text-[15px] font-bold text-ink">{i.t}</h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-3">{i.d}</p>
             </div>
           ))}
         </div>
-        <p className="mt-8 font-mono text-xs text-text-faint">
+        <p className="mt-8 font-mono text-xs text-ink-4">
           SOC 2 Type II in progress · DPA and sub-processor list available on request
         </p>
       </Section>
@@ -523,28 +451,26 @@ function Security() {
   );
 }
 
-/* --- closing CTA ---------------------------------------------------------- */
+/* --- CTA ------------------------------------------------------------------ */
 
 function Cta() {
   return (
-    <div className="relative overflow-hidden">
-      <div className="aurora pointer-events-none absolute inset-0" />
-      <Section id="demo" className="relative py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <Eyebrow>Private beta</Eyebrow>
-          <h2 className="font-display mt-4 text-balance text-[2.4rem] leading-[1.1] text-text sm:text-[3rem]">
+    <Section className="py-24">
+      <div className="dawn grain relative overflow-hidden rounded-3xl px-8 py-20 text-center">
+        <div className="relative mx-auto max-w-2xl">
+          <h2 className="display text-balance text-[2.4rem] text-white sm:text-[3rem]">
             Bring evidence to the next budget conversation.
           </h2>
-          <p className="mt-5 leading-relaxed text-text-muted">
+          <p className="mx-auto mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-white/80">
             We&apos;re working with a small number of engineering organisations to get this right.
             Connect a repository and see your own numbers — no slide deck required.
           </p>
-          <div className="mt-9 flex justify-center">
-            <DemoForm />
+          <div id="demo" className="mt-9 flex justify-center scroll-mt-32">
+            <DemoForm tone="dark" />
           </div>
         </div>
-      </Section>
-    </div>
+      </div>
+    </Section>
   );
 }
 
@@ -552,21 +478,32 @@ function Cta() {
 
 export default function Home() {
   return (
-    <>
+    <div className="relative">
+      {/*
+        The gradient is anchored to the top of the PAGE, not the top of the hero, so it
+        sits behind the floating nav — which is what lets the nav be transparent with
+        white type. Anchored to the hero instead, the nav rendered white-on-white.
+        It stops short of the product shot so the panel reads as emerging from the
+        colour rather than sitting on a coloured box.
+
+        No negative z-index here: the body's white background paints at the canvas layer,
+        so `-z-10` hides the gradient behind it completely. Being first in DOM order with
+        positioned siblings after it is enough.
+      */}
+      <div className="dawn grain dawn-fade absolute inset-x-0 top-0 h-[940px]" aria-hidden="true" />
       <Nav />
       <main>
         <Hero />
-        <div className="rule-fade" />
-        <Problem />
-        <Platform />
+        <ValueStrip />
+        <ReadsFrom />
+        <UseCases />
         <Features />
         <How />
-        <Audiences />
         <Integrations />
         <Security />
         <Cta />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
