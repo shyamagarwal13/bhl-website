@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+/*
+  Behold Labs — marketing design system.
+
+  Deliberately single-theme. The name is about seeing clearly, and the product is an
+  instrument panel for engineering leaders, so the site reads as one: a dark observatory
+  ground with two signal colours doing distinct jobs — warm gold for the human/insight
+  thread, teal for data and positive movement. Inherited from the product's own tokens so
+  the site and the app feel like one company.
+
+  Type is a designed pair: Instrument Serif for statements, Instrument Sans for the work,
+  a mono for anything that behaves like an instrument reading.
+*/
+
+:root {
+  /* Ground & surfaces — blue-biased neutrals, chosen not inherited */
+  --ink: #090b10;
+  --ink-2: #0c0f16;
+  --surface: #11141c;
+  --surface-2: #161a24;
+  --surface-3: #1c212d;
+  --hairline: #232936;
+  --hairline-strong: #313949;
+
+  /* Text */
+  --text: #e9ecf2;
+  --text-muted: #99a2b3;
+  --text-faint: #616b7d;
+
+  /* Signal — warm gold: insight, the human thread */
+  --gold: #e8a33d;
+  --gold-hi: #f4b459;
+  --gold-dim: #b17d2c;
+
+  /* Data — teal: measurement, positive delta */
+  --teal: #34c9a4;
+  --teal-hi: #56e0bd;
+  --teal-dim: #1f7d67;
+
+  --danger: #f2635e;
+  --warn: #e8b13d;
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 20px;
+
+  --maxw: 1200px;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+
+  --color-gold: var(--gold);
+  --color-gold-hi: var(--gold-hi);
+  --color-gold-dim: var(--gold-dim);
+  --color-teal: var(--teal);
+  --color-teal-hi: var(--teal-hi);
+  --color-teal-dim: var(--teal-dim);
+  --color-danger: var(--danger);
+  --color-warn: var(--warn);
+
+  --font-sans: var(--font-instrument-sans);
+  --font-display: var(--font-instrument-serif);
+  --font-mono: var(--font-mono-face);
+}
+
+* {
+  border-color: var(--hairline);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Anchor targets clear the sticky header */
+  scroll-padding-top: 5.5rem;
+  background: var(--ink);
+}
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--gold) 32%, transparent);
+  color: var(--text);
+}
+
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --- Type utilities ------------------------------------------------------- */
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Ambient ground ------------------------------------------------------- */
+
+/* Two light sources, low and wide, so the page has a horizon rather than a spotlight. */
+.aurora {
+  background:
+    radial-gradient(58rem 34rem at 8% -12%, color-mix(in srgb, var(--gold) 11%, transparent), transparent 62%),
+    radial-gradient(52rem 32rem at 96% 4%, color-mix(in srgb, var(--teal) 8%, transparent), transparent 58%);
+}
+
+/* Instrument grid — the faint ruled backdrop of a measuring device. */
+.grid-rule {
+  background-image:
+    linear-gradient(var(--hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(78% 62% at 50% 34%, #000 20%, transparent 76%);
+  mask-image: radial-gradient(78% 62% at 50% 34%, #000 20%, transparent 76%);
+  opacity: 0.42;
+}
+
+/* Hairline that fades at both ends — used as a section rule. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hairline-strong) 18%, var(--hairline-strong) 82%, transparent);
+}
+
+/* --- Motion --------------------------------------------------------------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Staggered by inline delay at the call site, so a section resolves as one gesture. */
+.rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: var(--len, 600);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.draw {
+  stroke-dasharray: var(--len, 600);
+  animation: draw 1.8s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+.live-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
