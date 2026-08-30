@@ -233,8 +233,8 @@ export default function Home() {
         <Hero />
         <ReadsFrom />
         <Model />
-        <NumberIsNotAnAnswer />
         <UseCases />
+        <NumberIsNotAnAnswer />
         <Cta />
       </main>
       <Footer />

@@ -8,10 +8,8 @@ import { Reveal } from "./reveal";
  * screens you have to sit through to reach the one that applies to you.
  *
  * Every vendor in the category runs a six-card grid here, so the differentiator can't be
- * the format — it's what the cards say. Each names a decision a leader is already making,
- * states the mechanism plainly, and tags the terms of the model it moves. That last part
- * ties the section back to the equation, and is the piece nobody without the model can
- * copy.
+ * the format — it's what the cards say. Each names a decision a leader is already making
+ * and states the mechanism plainly, in one sentence.
  *
  * No "Learn more" links: the reference has pages behind theirs and we don't. Six links to
  * nowhere would undo the credibility the research section is building.
@@ -20,7 +18,6 @@ import { Reveal } from "./reveal";
 type Case = {
   t: string;
   d: string;
-  terms: string[];
   band: string;
   icon: React.ReactNode;
 };
@@ -31,7 +28,6 @@ const CASES: Case[] = [
   {
     t: "Connect AI Spend to Delivered Software",
     d: "Attribute model, tool and seat costs to the teams, repositories and merged changes they produced, so investment decisions rest on measured unit cost rather than an invoice total.",
-    terms: ["P", "F"],
     band: "var(--t1)",
     icon: (
       <>
@@ -43,7 +39,6 @@ const CASES: Case[] = [
   {
     t: "Measure the Cost of Rework and Waste",
     d: "Separate work that shipped and stayed in production from work abandoned before merge or reverted afterwards, and cost each independently, so the share of spend that produced nothing becomes visible.",
-    terms: ["L(t)", "P"],
     band: "var(--t4)",
     icon: (
       <>
@@ -55,7 +50,6 @@ const CASES: Case[] = [
   {
     t: "Track Review Capacity and Effectiveness",
     d: "Monitor first-pass review rates alongside reviewer load, so a decline in review depth is identified as a trend and addressed before the consequences reach production.",
-    terms: ["E", "R"],
     band: "var(--t5)",
     icon: (
       <>
@@ -67,7 +61,6 @@ const CASES: Case[] = [
   {
     t: "Identify and Quantify Developer Friction",
     d: "Combine delivery telemetry with targeted developer feedback to locate where engineering time is lost, quantified in hours so remediation can be prioritized against other work.",
-    terms: ["T"],
     band: "var(--t2)",
     icon: (
       <>
@@ -79,14 +72,12 @@ const CASES: Case[] = [
   {
     t: "Benchmark Teams on Comparable Metrics",
     d: "Normalize unit cost for the composition of work each team performs, so cross-team comparisons stay defensible when the teams being measured review the results.",
-    terms: ["P", "T"],
     band: "var(--t3)",
     icon: <path d="M4 20V10M10 20V4M16 20v-7M22 20v-11" strokeLinecap="round" />,
   },
   {
     t: "Report Engineering Economics to Finance",
     d: "Deliver unit-cost reporting reconciled to provider billing with the full derivation attached, suitable for software capitalization, R&D tax credits and board-level reporting.",
-    terms: ["F", "P"],
     band: "var(--t1)",
     icon: (
       <>
@@ -108,8 +99,8 @@ export function UseCases() {
               What engineering leaders use it for.
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Each of these is a decision already being made without the evidence to settle it.
-              The tag on every card names the terms of the model that decision moves.
+              Each of these is a decision already being made — usually without the evidence to
+              settle it.
             </p>
           </div>
         </Reveal>
@@ -134,25 +125,8 @@ export function UseCases() {
                 <h3 className="mt-5 text-balance text-[1.05rem] font-bold leading-snug text-ink">
                   {c.t}
                 </h3>
-                <p className="mt-2.5 flex-1 text-[13.5px] leading-relaxed text-ink-3">{c.d}</p>
+                <p className="mt-2.5 text-[13.5px] leading-relaxed text-ink-3">{c.d}</p>
 
-                <div className="mt-6 flex items-center gap-2 border-t border-line pt-4">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
-                    Moves
-                  </span>
-                  {c.terms.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-md px-1.5 py-0.5 font-mono text-[11px] font-bold"
-                      style={{
-                        color: c.band,
-                        background: `color-mix(in srgb, ${c.band} 10%, transparent)`,
-                      }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
               </article>
             </Reveal>
           ))}

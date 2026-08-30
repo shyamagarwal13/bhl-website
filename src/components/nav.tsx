@@ -7,8 +7,8 @@ import { Wordmark } from "./brand";
 // scroll that looks like a broken page.
 const LINKS = [
   { label: "The model", href: "#model" },
-  { label: "Our approach", href: "#approach" },
   { label: "Use cases", href: "#use-cases" },
+  { label: "Our approach", href: "#approach" },
 ];
 
 export function Nav() {
