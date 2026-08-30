@@ -130,6 +130,15 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  /*
+    background-clip:text paints only inside the element box. `.display` runs a 1.02
+    line-height, so the box ends above the descenders — g, y and p get no fill and
+    vanish. Pad the box down past them and pull the same amount back out of the layout
+    so nothing shifts. Needs a block/inline-block box to take the padding.
+  */
+  display: inline-block;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
 }
 
 .eyebrow {
