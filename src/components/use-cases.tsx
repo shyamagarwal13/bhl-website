@@ -1,37 +1,26 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { Reveal } from "./reveal";
-import { EquationStrip } from "./equation";
-import { TermChart } from "./term-charts";
 
 /*
  * Use cases.
  *
- * Every vendor in this category runs a six-card grid here, so the differentiator can't be
- * the format — it has to be what the cards say. Each one names a question a leader can't
- * currently answer, and tags which terms of the equation it moves. That ties the section
- * back to the model instead of listing capabilities in a vacuum, and it's a claim only a
- * company with the model can make.
+ * A card grid, deliberately: this is a reference section a reader skims, not a narrative.
+ * The page already has one scroll-driven section, and a second turns a list into six
+ * screens you have to sit through to reach the one that applies to you.
  *
- * Deliberately no "Learn more" links: there is nothing behind them yet, and a grid of six
- * dead links is worse than a grid of six honest statements.
+ * Every vendor in the category runs a six-card grid here, so the differentiator can't be
+ * the format — it's what the cards say. Each names a decision a leader is already making,
+ * states the mechanism plainly, and tags the terms of the model it moves. That last part
+ * ties the section back to the equation, and is the piece nobody without the model can
+ * copy.
  *
- * Read vertically with a pinned panel: the case scrolls on the left while the right shows
- * the equation with that case's terms lit and the instrument for its primary term. That
- * makes the "Moves: P, F" tag literal — you see which part of the model the decision
- * touches, and what you'd actually be looking at.
- *
- * Below `lg` the pin is dropped; a frozen panel taller than a phone viewport traps the
- * reader.
+ * No "Learn more" links: the reference has pages behind theirs and we don't. Six links to
+ * nowhere would undo the credibility the research section is building.
  */
 
 type Case = {
-  q: string;
+  t: string;
   d: string;
   terms: string[];
-  /** which term's instrument to show alongside — the case's primary lever */
-  chart: string;
   band: string;
   icon: React.ReactNode;
 };
@@ -40,9 +29,8 @@ const S = { w: 20, h: 20, viewBox: "0 0 24 24", fill: "none", strokeWidth: 1.7 }
 
 const CASES: Case[] = [
   {
-    q: "Prove Your AI Investment Is Working",
-    chart: "P",
-    d: "Connect model and tool spend to the changes that actually shipped, so you can answer what the investment returned instead of reporting what it cost.",
+    t: "Connect AI Spend to Delivered Software",
+    d: "Attribute model, tool and seat costs to the teams, repositories and merged changes they produced, so investment decisions rest on measured unit cost rather than an invoice total.",
     terms: ["P", "F"],
     band: "var(--t1)",
     icon: (
@@ -53,9 +41,8 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Price Rework and Abandoned Work",
-    chart: "L",
-    d: "See what was abandoned before merge or reverted after it, priced apart from what survived, so you know how much of the budget bought something that is still running.",
+    t: "Measure the Cost of Rework and Waste",
+    d: "Separate work that shipped and stayed in production from work abandoned before merge or reverted afterwards, and cost each independently, so the share of spend that produced nothing becomes visible.",
     terms: ["L(t)", "P"],
     band: "var(--t4)",
     icon: (
@@ -66,9 +53,8 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Protect Your Review Capacity",
-    chart: "E",
-    d: "Track how many changes clear review first time alongside reviewer load, so a decline in review depth surfaces as a trend rather than as an incident.",
+    t: "Track Review Capacity and Effectiveness",
+    d: "Monitor first-pass review rates alongside reviewer load, so a decline in review depth is identified as a trend and addressed before the consequences reach production.",
     terms: ["E", "R"],
     band: "var(--t5)",
     icon: (
@@ -79,9 +65,8 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Reduce Developer Friction",
-    chart: "T",
-    d: "Combine delivery data with short, targeted developer input to find where time is lost, ranked by the hours each source of friction actually costs you.",
+    t: "Identify and Quantify Developer Friction",
+    d: "Combine delivery telemetry with targeted developer feedback to locate where engineering time is lost, quantified in hours so remediation can be prioritized against other work.",
     terms: ["T"],
     band: "var(--t2)",
     icon: (
@@ -92,17 +77,15 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Compare Teams on Equal Terms",
-    chart: "P",
-    d: "Normalize unit cost for the work each team actually does, so a comparison holds up when the teams being compared are the ones asking the questions.",
+    t: "Benchmark Teams on Comparable Metrics",
+    d: "Normalize unit cost for the composition of work each team performs, so cross-team comparisons stay defensible when the teams being measured review the results.",
     terms: ["P", "T"],
     band: "var(--t3)",
     icon: <path d="M4 20V10M10 20V4M16 20v-7M22 20v-11" strokeLinecap="round" />,
   },
   {
-    q: "Automate Engineering Cost Reporting",
-    chart: "F",
-    d: "Produce unit economics reconciled to provider billing with the derivation attached to every figure, ready for capitalization, R&D claims and board reporting.",
+    t: "Report Engineering Economics to Finance",
+    d: "Deliver unit-cost reporting reconciled to provider billing with the full derivation attached, suitable for software capitalization, R&D tax credits and board-level reporting.",
     terms: ["F", "P"],
     band: "var(--t1)",
     icon: (
@@ -113,42 +96,8 @@ const CASES: Case[] = [
     ),
   },
 ];
+
 export function UseCases() {
-  const [i, setI] = useState(0);
-  const cards = useRef<(HTMLDivElement | null)[]>([]);
-  const cur = CASES[i];
-
-  useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const mid = window.innerHeight / 2;
-      let best = 0;
-      let bestD = Infinity;
-      cards.current.forEach((el, n) => {
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        const d = Math.abs(r.top + r.height / 2 - mid);
-        if (d < bestD) {
-          bestD = d;
-          best = n;
-        }
-      });
-      setI(best);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    update();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
     <div className="border-y border-line bg-paper/60">
       <section id="use-cases" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
@@ -160,29 +109,21 @@ export function UseCases() {
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
               Each of these is a decision already being made without the evidence to settle it.
-              The tag on every case names the terms of the model that decision moves.
+              The tag on every card names the terms of the model that decision moves.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16">
-          <div className="flex min-w-0 flex-col">
-            {CASES.map((c, n) => (
-              <div
-                key={c.q}
-                ref={(el) => {
-                  cards.current[n] = el;
-                }}
-                className="border-t border-line py-9 first:border-t-0 lg:flex lg:min-h-[54vh] lg:flex-col lg:justify-center lg:border-t-0 lg:py-10"
-              >
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {CASES.map((c, i) => (
+            <Reveal key={c.t} delay={(i % 3) * 80}>
+              <article className="flex h-full flex-col rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift">
                 <span
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-500"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border"
                   style={{
-                    borderColor:
-                      i === n ? `color-mix(in srgb, ${c.band} 45%, transparent)` : "var(--line)",
-                    background:
-                      i === n ? `color-mix(in srgb, ${c.band} 9%, transparent)` : "transparent",
-                    color: i === n ? c.band : "var(--ink-4)",
+                    borderColor: `color-mix(in srgb, ${c.band} 28%, transparent)`,
+                    background: `color-mix(in srgb, ${c.band} 8%, transparent)`,
+                    color: c.band,
                   }}
                 >
                   <svg {...S} stroke="currentColor" aria-hidden="true">
@@ -190,15 +131,12 @@ export function UseCases() {
                   </svg>
                 </span>
 
-                <h3
-                  className="mt-5 max-w-md text-balance text-[1.3rem] font-bold leading-snug transition-colors duration-500 sm:text-[1.5rem]"
-                  style={{ color: i === n ? "var(--ink)" : "var(--ink-3)" }}
-                >
-                  {c.q}
+                <h3 className="mt-5 text-balance text-[1.05rem] font-bold leading-snug text-ink">
+                  {c.t}
                 </h3>
-                <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-ink-3">{c.d}</p>
+                <p className="mt-2.5 flex-1 text-[13.5px] leading-relaxed text-ink-3">{c.d}</p>
 
-                <div className="mt-5 flex items-center gap-2">
+                <div className="mt-6 flex items-center gap-2 border-t border-line pt-4">
                   <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
                     Moves
                   </span>
@@ -215,50 +153,9 @@ export function UseCases() {
                     </span>
                   ))}
                 </div>
-
-                <div className="mt-6 lg:hidden">
-                  <TermChart k={c.chart} band={c.band} />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="hidden min-w-0 lg:block">
-            <div className="sticky top-[calc(50vh-220px)]">
-              <div className="rounded-2xl border border-line bg-white p-6 lift">
-                <EquationStrip active={cur.terms.map((t) => (t === "L(t)" ? "L" : t))} />
-                <div className="mt-5 border-t border-line pt-5">
-                  <div className="relative min-h-[318px]">
-                    {CASES.map((c, n) => (
-                      <div
-                        key={c.q}
-                        aria-hidden={i !== n}
-                        className="transition-opacity duration-500"
-                        style={{
-                          position: n === 0 ? "relative" : "absolute",
-                          inset: n === 0 ? undefined : 0,
-                          opacity: i === n ? 1 : 0,
-                          pointerEvents: i === n ? "auto" : "none",
-                        }}
-                      >
-                        <TermChart k={c.chart} band={c.band} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 flex gap-1.5">
-                {CASES.map((c, n) => (
-                  <span
-                    key={c.q}
-                    className="h-[3px] flex-1 rounded-full transition-all duration-500"
-                    style={{ background: n <= i ? c.band : "var(--line)" }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </section>
     </div>
