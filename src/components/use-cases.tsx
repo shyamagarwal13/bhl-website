@@ -40,9 +40,9 @@ const S = { w: 20, h: 20, viewBox: "0 0 24 24", fill: "none", strokeWidth: 1.7 }
 
 const CASES: Case[] = [
   {
-    q: "Attribute AI Spend to Delivered Work",
+    q: "Prove Your AI Investment Is Working",
     chart: "P",
-    d: "Resolve provider invoices and tool costs down to the team, repository and merged change they produced, so investment decisions rest on unit economics rather than a total and an assumption.",
+    d: "Connect model and tool spend to the changes that actually shipped, so you can answer what the investment returned instead of reporting what it cost.",
     terms: ["P", "F"],
     band: "var(--t1)",
     icon: (
@@ -53,9 +53,9 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Quantify Rework and Abandoned Investment",
+    q: "Price Rework and Abandoned Work",
     chart: "L",
-    d: "Separate work that shipped and remained in production from work abandoned before merge or reverted after it, and price each independently. Both consumed the same budget; only one returned anything.",
+    d: "See what was abandoned before merge or reverted after it, priced apart from what survived, so you know how much of the budget bought something that is still running.",
     terms: ["L(t)", "P"],
     band: "var(--t4)",
     icon: (
@@ -66,9 +66,9 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Monitor Review Capacity and Effectiveness",
+    q: "Protect Your Review Capacity",
     chart: "E",
-    d: "Track the proportion of changes merged on first review alongside reviewer load, so declining review depth is visible as a trend rather than discovered through a production incident.",
+    d: "Track how many changes clear review first time alongside reviewer load, so a decline in review depth surfaces as a trend rather than as an incident.",
     terms: ["E", "R"],
     band: "var(--t5)",
     icon: (
@@ -79,9 +79,9 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Locate and Price Developer Friction",
+    q: "Reduce Developer Friction",
     chart: "T",
-    d: "Combine delivery telemetry with targeted developer input to identify where time is lost across the lifecycle, ranked by the hours each source of friction costs the organisation.",
+    d: "Combine delivery data with short, targeted developer input to find where time is lost, ranked by the hours each source of friction actually costs you.",
     terms: ["T"],
     band: "var(--t2)",
     icon: (
@@ -92,17 +92,17 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Benchmark Teams on Comparable Terms",
+    q: "Compare Teams on Equal Terms",
     chart: "P",
-    d: "Normalise unit cost for the work each team actually performs, so comparisons between a payments platform and a growth surface hold up to scrutiny from the teams being compared.",
+    d: "Normalize unit cost for the work each team actually does, so a comparison holds up when the teams being compared are the ones asking the questions.",
     terms: ["P", "T"],
     band: "var(--t3)",
     icon: <path d="M4 20V10M10 20V4M16 20v-7M22 20v-11" strokeLinecap="round" />,
   },
   {
-    q: "Produce Audit-Ready Engineering Economics",
+    q: "Automate Engineering Cost Reporting",
     chart: "F",
-    d: "Report unit economics reconciled to provider billing, with the derivation attached to every figure — suitable for capitalisation, R&D claims and board reporting without a translation layer.",
+    d: "Produce unit economics reconciled to provider billing with the derivation attached to every figure, ready for capitalization, R&D claims and board reporting.",
     terms: ["F", "P"],
     band: "var(--t1)",
     icon: (
