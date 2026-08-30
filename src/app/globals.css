@@ -166,21 +166,6 @@ body {
 
 /* --- the prism ------------------------------------------------------------ */
 
-/* The spectrum as a literal object: five bands. Used as a rule and a marker. */
-.spectrum-rule {
-  height: 3px;
-  border-radius: 3px;
-  flex: none;
-  background: linear-gradient(
-    90deg,
-    var(--s1) 0% 20%,
-    var(--s2) 20% 40%,
-    var(--s3) 40% 60%,
-    var(--s4) 60% 80%,
-    var(--s5) 80% 100%
-  );
-}
-
 /*
   Hero refraction — a beam entering from the upper left and fanning out. Built from
   skewed conic/linear layers so it reads as light through glass rather than a gradient

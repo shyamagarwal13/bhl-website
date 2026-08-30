@@ -37,7 +37,7 @@ function Hero() {
                 phrase is too long to survive 0.16em tracking at 11px, which is what made
                 it look cramped. A pill gives it a shape and lets it sit in sentence case. */}
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 py-1.5 pl-2 pr-3.5 backdrop-blur-sm">
-              <span className="spectrum-rule w-5" />
+              <span className="h-1.5 w-1.5 rounded-full bg-ink" />
               <span className="text-[12.5px] font-semibold tracking-tight text-ink-2">
                 AI unit economics for software delivery
               </span>
