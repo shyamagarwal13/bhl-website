@@ -17,15 +17,15 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const title = "Behold Labs — See what your AI engineering investment is actually doing";
+const title = "Behold — AI unit economics for software delivery";
 const description =
-  "Behold Labs connects AI spend to engineering output. Measure cost per merged pull request, agent adoption, developer experience, and delivery impact — in one instrument panel.";
+  "Trace every AI dollar through your entire SDLC. Behold attributes AI spend across planning, building, review and release — with cost per merged pull request, and what shipped versus what was abandoned.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://beholdlabs.com"),
   title: {
     default: title,
-    template: "%s — Behold Labs",
+    template: "%s — Behold",
   },
   description,
   keywords: [

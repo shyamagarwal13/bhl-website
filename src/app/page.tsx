@@ -5,7 +5,7 @@ import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
 import { Scrollytelling, type Step } from "@/components/scrollytelling";
-import { AttributionSplit, DxSignals, HotspotTable, SpendBreakdown } from "@/components/viz";
+import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
 
 function Section({
   id,
@@ -31,7 +31,7 @@ function Hero() {
       <Section className="relative pt-20 sm:pt-24">
         <div className="mx-auto max-w-3xl text-center">
           <Reveal>
-            <p className="eyebrow">Engineering intelligence</p>
+            <p className="eyebrow">AI unit economics for software delivery</p>
           </Reveal>
 
           <Reveal delay={80}>
@@ -44,8 +44,8 @@ function Hero() {
 
           <Reveal delay={160}>
             <p className="mx-auto mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-ink-3">
-              Your AI spend arrives as a single opaque figure. Behold refracts it — into teams,
-              repositories, pull requests, and whether any of it actually changed what you ship.
+              Trace every AI dollar through your entire SDLC — planning, building, review and
+              release — and see, stage by stage, what it actually shipped.
             </p>
           </Reveal>
 
@@ -99,28 +99,28 @@ function ReadsFrom() {
 
 const STEPS: Step[] = [
   {
-    k: "spend",
-    title: "Split the invoice.",
-    body: "One line item becomes cost per team, per repository, per merged pull request — reconciled against provider billing so the totals still match finance.",
-    visual: <SpendBreakdown />,
+    k: "split",
+    title: "One invoice. Four stages.",
+    body: "Your provider sends a single figure. Behold refracts it across the delivery lifecycle, so every dollar has a stage attached to it before anyone starts arguing about value.",
+    visual: <StageSplit active={0} />,
   },
   {
-    k: "attribution",
-    title: "See whose work it was.",
-    body: "Agent-assisted share of everything that reached the main branch, tracked over time. Metrics only: we never ingest prompts, completions or source content.",
-    visual: <AttributionSplit />,
+    k: "build",
+    title: "Price the work that shipped.",
+    body: "Half the budget lands here. We divide it by what actually reached the main branch, giving a unit cost you can compare across teams without pretending they do the same job.",
+    visual: <BuildCost />,
   },
   {
-    k: "dx",
-    title: "Find the daily tax.",
-    body: "A slow build is charged to every engineer, every day, and never appears on an invoice. System signals paired with short surveys locate it precisely enough to fix.",
-    visual: <DxSignals />,
+    k: "review",
+    title: "Cost the second look.",
+    body: "Revision rounds are real spend and nobody budgets for them. When a team's rework cost climbs, that is a signal about the work going in — not about the reviewers.",
+    visual: <ReviewCost />,
   },
   {
-    k: "health",
-    title: "Watch what speed leaves behind.",
-    body: "Complexity weighted by change frequency, plus committed secrets and dependency risk — because complex code nobody touches was never the problem.",
-    visual: <HotspotTable />,
+    k: "release",
+    title: "Separate shipped from spent.",
+    body: "Work that was abandoned or reverted still cost money. Counting it apart from what survived is the difference between a spend report and an ROI answer.",
+    visual: <ReleaseOutcome />,
   },
 ];
 
@@ -132,12 +132,12 @@ function Story() {
           <div className="max-w-2xl">
             <div className="spectrum-rule mb-7 w-16" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              Four bands. One picture.
+              Follow the dollar.
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Spend without output is a bill. Output without spend is a vanity chart. Behold reads
-              both from the same source of truth, so the link between them is evidence rather than
-              an argument.
+              Every other tool tells you what your engineers did. The question your board is
+              actually asking is what it cost and what came back. That answer only exists if the
+              spend is attributed stage by stage — which is the whole product.
             </p>
           </div>
         </Reveal>

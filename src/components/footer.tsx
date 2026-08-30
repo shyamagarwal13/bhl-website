@@ -37,8 +37,8 @@ export function Footer() {
           <div>
             <Wordmark tone="white" />
             <p className="mt-4 max-w-xs text-[13.5px] leading-relaxed text-white/45">
-              The intelligence layer for AI-native engineering. See what your AI investment is
-              actually doing.
+              AI unit economics for software delivery. Trace every AI dollar through your
+              entire SDLC.
             </p>
           </div>
 
