@@ -192,15 +192,10 @@ export function NumberIsNotAnAnswer() {
 
         <Reveal delay={80}>
           <div className="mt-16 max-w-2xl">
-            <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-              Selected papers
-            </p>
-            <h3 className="h2 mt-3 text-balance text-[1.7rem] sm:text-[2.05rem]">
-              We didn&apos;t read this research. We wrote it.
-            </h3>
+            <h3 className="h2 text-balance text-[1.7rem] sm:text-[2.05rem]">Selected work</h3>
             <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-3">
               Peer-reviewed at Carnegie Mellon and Stanford, with the data and the limitations
-              stated — which is a different thing from a vendor benchmark.
+              stated. The model on this page is built on these findings.
             </p>
           </div>
         </Reveal>

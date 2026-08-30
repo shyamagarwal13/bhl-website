@@ -6,6 +6,7 @@ import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
 import { EquationPanel } from "@/components/equation";
 import { UseCases } from "@/components/use-cases";
+import { Statement } from "@/components/statement";
 import { NumberIsNotAnAnswer, Position } from "@/components/philosophy";
 
 function Section({
@@ -234,6 +235,7 @@ export default function Home() {
         <ReadsFrom />
         <Model />
         <UseCases />
+        <Statement />
         <NumberIsNotAnAnswer />
         <Cta />
       </main>
