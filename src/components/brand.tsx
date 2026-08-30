@@ -1,30 +1,25 @@
 import Link from "next/link";
 
 /*
- * Behold logomark — an aperture. Blades opening around a lit centre: the instrument you
- * look through. Pure SVG, so it stays crisp at any size and needs no asset pipeline.
- * `tone` lets it sit on the gradient (white) or on paper (full colour).
+ * Behold logomark — a prism aperture.
+ *
+ * Blades opening around a lit centre, each blade carrying one band of the spectrum:
+ * the instrument you look through, and the thing it does (one beam in, measurable
+ * bands out). Pure SVG, so it stays crisp at any size and needs no asset pipeline.
  */
 export function Logomark({ size = 28, tone = "color" }: { size?: number; tone?: "color" | "white" }) {
-  if (tone === "white") {
-    return (
-      <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <circle cx="16" cy="16" r="12" fill="#fff" fillOpacity="0.16" />
-        <path d="M16 5.5a10.5 10.5 0 0 1 9.09 5.25L16 16Z" fill="#fff" fillOpacity="0.95" />
-        <path d="M25.09 10.75A10.5 10.5 0 0 1 21.7 25.05L16 16Z" fill="#fff" fillOpacity="0.62" />
-        <path d="M21.7 25.05A10.5 10.5 0 0 1 6.9 21.3L16 16Z" fill="#fff" fillOpacity="0.4" />
-        <circle cx="16" cy="16" r="3.4" fill="#fff" />
-      </svg>
-    );
-  }
+  const bands =
+    tone === "white"
+      ? ["#fff", "#fff", "#fff", "#fff"]
+      : ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)"];
+  const op = tone === "white" ? [0.95, 0.7, 0.5, 0.32] : [1, 1, 1, 0.95];
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <circle cx="16" cy="16" r="12" fill="#4f3ddb" fillOpacity="0.08" />
-      <path d="M16 5.5a10.5 10.5 0 0 1 9.09 5.25L16 16Z" fill="#4f3ddb" />
-      <path d="M25.09 10.75A10.5 10.5 0 0 1 21.7 25.05L16 16Z" fill="#8b5cf6" />
-      <path d="M21.7 25.05A10.5 10.5 0 0 1 6.9 21.3L16 16Z" fill="#f0568f" />
-      <path d="M6.9 21.3A10.5 10.5 0 0 1 16 5.5L16 16Z" fill="#ffb020" fillOpacity="0.9" />
-      <circle cx="16" cy="16" r="3.4" fill="#fff" />
+      <path d="M16 5.5a10.5 10.5 0 0 1 9.09 5.25L16 16Z" fill={bands[0]} fillOpacity={op[0]} />
+      <path d="M25.09 10.75A10.5 10.5 0 0 1 21.7 25.05L16 16Z" fill={bands[1]} fillOpacity={op[1]} />
+      <path d="M21.7 25.05A10.5 10.5 0 0 1 6.9 21.3L16 16Z" fill={bands[2]} fillOpacity={op[2]} />
+      <path d="M6.9 21.3A10.5 10.5 0 0 1 16 5.5L16 16Z" fill={bands[3]} fillOpacity={op[3]} />
+      <circle cx="16" cy="16" r="3.2" fill={tone === "white" ? "#fff" : "var(--white)"} />
     </svg>
   );
 }

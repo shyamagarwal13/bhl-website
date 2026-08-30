@@ -36,7 +36,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
             <Wordmark tone="white" />
-            <p className="mt-4 max-w-xs text-[13.5px] leading-relaxed text-white/50">
+            <p className="mt-4 max-w-xs text-[13.5px] leading-relaxed text-white/45">
               The intelligence layer for AI-native engineering. See what your AI investment is
               actually doing.
             </p>

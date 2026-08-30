@@ -26,7 +26,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
     <form
       onSubmit={submit}
       className={`flex w-full max-w-[440px] items-center gap-1.5 rounded-full border p-1.5 ${
-        onDark ? "border-white/20 bg-white/12 backdrop-blur-md" : "border-line bg-white lift"
+        onDark ? "border-white/20 bg-white/10 backdrop-blur-md" : "border-line-2 bg-white lift"
       }`}
     >
       <input
@@ -43,7 +43,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
       <button
         type="submit"
         className={`h-10 shrink-0 rounded-full px-5 text-[13.5px] font-bold transition-transform hover:scale-[1.03] ${
-          onDark ? "bg-white text-indigo" : "bg-indigo text-white"
+          onDark ? "bg-white text-ink" : "bg-ink text-white"
         }`}
       >
         Request a demo

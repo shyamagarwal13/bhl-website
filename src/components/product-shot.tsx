@@ -14,7 +14,7 @@ function Tab({ label, active = false }: { label: string; active?: boolean }) {
   return (
     <span
       className={`whitespace-nowrap rounded-md px-2.5 py-1 text-[11px] font-semibold ${
-        active ? "bg-indigo/10 text-indigo" : "text-ink-4"
+        active ? "bg-s1/10 text-s1" : "text-ink-4"
       }`}
     >
       {label}
@@ -68,11 +68,11 @@ function SpendBars() {
           return (
             <div
               key={i}
-              className="grow relative flex-1 rounded-[3px] bg-indigo"
+              className="grow relative flex-1 rounded-[3px] bg-s1"
               style={{ height: h, animationDelay: `${i * 45}ms` }}
             >
               <div
-                className="absolute inset-x-0 bottom-0 rounded-[3px] bg-violet/45"
+                className="absolute inset-x-0 bottom-0 rounded-[3px] bg-s2/45"
                 style={{ height: hh }}
               />
             </div>
@@ -108,13 +108,13 @@ function CostLine() {
     <svg viewBox={`0 0 ${w} ${h}`} className="mt-3 h-[62px] w-full" aria-hidden="true">
       <defs>
         <linearGradient id="ps-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--teal)" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="var(--teal)" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--s3)" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="var(--s3)" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d={`${d} L${w},${h} L0,${h} Z`} fill="url(#ps-fill)" />
-      <path d={d} fill="none" stroke="var(--teal)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx={w} cy={h - ((54 - min) / (max - min)) * h} r="3" fill="var(--teal)" />
+      <path d={d} fill="none" stroke="var(--s3)" strokeWidth="2" strokeLinecap="round" />
+      <circle cx={w} cy={h - ((54 - min) / (max - min)) * h} r="3" fill="var(--s3)" />
     </svg>
   );
 }
@@ -133,7 +133,7 @@ function TeamRows() {
           <span className="w-14 shrink-0 text-[10px] text-ink-3">{r.t}</span>
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-paper-2">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-indigo to-rose"
+              className="h-full rounded-full bg-gradient-to-r from-s1 to-s3"
               style={{ width: `${r.v}%` }}
             />
           </div>
@@ -165,14 +165,14 @@ export function ProductShot() {
         {/* sidebar */}
         <aside className="hidden w-[132px] shrink-0 border-r border-line bg-paper/60 p-3 lg:block">
           <div className="mb-3 flex items-center gap-1.5">
-            <span className="h-4 w-4 rounded bg-gradient-to-br from-indigo to-rose" />
+            <span className="h-4 w-4 rounded bg-gradient-to-br from-s1 to-s3" />
             <span className="text-[11px] font-bold tracking-tight text-ink">Behold</span>
           </div>
           {["Overview", "AI Spend", "Delivery", "DevEx", "Code health", "People"].map((n, i) => (
             <div
               key={n}
               className={`mb-0.5 rounded-md px-2 py-1.5 text-[11px] ${
-                i === 1 ? "bg-white font-semibold text-indigo lift" : "text-ink-3"
+                i === 1 ? "bg-white font-semibold text-s1 lift" : "text-ink-3"
               }`}
             >
               {n}
@@ -186,7 +186,7 @@ export function ProductShot() {
             <Tab label="Last 12 months" active />
             <Tab label="By team" />
             <Tab label="By model" />
-            <span className="ml-auto hidden rounded-md bg-indigo px-2.5 py-1 text-[10px] font-semibold text-white sm:block">
+            <span className="ml-auto hidden rounded-md bg-s1 px-2.5 py-1 text-[10px] font-semibold text-white sm:block">
               Export
             </span>
           </div>

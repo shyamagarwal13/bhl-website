@@ -31,14 +31,14 @@ export function SpendBreakdown() {
             <span className="w-20 shrink-0 text-[13px] text-ink-2">{r.team}</span>
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-paper-2">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo to-rose"
+                className="h-full rounded-full bg-gradient-to-r from-s1 to-s3"
                 style={{ width: `${r.pct}%` }}
               />
             </div>
             <span className="tabular w-12 shrink-0 text-right font-mono text-xs text-ink-3">
               {r.cost}
             </span>
-            <span className="tabular w-11 shrink-0 text-right font-mono text-xs font-semibold text-indigo">
+            <span className="tabular w-11 shrink-0 text-right font-mono text-xs font-semibold text-s1">
               {r.per}
             </span>
           </div>
@@ -68,7 +68,7 @@ export function AttributionSplit() {
         {weeks.map((w, i) => (
           <div key={i} className="flex flex-1 flex-col justify-end gap-1">
             <div
-              className="grow rounded-t-md bg-gradient-to-b from-indigo to-violet"
+              className="grow rounded-t-md bg-gradient-to-b from-s1 to-s2"
               style={{ height: (COL_H - 4) * (w.a / 100), animationDelay: `${i * 60}ms` }}
             />
             <div
@@ -80,7 +80,7 @@ export function AttributionSplit() {
       </div>
       <div className="mt-4 flex items-center gap-5">
         <span className="flex items-center gap-1.5 text-[11px] text-ink-3">
-          <span className="h-2.5 w-2.5 rounded-sm bg-indigo" /> Agent-assisted
+          <span className="h-2.5 w-2.5 rounded-sm bg-s1" /> Agent-assisted
         </span>
         <span className="flex items-center gap-1.5 text-[11px] text-ink-3">
           <span className="h-2.5 w-2.5 rounded-sm bg-paper-2" /> Human-only
@@ -107,7 +107,7 @@ export function DxSignals() {
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-paper-2">
               <div
                 className={`h-full rounded-full ${
-                  s.score >= 70 ? "bg-teal" : s.score >= 50 ? "bg-amber" : "bg-rose"
+                  s.score >= 70 ? "bg-s3" : s.score >= 50 ? "bg-s4" : "bg-s5"
                 }`}
                 style={{ width: `${s.score}%` }}
               />
@@ -148,13 +148,13 @@ export function HotspotTable() {
               {r.f}
             </span>
             {r.n > 0 && (
-              <span className="shrink-0 rounded-full bg-rose/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-rose">
+              <span className="shrink-0 rounded-full bg-s5/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-s5">
                 {r.n} finding{r.n > 1 ? "s" : ""}
               </span>
             )}
             <div className="h-2 w-16 shrink-0 overflow-hidden rounded-full bg-paper-2">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-amber to-rose"
+                className="h-full rounded-full bg-gradient-to-r from-s4 to-s5"
                 style={{ width: `${r.s}%` }}
               />
             </div>
