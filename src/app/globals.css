@@ -72,7 +72,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 7rem;
   background: var(--white);
 }
 
@@ -136,6 +136,7 @@ body {
 .spectrum-rule {
   height: 3px;
   border-radius: 3px;
+  flex: none;
   background: linear-gradient(
     90deg,
     var(--s1) 0% 20%,
