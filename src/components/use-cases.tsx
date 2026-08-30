@@ -27,7 +27,7 @@ const S = { w: 20, h: 20, viewBox: "0 0 24 24", fill: "none", strokeWidth: 1.7 }
 const CASES: Case[] = [
   {
     t: "Align AI Spend With What Matters",
-    d: "See exactly how AI and engineering effort maps to the initiatives you care about, so leaders can confirm investment is flowing to the highest-priority work — not just the loudest.",
+    d: "See exactly how AI and engineering effort maps to the initiatives you care about, so leaders can confirm investment is flowing to the highest-priority work, not just the loudest.",
     band: "var(--t1)",
     icon: (
       <>
@@ -50,7 +50,7 @@ const CASES: Case[] = [
   },
   {
     t: "Build a Smarter Metrics Practice",
-    d: "Design flexible metrics spanning delivery, investment, and day-to-day workflows — with AI that reads the data for you and highlights what deserves attention next.",
+    d: "Design flexible metrics spanning delivery, investment, and day-to-day workflows, with AI that reads the data for you and highlights what deserves attention next.",
     band: "var(--t2)",
     icon: (
       <>
@@ -73,7 +73,7 @@ const CASES: Case[] = [
   },
   {
     t: "Remove Friction From Developer Workflows",
-    d: "Capture structured feedback from your engineers to pinpoint what's slowing them down — then act on it to lift productivity and satisfaction.",
+    d: "Capture structured feedback from your engineers to pinpoint what's slowing them down, then act on it to lift productivity and satisfaction.",
     band: "var(--t4)",
     icon: (
       <>
@@ -107,7 +107,7 @@ export function UseCases() {
               What engineering leaders use it for.
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Each of these is a decision already being made — usually without the evidence to
+              Each of these is a decision already being made, usually without the evidence to
               settle it.
             </p>
           </div>

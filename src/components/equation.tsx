@@ -45,7 +45,7 @@ const TERMS: Term[] = [
     name: "Feature value delivered",
     unit: "$ revenue / ARR impact",
     band: "var(--t3)",
-    body: "What the work was worth to the business. Everything to the right of it is what you paid to get it — so this is the term that makes the others mean anything.",
+    body: "What the work was worth to the business. Everything to the right of it is what you paid to get it, so this is the term that makes the others mean anything.",
     drivers: [
       { good: true, text: "Shipping what customers actually pay for" },
       { good: false, text: "Work that never reaches production" },
@@ -83,9 +83,9 @@ const TERMS: Term[] = [
     name: "Liability",
     unit: "$, compounding",
     band: "var(--t4)",
-    body: "Rework and harm — and the reason this term carries a t. The cost of low-quality code isn't paid when it's written. It accrues, and it lands in a later quarter than the one that booked the saving.",
+    body: "Rework and harm. It is also the reason this term carries a t. The cost of low-quality code isn't paid when it's written. It accrues, and it lands in a later quarter than the one that booked the saving.",
     drivers: [
-      { good: false, text: "Lower quality — more harm, more rework" },
+      { good: false, text: "Lower quality, more harm, more rework" },
       { good: true, text: "Committed AI configuration, tests, proofs" },
     ],
     cite: {
@@ -99,7 +99,7 @@ const TERMS: Term[] = [
     name: "Review effectiveness",
     unit: "%",
     band: "var(--t5)",
-    body: "How much liability review actually catches. It multiplies against L, so a small drop is expensive — and effectiveness falls exactly when volume rises.",
+    body: "How much liability review actually catches. It multiplies against L, so a small drop is expensive. Effectiveness falls exactly when volume rises.",
     drivers: [
       { good: false, text: "Productivity pressure on reviewers" },
       { good: false, text: "Deceptive plausibility of generated code" },
@@ -116,7 +116,7 @@ const TERMS: Term[] = [
     name: "Review cost",
     unit: "$",
     band: "var(--t5)",
-    body: "What it costs to run review at all: reviewer hours, automated checks, CI. Doubling merged output doesn't leave this term alone — it roughly doubles the load on whoever is reading.",
+    body: "What it costs to run review at all: reviewer hours, automated checks, CI. Doubling merged output doesn't leave this term alone. It roughly doubles the load on whoever is reading.",
     drivers: [
       { good: true, text: "Automated review that catches real defects" },
       { good: false, text: "More merged changes per reviewer" },

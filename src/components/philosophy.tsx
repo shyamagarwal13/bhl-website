@@ -24,14 +24,16 @@ const HALVES = [
     eyebrow: "The platform",
     band: "var(--t1)",
     lead: "Our dashboards and tools get you the measurement.",
-    body: "Agents read your repositories, provider billing and tool data directly, so every term in the model is computed from systems rather than assembled by hand — and recomputed as the work changes, not reconstructed for a quarterly deck.",
+    body: "Agents read your repositories, provider billing and tool data directly, so every term in the model is computed from your systems and recomputed as the work changes. Nothing waits for a quarterly spreadsheet.",
     points: [
       "AI and engineering cost attributed to teams and initiatives",
-      "Delivery, review and quality effects — not acceptance rates",
+      // the one negation kept in this section: every assistant dashboard on the market
+      // reports acceptance rates, so the reader would assume it of us too
+      "Delivery, review and quality effects, not acceptance rates",
       // we do ask people things; the use-cases section says so, and claiming a fully
       // passive pipeline on the page arguing for measurement rigour would be the worst
       // possible place to overstate
-      "Where a signal only exists in people's heads, we ask — briefly, and rarely",
+      "Where a signal only exists in people's heads, we ask briefly and rarely",
     ],
   },
   {
@@ -41,7 +43,7 @@ const HALVES = [
     body: "The researchers who published the work below read your numbers themselves, with the caveats stated. A regulated bank and a consumer startup do not share a cost function, and no dashboard can tell you which of six terms is the one to move this quarter.",
     points: [
       "The model calibrated to your codebase and review culture",
-      "Interventions ranked by what they are worth to you, not to a benchmark",
+      "Interventions ranked by what they are worth to you",
       "Findings you can take to a board, with the limits named",
     ],
   },
@@ -128,7 +130,7 @@ export function Position() {
             <p>
               Then AI arrived and the same number came back wearing a new name. Share of code
               written by AI. Tokens consumed. Suggestions accepted. Every one of them counts the
-              act of writing —{" "}
+              act of writing, and that too{" "}
               <span className="font-semibold text-ink">
                 at the exact moment writing stopped being the expensive part
               </span>
@@ -142,9 +144,9 @@ export function Position() {
               What we do instead
             </p>
             <p>
-              Lines of code. Pull requests merged. Tokens burned. Each is a real number, and
-              each is an incomplete picture — they describe what was produced, never what it
-              was worth or what it cost to keep. We measure what happened afterwards.
+              Lines of code. Pull requests merged. Tokens burned. None of these tell the real
+              story of what the work was worth or what it cost to keep. We measure what
+              happened afterwards.
             </p>
             <ul className="mt-4 flex flex-col gap-2">
               {[
@@ -162,7 +164,6 @@ export function Position() {
                 </li>
               ))}
             </ul>
-            <p className="mt-4">Six terms, every one of them priced.</p>
           </div>
         </div>
       </Reveal>
