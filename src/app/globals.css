@@ -169,6 +169,16 @@ body {
   font-weight: 600;
 }
 
+/* Horizontal card rails: the scrollbar is noise when the rail already shows edge
+   fades and arrow controls, but keyboard and trackpad scrolling must still work. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .tabular {
   font-variant-numeric: tabular-nums;
 }

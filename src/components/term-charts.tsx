@@ -17,6 +17,7 @@ function Frame({
   unit,
   delta,
   deltaGood,
+  band,
   children,
 }: {
   title: string;
@@ -25,10 +26,14 @@ function Frame({
   unit: string;
   delta?: string;
   deltaGood?: boolean;
+  band: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-white lift">
+    <div className="overflow-hidden rounded-xl border border-line bg-white">
+      {/* a hairline of the term's colour along the top edge ties the window to the
+          variable it belongs to without repeating the letter a third time */}
+      <div className="h-[3px] w-full" style={{ background: band }} />
       <div className="flex items-center gap-2 border-b border-line bg-paper px-3 py-2">
         <span className="flex gap-1">
           <span className="h-1.5 w-1.5 rounded-full bg-line-2" />
@@ -41,15 +46,22 @@ function Frame({
         </span>
       </div>
       <div className="p-4">
-        <div className="flex items-baseline gap-2">
-          <span className="tabular text-[1.5rem] font-extrabold leading-none tracking-tight text-ink">
-            {value}
-          </span>
-          <span className="text-[11.5px] text-ink-3">{unit}</span>
+        <div className="flex items-end justify-between gap-3">
+          <div className="min-w-0">
+            <div className="tabular text-[1.6rem] font-extrabold leading-none tracking-tight text-ink">
+              {value}
+            </div>
+            <div className="mt-1.5 truncate text-[11.5px] text-ink-3">{unit}</div>
+          </div>
           {delta && (
             <span
-              className="tabular ml-auto font-mono text-[11px] font-semibold"
-              style={{ color: deltaGood ? "var(--pos)" : "var(--neg)" }}
+              className="tabular shrink-0 rounded-md px-2 py-1 font-mono text-[11px] font-bold"
+              style={{
+                color: deltaGood ? "var(--pos)" : "var(--neg)",
+                background: deltaGood
+                  ? "color-mix(in srgb, var(--pos) 11%, transparent)"
+                  : "color-mix(in srgb, var(--neg) 11%, transparent)",
+              }}
             >
               {delta}
             </span>
@@ -203,6 +215,7 @@ export function TermChart({ k, band }: { k: string; band: string }) {
         unit="ARR shipped"
         delta="+18%"
         deltaGood
+        band={band}
       >
         <Rows
           band={band}
@@ -225,6 +238,7 @@ export function TermChart({ k, band }: { k: string; band: string }) {
         unit="days, idea → production"
         delta="−31%"
         deltaGood
+        band={band}
       >
         <Line
           pts={[21, 19, 17.5, 14, 12, 9.4]}
@@ -244,6 +258,7 @@ export function TermChart({ k, band }: { k: string; band: string }) {
         unit="build-stage spend"
         delta="+12%"
         deltaGood={false}
+        band={band}
       >
         <Rows
           band={band}
@@ -266,6 +281,7 @@ export function TermChart({ k, band }: { k: string; band: string }) {
         unit="complexity in changed files"
         delta="12 hotspots"
         deltaGood={false}
+        band={band}
       >
         <Line pts={[100, 106, 115, 121, 132, 141]} band={band} labels={MONTHS} />
       </Frame>
@@ -280,6 +296,7 @@ export function TermChart({ k, band }: { k: string; band: string }) {
         unit="merged on first review"
         delta="−14pts"
         deltaGood={false}
+        band={band}
       >
         {/* filled = caught at first review, ghost = needed another round */}
         <Bars
@@ -299,6 +316,7 @@ export function TermChart({ k, band }: { k: string; band: string }) {
       unit="PRs per reviewer, median"
       delta="+96%"
       deltaGood={false}
+      band={band}
     >
       <Bars band={band} data={[21, 24, 27, 31, 36, 41]} labels={MONTHS} />
     </Frame>

@@ -1,20 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TermChart } from "./term-charts";
 
 /*
- * The engineering value equation, as one contained instrument panel.
+ * The engineering value equation, as a rail of instruments.
  *
  * The previous version scattered six full-width cards down a scroll-driven column, which
  * left screens of dead space between a term and the equation it belonged to. This holds
  * the whole model in a single dark panel: equation on top, term selector under it,
  * detail below — so the variable and its explanation are always in the same frame.
  *
- * Click-driven rather than scroll-driven on purpose. The page already has a pinned
- * scroll story in the delivery-stage section; repeating the device makes the second one
- * feel like a tic, and a reader who wants R shouldn't have to scroll past four terms
- * to reach it.
+ * All six terms sit side by side on a horizontal rail. Nothing is hidden behind a click:
+ * scrolling the rail moves through the terms, and whichever card is nearest the centre
+ * lights its variable in the equation above. Tabs still work as jump targets, so a reader
+ * who wants R goes straight there.
+ *
+ * Horizontal rather than the vertical pinned-scroll used in the delivery-stage section —
+ * repeating that device would make the second one read as a tic, and a rail lets the six
+ * instruments be compared against each other rather than seen one at a time.
  *
  * Light, like the rest of the page — a lone dark slab in the middle of a light document
  * reads as a different site's component that wandered in.
@@ -29,7 +33,6 @@ type Term = {
   name: string;
   unit: string;
   band: string;
-  side: string;
   body: string;
   drivers: { good: boolean; text: string }[];
   cite?: { short: string; href: string };
@@ -42,7 +45,6 @@ const TERMS: Term[] = [
     name: "Feature value delivered",
     unit: "$ revenue / ARR impact",
     band: "var(--t3)",
-    side: "Value",
     body: "What the work was worth to the business. Everything to the right of it is what you paid to get it — so this is the term that makes the others mean anything.",
     drivers: [
       { good: true, text: "Shipping what customers actually pay for" },
@@ -55,7 +57,6 @@ const TERMS: Term[] = [
     name: "Time multiplier",
     unit: "1 on time · < 1 late",
     band: "var(--t2)",
-    side: "Value",
     body: "Value decays when it arrives late. A feature worth $1M shipped two quarters after the window is not worth $1M, and no velocity dashboard prices that gap.",
     drivers: [
       { good: true, text: "Faster cycle time, earlier feedback" },
@@ -69,7 +70,6 @@ const TERMS: Term[] = [
     name: "Production cost",
     unit: "$",
     band: "var(--t1)",
-    side: "Cost",
     body: "Everything it takes to produce the code: salaries, AI tooling and model spend, hiring, onboarding. The lever every team pulls first, because it's the only one they can currently see.",
     drivers: [
       { good: true, text: "Agents producing working code faster" },
@@ -83,7 +83,6 @@ const TERMS: Term[] = [
     name: "Liability",
     unit: "$, compounding",
     band: "var(--t4)",
-    side: "Cost",
     body: "Rework and harm — and the reason this term carries a t. The cost of low-quality code isn't paid when it's written. It accrues, and it lands in a later quarter than the one that booked the saving.",
     drivers: [
       { good: false, text: "Lower quality — more harm, more rework" },
@@ -100,7 +99,6 @@ const TERMS: Term[] = [
     name: "Review effectiveness",
     unit: "%",
     band: "var(--t5)",
-    side: "Review",
     body: "How much liability review actually catches. It multiplies against L, so a small drop is expensive — and effectiveness falls exactly when volume rises.",
     drivers: [
       { good: false, text: "Productivity pressure on reviewers" },
@@ -118,7 +116,6 @@ const TERMS: Term[] = [
     name: "Review cost",
     unit: "$",
     band: "var(--t5)",
-    side: "Review",
     body: "What it costs to run review at all: reviewer hours, automated checks, CI. Doubling merged output doesn't leave this term alone — it roughly doubles the load on whoever is reading.",
     drivers: [
       { good: true, text: "Automated review that catches real defects" },
@@ -154,12 +151,12 @@ const TOKENS: Tok[] = [
 function Arrow({ good }: { good: boolean }) {
   return (
     <svg
-      width="14"
-      height="14"
+      width="13"
+      height="13"
       viewBox="0 0 16 16"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="2.1"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -169,159 +166,258 @@ function Arrow({ good }: { good: boolean }) {
   );
 }
 
+/** The rail's left padding, which is the x-position both the observer and go() anchor to. */
+function railPad(el: HTMLElement) {
+  return parseFloat(getComputedStyle(el).paddingLeft) || 0;
+}
+
 export function EquationPanel() {
-  // Opens on L(t): the term nobody is currently pricing, and the reason for the product.
-  const [i, setI] = useState(3);
+  const [i, setI] = useState(0);
+  const rail = useRef<HTMLDivElement>(null);
+  const cards = useRef<(HTMLDivElement | null)[]>([]);
   const cur = TERMS[i];
 
+  /*
+   * Active term = the card whose left edge is nearest the rail's content edge.
+   *
+   * Deliberately a scroll listener and not an IntersectionObserver: an IO callback only
+   * receives entries whose visibility *changed*, so reducing over `entries` to find the
+   * closest card searched a partial set and settled on the wrong term — clicking the T
+   * chip highlighted L(t). Reading positions on scroll considers every card every time.
+   * rAF-throttled, passive, so it costs nothing.
+   */
+  useEffect(() => {
+    const root = rail.current;
+    if (!root) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const anchor = root.getBoundingClientRect().left + railPad(root);
+      let best = 0;
+      let bestD = Infinity;
+      cards.current.forEach((el, n) => {
+        if (!el) return;
+        const d = Math.abs(el.getBoundingClientRect().left - anchor);
+        if (d < bestD) {
+          bestD = d;
+          best = n;
+        }
+      });
+      setI(best);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    root.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      root.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // scrollIntoView also scrolls ancestors and re-settles against snap points, which made
+  // it unreliable here. Setting scrollLeft on the rail directly is deterministic.
+  const go = (n: number) => {
+    const root = rail.current;
+    const el = cards.current[Math.max(0, Math.min(TERMS.length - 1, n))];
+    if (!root || !el) return;
+    const delta = el.getBoundingClientRect().left - root.getBoundingClientRect().left;
+    root.scrollTo({ left: root.scrollLeft + delta - railPad(root), behavior: "smooth" });
+  };
+
   return (
-    <div className="relative overflow-hidden rounded-[26px] border border-line bg-white p-6 lift sm:p-10">
-      {/* the active term's colour washes the top of the frame, so the whole panel responds */}
+    <div className="relative overflow-hidden rounded-[26px] border border-line bg-white py-8 lift sm:py-10">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 transition-all duration-700"
         style={{
-          background: `radial-gradient(84% 52% at 50% -16%, color-mix(in srgb, ${cur.band} 13%, transparent), transparent 70%)`,
+          background: `radial-gradient(80% 46% at 50% -16%, color-mix(in srgb, ${cur.band} 13%, transparent), transparent 70%)`,
         }}
       />
 
       <div className="relative">
-        <div className="flex flex-wrap items-baseline justify-center gap-x-2 gap-y-2 sm:gap-x-3">
-          {TOKENS.map((tok, n) => {
-            const isVar = !!tok.t;
-            const on = isVar && (tok.t === cur.k || tok.t === "V");
-            const color =
-              tok.t === "V"
-                ? "var(--ink)"
-                : isVar
-                  ? TERMS.find((t) => t.k === tok.t)!.band
-                  : "var(--ink-4)";
-            return (
-              <span
-                key={n}
-                className="font-mono font-bold transition-all duration-500"
-                style={{
-                  color,
-                  opacity: !isVar ? 1 : on ? 1 : 0.32,
-                  fontSize: "clamp(1.15rem, 3.3vw, 2.5rem)",
-                  textShadow: "none",
-                }}
-              >
-                {tok.s}
-              </span>
-            );
-          })}
-        </div>
-
-        <p className="mt-4 text-center font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
-          Engineering value = what it was worth − what it cost to get
-        </p>
-
-        <div
-          role="tablist"
-          aria-label="Equation terms"
-          className="mt-9 flex flex-wrap justify-center gap-2"
-        >
-          {TERMS.map((t, n) => {
-            const on = n === i;
-            return (
-              <button
-                key={t.k}
-                role="tab"
-                aria-selected={on}
-                onClick={() => setI(n)}
-                className="flex items-center gap-2 rounded-full border px-3.5 py-2 transition-all duration-300"
-                style={{
-                  borderColor: on ? t.band : "var(--line)",
-                  background: on ? `color-mix(in srgb, ${t.band} 9%, transparent)` : "var(--white)",
-                }}
-              >
+        <div className="px-5 sm:px-10">
+          <div className="flex flex-wrap items-baseline justify-center gap-x-2 gap-y-2 sm:gap-x-3">
+            {TOKENS.map((tok, n) => {
+              const isVar = !!tok.t;
+              const on = isVar && (tok.t === cur.k || tok.t === "V");
+              const color =
+                tok.t === "V"
+                  ? "var(--ink)"
+                  : isVar
+                    ? TERMS.find((t) => t.k === tok.t)!.band
+                    : "var(--ink-4)";
+              return (
                 <span
-                  className="font-mono text-[13px] font-bold transition-colors duration-300"
-                  style={{ color: on ? t.band : "var(--ink-4)" }}
+                  key={n}
+                  className="font-mono font-bold transition-all duration-500"
+                  style={{
+                    color,
+                    opacity: !isVar ? 1 : on ? 1 : 0.32,
+                    fontSize: "clamp(1.15rem, 3.1vw, 2.35rem)",
+                  }}
                 >
-                  {t.sym}
+                  {tok.s}
                 </span>
-                <span
-                  className="hidden text-[12.5px] font-medium transition-colors duration-300 sm:inline"
-                  style={{ color: on ? "var(--ink)" : "var(--ink-3)" }}
-                >
-                  {t.name}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        {/*
-          Each term gets the view you'd actually open in the app. The claim of this
-          section is that we measure all six, and a panel per term is what makes that
-          concrete rather than asserted.
-        */}
-        <div className="mt-8 rounded-2xl border border-line bg-paper p-6 sm:p-8">
-          {/* Fixed floor: term copy varies in length (E carries three drivers), so without
-              it the panel grew and shrank by ~76px and the page jumped under the cursor
-              every time you changed tabs. */}
-          <div className="grid gap-8 lg:min-h-[352px] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-10">
-            <div className="min-w-0">
-              <div className="flex items-baseline gap-4">
-                <span
-                  className="font-mono text-[2.5rem] font-extrabold leading-none transition-colors duration-500"
-                  style={{ color: cur.band }}
-                >
-                  {cur.sym}
-                </span>
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2.5">
-                    <h3 className="text-[1.1rem] font-bold text-ink">{cur.name}</h3>
-                    <span className="rounded border border-line-2 px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-wide text-ink-4">
-                      {cur.side}
-                    </span>
-                  </div>
-                  <p className="mt-0.5 font-mono text-[11px] text-ink-4">{cur.unit}</p>
-                </div>
-              </div>
+          <p className="mt-4 text-center font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
+            Engineering value = what it was worth − what it cost to get
+          </p>
 
-              <p className="mt-5 text-[15px] leading-relaxed text-ink-3">{cur.body}</p>
-
-              <ul className="mt-6 flex flex-col gap-3">
-                {cur.drivers.map((d) => (
-                  <li key={d.text} className="flex items-start gap-3 text-[14px] text-ink-2">
-                    <span
-                      className="mt-[3px] shrink-0"
-                      style={{ color: d.good ? "var(--pos)" : "var(--neg)" }}
-                    >
-                      <Arrow good={d.good} />
-                    </span>
-                    <span>{d.text}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {cur.cite && (
-                <a
-                  href={cur.cite.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-line bg-white px-3.5 py-2 text-[12.5px] text-ink-2 transition-colors hover:border-line-2 hover:text-ink"
+          {/* jump targets — the rail is the primary control, these are shortcuts */}
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            {TERMS.map((t, n) => {
+              const on = n === i;
+              return (
+                <button
+                  key={t.k}
+                  onClick={() => go(n)}
+                  aria-label={`Show ${t.name}`}
+                  className="flex items-center gap-2 rounded-full border px-3 py-1.5 transition-all duration-300"
+                  style={{
+                    borderColor: on ? t.band : "var(--line)",
+                    background: on
+                      ? `color-mix(in srgb, ${t.band} 9%, transparent)`
+                      : "var(--white)",
+                  }}
                 >
                   <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ background: cur.band }}
-                  />
-                  Our research: {cur.cite.short}
-                  <span aria-hidden="true">↗</span>
-                </a>
-              )}
-            </div>
-
-            <div className="min-w-0">
-              <TermChart k={cur.k} band={cur.band} />
-              <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
-                How Behold measures {cur.sym}
-              </p>
-            </div>
+                    className="font-mono text-[12.5px] font-bold"
+                    style={{ color: on ? t.band : "var(--ink-4)" }}
+                  >
+                    {t.sym}
+                  </span>
+                  <span
+                    className="hidden text-[12px] font-medium sm:inline"
+                    style={{ color: on ? "var(--ink)" : "var(--ink-3)" }}
+                  >
+                    {t.name}
+                  </span>
+                </button>
+              );
+            })}
           </div>
+        </div>
+
+        {/* the rail */}
+        <div className="relative mt-8">
+          <div
+            ref={rail}
+            className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-2 sm:px-10"
+          >
+            {TERMS.map((t, n) => (
+              <div
+                key={t.k}
+                ref={(el) => {
+                  cards.current[n] = el;
+                }}
+                className="w-[min(84vw,392px)] shrink-0 snap-start"
+              >
+                <article
+                  className="flex h-full flex-col rounded-2xl border bg-paper p-5 transition-all duration-500"
+                  style={{
+                    borderColor: i === n ? t.band : "var(--line)",
+                    opacity: i === n ? 1 : 0.62,
+                  }}
+                >
+                  <TermChart k={t.k} band={t.band} />
+
+                  <div className="mt-5 flex items-baseline gap-3">
+                    <span
+                      className="font-mono text-[1.65rem] font-extrabold leading-none"
+                      style={{ color: t.band }}
+                    >
+                      {t.sym}
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="text-[15px] font-bold text-ink">{t.name}</h3>
+                      <p className="font-mono text-[10.5px] text-ink-4">{t.unit}</p>
+                    </div>
+                  </div>
+
+                  <p className="mt-3 text-[13.5px] leading-relaxed text-ink-3">{t.body}</p>
+
+                  <ul className="mt-4 flex flex-col gap-2">
+                    {t.drivers.map((d) => (
+                      <li key={d.text} className="flex items-start gap-2.5 text-[12.5px] text-ink-2">
+                        <span
+                          className="mt-[2px] shrink-0"
+                          style={{ color: d.good ? "var(--pos)" : "var(--neg)" }}
+                        >
+                          <Arrow good={d.good} />
+                        </span>
+                        <span>{d.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {t.cite && (
+                    <a
+                      href={t.cite.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-auto pt-4 text-[11.5px] text-ink-4 underline decoration-line-2 underline-offset-4 transition-colors hover:text-ink"
+                    >
+                      Our research: {t.cite.short} ↗
+                    </a>
+                  )}
+                </article>
+              </div>
+            ))}
+
+            {/*
+              Trailing spacer. Without it the rail runs out of scroll before the last
+              cards can reach the left edge, so clicking the R chip scrolled as far as it
+              could and left L(t) highlighted — the chip and the highlight disagreed.
+            */}
+            <div
+              aria-hidden="true"
+              className="shrink-0"
+              style={{ width: "calc(100% - min(84vw, 392px))" }}
+            />
+          </div>
+
+          {/* edge fades, so cards read as continuing past the frame */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-white to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white to-transparent" />
+        </div>
+
+        {/* rail controls */}
+        <div className="mt-6 flex items-center justify-center gap-4 px-5 sm:px-10">
+          <button
+            onClick={() => go(i - 1)}
+            disabled={i === 0}
+            aria-label="Previous term"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white text-ink-3 transition-colors hover:border-line-2 hover:text-ink disabled:opacity-35"
+          >
+            ←
+          </button>
+          <div className="flex gap-1.5">
+            {TERMS.map((t, n) => (
+              <span
+                key={t.k}
+                className="h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  width: i === n ? 22 : 6,
+                  background: i === n ? t.band : "var(--line-2)",
+                }}
+              />
+            ))}
+          </div>
+          <button
+            onClick={() => go(i + 1)}
+            disabled={i === TERMS.length - 1}
+            aria-label="Next term"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white text-ink-3 transition-colors hover:border-line-2 hover:text-ink disabled:opacity-35"
+          >
+            →
+          </button>
         </div>
       </div>
     </div>
