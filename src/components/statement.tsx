@@ -13,9 +13,9 @@ import { useEffect, useRef, useState } from "react";
  * Words light as the card rises, with a faint halo on the lit ones so the sentence reads
  * as filling with light rather than only changing opacity.
  *
- * The adoption claim is attributed (Google's DORA, as cited in our own 2x mandate paper).
- * The inference on top of it — that the gap is fit, not tooling — is ours, and sits in its
- * own sentence so it can't be read as something the source said.
+ * No citation line: the card no longer quotes a figure, only characterises the situation,
+ * so a source note under it read as a footnote to nothing. The adoption claim is backed by
+ * Google's DORA (as cited in our own 2x mandate paper) if it is ever challenged.
  */
 const LEAD =
   "AI adoption in SDLC workflows is near-universal, but most organizations have no way to study how it is impacting their software.";
@@ -96,10 +96,6 @@ export function Statement() {
               </span>
             );
           })}
-        </p>
-
-        <p className="relative mt-9 font-mono text-[10.5px] leading-relaxed text-white/30">
-          Adoption: Google DORA, 2025.
         </p>
       </div>
     </section>
