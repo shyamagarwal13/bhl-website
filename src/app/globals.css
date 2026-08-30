@@ -43,6 +43,7 @@
   --t2: #0369a1;
   --t3: #0f766e;
   --t4: #a16207;
+  --t5: #be3428;
 
   --pos: #10b5a0;
   --neg: #f2564b;
@@ -67,6 +68,11 @@
   --color-s3: var(--s3);
   --color-s4: var(--s4);
   --color-s5: var(--s5);
+  --color-t1: var(--t1);
+  --color-t2: var(--t2);
+  --color-t3: var(--t3);
+  --color-t4: var(--t4);
+  --color-t5: var(--t5);
   --color-pos: var(--pos);
   --color-neg: var(--neg);
 

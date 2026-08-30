@@ -5,6 +5,8 @@ import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
 import { Scrollytelling, type Step } from "@/components/scrollytelling";
+import { EquationScroll } from "@/components/equation";
+import { Research, YourTeam } from "@/components/research";
 import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
 
 function Section({
@@ -163,6 +165,34 @@ function ReadsFrom() {
   );
 }
 
+/* --- the model ------------------------------------------------------------ */
+
+function Model() {
+  return (
+    <div className="border-y border-line bg-paper">
+      <Section id="model" className="py-24">
+        <Reveal>
+          <div className="max-w-2xl">
+            <div className="spectrum-rule mb-7 w-16" />
+            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
+              We measure every term.
+            </h2>
+            <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
+              Engineering value is not throughput and it is not spend. It is what the work was
+              worth, minus everything it cost to get there — including the costs that arrive
+              late. Six terms. We instrument all of them.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14">
+          <EquationScroll />
+        </div>
+      </Section>
+    </div>
+  );
+}
+
 /* --- the pinned scroll story ---------------------------------------------- */
 
 const STEPS: Step[] = [
@@ -215,45 +245,6 @@ function Story() {
         </div>
       </Section>
     </div>
-  );
-}
-
-/* --- claims --------------------------------------------------------------- */
-
-function Claims() {
-  const rows = [
-    {
-      h: "Every metric shows its working.",
-      b: "Each number carries the formula that produced it and the rows it was computed from. Nobody has to take an engineering metric on faith — least of all the person being measured by it.",
-    },
-    {
-      h: "Aggregate by default.",
-      b: "Individual-level views stay off unless an admin deliberately turns them on. A measurement tool that becomes a surveillance tool stops getting honest data, and then it stops being useful.",
-    },
-    {
-      h: "Numbers your CFO will accept.",
-      b: "Unit economics reconciled to the invoice: cost per merged change, by team, with abandoned and reverted work separated from what actually shipped.",
-    },
-  ];
-  return (
-    <Section className="py-24">
-      <div className="flex flex-col">
-        {rows.map((r, i) => (
-          <Reveal key={r.h} delay={i * 80}>
-            <div className="grid gap-6 border-t border-line py-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16">
-              <div className="flex items-start gap-5">
-                <span
-                  className="mt-2.5 h-[3px] w-10 shrink-0 rounded-full"
-                  style={{ background: `var(--s${i + 1})` }}
-                />
-                <h3 className="h2 text-balance text-[1.6rem] sm:text-[1.95rem]">{r.h}</h3>
-              </div>
-              <p className="text-[15.5px] leading-relaxed text-ink-3">{r.b}</p>
-            </div>
-          </Reveal>
-        ))}
-      </div>
-    </Section>
   );
 }
 
@@ -462,8 +453,10 @@ export default function Home() {
       <main>
         <Hero />
         <ReadsFrom />
+        <Model />
         <Story />
-        <Claims />
+        <Research />
+        <YourTeam />
         <How />
         <Integrations />
         <Security />
