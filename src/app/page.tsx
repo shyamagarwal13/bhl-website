@@ -6,8 +6,8 @@ import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
 import { Scrollytelling, type Step } from "@/components/scrollytelling";
 import { EquationPanel } from "@/components/equation";
-import { Research, YourTeam } from "@/components/research";
 import { UseCases } from "@/components/use-cases";
+import { Philosophy } from "@/components/philosophy";
 import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
 
 function Section({
@@ -454,11 +454,10 @@ export default function Home() {
       <main>
         <Hero />
         <ReadsFrom />
+        <Philosophy />
         <Model />
         <UseCases />
         <Story />
-        <Research />
-        <YourTeam />
         <How />
         <Integrations />
         <Security />
