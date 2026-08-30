@@ -3,7 +3,6 @@ import { Footer } from "@/components/footer";
 import { DemoForm } from "@/components/demo-form";
 import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
-import { SpendFlow } from "@/components/spend-flow";
 import { Marquee } from "@/components/marquee";
 import { Scrollytelling, type Step } from "@/components/scrollytelling";
 import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
@@ -30,7 +29,7 @@ function Hero() {
   return (
     <div className="refraction grain relative overflow-hidden">
       <Section className="relative pt-20 sm:pt-24">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-5xl text-center">
           <Reveal>
             {/* The category term as a chip rather than a stretched mono eyebrow — the
                 phrase is too long to survive 0.16em tracking at 11px, which is what made
@@ -44,9 +43,9 @@ function Hero() {
           </Reveal>
 
           <Reveal delay={80}>
-            {/* Each sentence balances on its own. text-balance across the whole heading
-                treats it as one block and orphaned "bill." on a line by itself. */}
-            <h1 className="display mx-auto mt-6 max-w-3xl text-[2.15rem] sm:text-[3rem]">
+            {/* Sized to hold each sentence on a single line from lg up; it still wraps
+                on narrow screens, where two balanced lines read better than 20px type. */}
+            <h1 className="display mx-auto mt-6 max-w-[19ch] text-[2.05rem] sm:max-w-none sm:text-[2.6rem] lg:text-[2.85rem]">
               <span className="block text-balance">What is your AI budget actually buying?</span>
               <span className="refract block text-balance">
                 Full-spectrum accounting of your AI bill.
@@ -55,27 +54,80 @@ function Hero() {
           </Reveal>
 
           <Reveal delay={160}>
-            <p className="mx-auto mt-7 max-w-xl text-[1.0625rem] leading-relaxed text-ink-3">
-              Trace and optimise every AI dollar through your entire SDLC. Behold turns your
-              developer and AI tool data into one honest picture: what you put in, what you got
-              out, both in dollars.
+            {/*
+                Four marks, in spectrum order left to right: s1 → s2 → s3 → s4. The
+                sentence is itself refracted, so the colour is carrying the concept
+                rather than just picking out words at random.
+            */}
+            <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[2] text-ink-3">
+              <span
+                className="mark whitespace-nowrap font-semibold text-ink"
+                style={{ background: "color-mix(in srgb, var(--s1) 18%, transparent)" }}
+              >
+                Trace and optimise
+              </span>{" "}
+              every AI dollar through your entire SDLC. Behold turns your developer and AI tool
+              data into one honest picture:{" "}
+              <span
+                className="mark whitespace-nowrap font-semibold text-ink"
+                style={{ background: "color-mix(in srgb, var(--s2) 20%, transparent)" }}
+              >
+                what you put in
+              </span>
+              ,{" "}
+              <span
+                className="mark whitespace-nowrap font-semibold text-ink"
+                style={{ background: "color-mix(in srgb, var(--s3) 24%, transparent)" }}
+              >
+                what you got out
+              </span>
+              , both in{" "}
+              <span
+                className="mark whitespace-nowrap font-semibold text-ink"
+                style={{ background: "color-mix(in srgb, var(--s4) 30%, transparent)" }}
+              >
+                dollars
+              </span>
+              .
             </p>
           </Reveal>
 
           <Reveal delay={240}>
             <div className="mt-9 flex justify-center">
-              <DemoForm />
+              {/* The relative box wraps only the form. Put it on the flex row instead and
+                  `left-full` resolves against the full container width, which pushes the
+                  note off the right edge where the section's overflow-hidden silently
+                  eats it — no layout overflow to warn you, just missing content. */}
+              <div className="relative">
+                <DemoForm />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-full top-1/2 ml-4 hidden -translate-y-1/2 items-center gap-2 lg:flex"
+                >
+                  <svg width="44" height="28" viewBox="0 0 44 28" fill="none">
+                    <path
+                      d="M43 5C30 1 12 3 5 15"
+                      stroke="var(--ink-4)"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M4 14.5l7.5-1.5M4 14.5l3 6.5"
+                      stroke="var(--ink-4)"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="hand whitespace-nowrap text-[1.15rem] text-ink-3">
+                    we reply within a day
+                  </span>
+                </span>
+              </div>
             </div>
           </Reveal>
         </div>
 
         <Reveal delay={300}>
-          <div className="mx-auto mt-14 max-w-3xl">
-            <SpendFlow />
-          </div>
-        </Reveal>
-
-        <Reveal delay={320}>
           <div className="mt-16">
             <ProductShot />
           </div>

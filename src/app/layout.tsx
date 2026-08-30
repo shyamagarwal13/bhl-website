@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Caveat, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 // One family doing display and text. Jakarta has enough character at 800 to carry a
@@ -7,6 +7,15 @@ import "./globals.css";
 const sans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
   subsets: ["latin"],
+  display: "swap",
+});
+
+// Margin notes only — the one voice on the page that isn't the company talking.
+// Used sparingly; a handwriting face doing real work reads as a greetings card.
+const hand = Caveat({
+  variable: "--font-hand-face",
+  subsets: ["latin"],
+  weight: ["600"],
   display: "swap",
 });
 
@@ -49,7 +58,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable} ${hand.variable}`}>
       <body className="min-h-screen">{children}</body>
     </html>
   );

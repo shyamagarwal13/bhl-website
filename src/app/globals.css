@@ -72,6 +72,7 @@
 
   --font-sans: var(--font-jakarta);
   --font-mono: var(--font-mono-face);
+  --font-hand: var(--font-hand-face);
 }
 
 * {
@@ -132,6 +133,25 @@ body {
   letter-spacing: 0.16em;
   font-weight: 500;
   color: var(--ink-4);
+}
+
+/*
+  Highlighter. The off-square gradient angle and the slight negative margin make the
+  swipe start and stop a touch past the text, the way a real marker overshoots. The
+  box-decoration-break is what keeps it looking hand-drawn when the phrase wraps —
+  without it the swipe gets a hard vertical cut at the line break.
+*/
+.mark {
+  padding: 0.05em 0.28em;
+  margin: 0 -0.14em;
+  border-radius: 0.5em 0.35em 0.45em 0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hand {
+  font-family: var(--font-hand), ui-rounded, cursive;
+  font-weight: 600;
 }
 
 .tabular {
