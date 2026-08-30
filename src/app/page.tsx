@@ -57,10 +57,10 @@ function Hero() {
             {/*
                 Two marks, not four: the action and the unit. Marking the middle clauses
                 too made the paragraph read as a page of someone else's revision notes —
-                when everything is emphasised, nothing is.
+                when everything is emphasized, nothing is.
 
-                Both in the same amber. A real highlighter is one colour; two different
-                ones in a single paragraph reads as a colour-coding system the reader is
+                Both in the same amber. A real highlighter is one color; two different
+                ones in a single paragraph reads as a color-coding system the reader is
                 expected to decode, and there's nothing to decode here.
             */}
             <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[1.95] text-ink-3">
@@ -68,7 +68,7 @@ function Hero() {
                 className="mark whitespace-nowrap font-semibold text-ink"
                 style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
               >
-                Trace and optimise
+                Trace and optimize
               </span>{" "}
               every AI dollar through your entire SDLC. Behold turns your developer and AI tool
               data into one honest picture: what you put in, what you got out, all in{" "}
@@ -94,18 +94,25 @@ function Hero() {
                   aria-hidden="true"
                   className="pointer-events-none absolute left-full top-1/2 ml-4 hidden -translate-y-1/2 items-center gap-2 lg:flex"
                 >
-                  <svg width="44" height="28" viewBox="0 0 44 28" fill="none">
+                  {/*
+                    Hand-drawn arrow pointing back at the button. The head is built from
+                    two barbs rotated ±30° off the *reverse* of the curve's end tangent —
+                    the previous one had a barb on the wrong side, which is why it read
+                    as a tick rather than an arrowhead.
+                  */}
+                  <svg width="50" height="30" viewBox="0 0 50 30" fill="none">
                     <path
-                      d="M43 5C30 1 12 3 5 15"
+                      d="M48 23.5C37.5 26.5 15.5 23 4.5 10.5"
                       stroke="var(--ink-4)"
-                      strokeWidth="1.6"
+                      strokeWidth="1.7"
                       strokeLinecap="round"
                     />
                     <path
-                      d="M4 14.5l7.5-1.5M4 14.5l3 6.5"
+                      d="M4.5 10.5 7 18.6M4.5 10.5 12.6 13"
                       stroke="var(--ink-4)"
-                      strokeWidth="1.6"
+                      strokeWidth="1.7"
                       strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                   <span className="hand whitespace-nowrap text-[1.15rem] text-ink-3">
@@ -433,7 +440,7 @@ function Cta() {
               Bring evidence to the next budget conversation.
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-white/70">
-              We&apos;re working with a small number of engineering organisations to get this
+              We&apos;re working with a small number of engineering organizations to get this
               right. Connect a repository and see your own numbers — no slide deck required.
             </p>
             <div id="demo" className="mt-9 flex scroll-mt-32 justify-center">

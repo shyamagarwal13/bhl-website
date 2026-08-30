@@ -9,9 +9,9 @@
   spectrum you can measure — which is exactly the product: one opaque number (AI spend)
   refracted into bands you can act on (team, repo, pull request, outcome).
 
-  So the identity is a spectrum, not a single brand colour, and it is used literally:
+  So the identity is a spectrum, not a single brand color, and it is used literally:
   five fixed bands that appear as rules, chart series, section markers and the hero
-  refraction. Primary actions are ink black — the colour carries meaning, so it never
+  refraction. Primary actions are ink black — the color carries meaning, so it never
   gets spent on a button.
 */
 
@@ -118,7 +118,7 @@ body {
   line-height: 1.08;
 }
 
-/* Emphasis inside a headline — the one place colour enters the type. */
+/* Emphasis inside a headline — the one place color enters the type. */
 .refract {
   background: linear-gradient(96deg, var(--t1), var(--t2) 34%, var(--t3) 62%, var(--t4) 100%);
   -webkit-background-clip: text;

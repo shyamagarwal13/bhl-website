@@ -32,7 +32,7 @@ export function Scrollytelling({ steps }: { steps: Step[] }) {
 
     const io = new IntersectionObserver(
       (entries) => {
-        // Pick the entry nearest the pinned panel's centre rather than the first
+        // Pick the entry nearest the pinned panel's center rather than the first
         // intersecting one, so fast scrolling lands on the step you actually stopped at.
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;

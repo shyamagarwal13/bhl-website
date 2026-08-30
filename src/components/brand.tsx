@@ -3,7 +3,7 @@ import Link from "next/link";
 /*
  * Behold logomark — a prism aperture.
  *
- * Blades opening around a lit centre, each blade carrying one band of the spectrum:
+ * Blades opening around a lit center, each blade carrying one band of the spectrum:
  * the instrument you look through, and the thing it does (one beam in, measurable
  * bands out). Pure SVG, so it stays crisp at any size and needs no asset pipeline.
  */
