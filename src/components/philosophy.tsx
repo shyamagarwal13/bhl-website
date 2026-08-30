@@ -1,76 +1,28 @@
+import Image from "next/image";
 import { Reveal } from "./reveal";
 
 /*
- * Position.
+ * The argument that sets up the model, and the one that follows it.
  *
- * The page's argument, placed before the model so a reader knows why a new measurement
- * is needed before being shown one. It absorbs what were three separate sections — the
- * case against input metrics, the research, and the engagement model — because they are
- * one argument: counting is the wrong instrument, here is the evidence, and here is why
- * a number alone still isn't an answer.
+ * `Position` is the copy that opens the measurement section: the pull quote, the story of
+ * how the industry un-learned and then re-learned a bad metric, and a plain statement of
+ * what we measure instead. It sits above the equation pane so a reader knows why a new
+ * measurement is needed before being shown one.
  *
- * The quotes are load-bearing, so they are attributed rather than floated as folklore.
+ * `NumberIsNotAnAnswer` follows the pane: measurement alone doesn't decide anything, and
+ * the papers are the evidence for that claim rather than a separate credentials section.
+ * The paper images are real first pages rendered from the PDFs — a screenshot of the
+ * actual paper is harder to fake than a citation, which is the point.
  */
-
-const COUNTED = [
-  "% of code written by AI",
-  "Tokens consumed",
-  "Suggestions accepted",
-  "Lines added per developer",
-  "Seats active this month",
-];
-
-const MEASURED = [
-  "Cost per merged change",
-  "What survived review unchanged",
-  "What was abandoned or reverted",
-  "Debt that compounded after the fact",
-  "Hours lost to friction, priced",
-];
-
-const PAPERS = [
-  {
-    t: "AI Writes Faster Than Humans Can Review",
-    sub: "802 developers · 196,212 pull requests",
-    find: "Throughput doubled. Per-reviewer load roughly doubled with it.",
-    venue: "arXiv:2607.01904",
-    href: "https://arxiv.org/abs/2607.01904",
-    band: "var(--t5)",
-  },
-  {
-    t: "Speed at the Cost of Quality",
-    sub: "Cursor adopters vs. matched controls",
-    find: "A large but transient velocity gain, and a persistent rise in complexity that drove later slowdown.",
-    venue: "MSR 2026",
-    href: "https://doi.org/10.1145/3793302.3793349",
-    band: "var(--t4)",
-  },
-  {
-    t: "A Few Pages of Markdown",
-    sub: "Repository AI maturity, four levels",
-    find: "Average effects across adopters hide wide differences between teams.",
-    venue: "ASE 2026",
-    href: "https://doi.org/10.1145/3832783.3837546",
-    band: "var(--t1)",
-  },
-  {
-    t: "AI IDEs or Autonomous Agents?",
-    sub: "Longitudinal causal study",
-    find: "Agents and IDE assistants are not the same intervention and do not carry the same cost.",
-    venue: "MSR 2026",
-    href: "https://doi.org/10.1145/3793302.3793589",
-    band: "var(--t2)",
-  },
-];
 
 const ROLES = [
   {
-    t: "Agents produce the measurement",
-    d: "Custom-built agents run against your repositories and tool data to compute every term, continuously, without anyone filling in a survey or a timesheet.",
+    t: "Our agents produce the measurement",
+    d: "Custom-built agents run against your repositories and tool data to compute every term continuously — no survey, no timesheet, no self-reporting.",
   },
   {
-    t: "Researchers say what it means",
-    d: "The people who published the work above read your numbers directly, with the caveats stated. A dashboard cannot tell you which of six terms is the one to move this quarter.",
+    t: "Our researchers say what it means",
+    d: "The people who published the work below read your numbers directly, with the caveats stated. A dashboard cannot tell you which of six terms is the one to move this quarter.",
   },
   {
     t: "Fitted to your constraints",
@@ -78,130 +30,113 @@ const ROLES = [
   },
 ];
 
-export function Philosophy() {
+const PAPERS = [
+  {
+    img: "/papers/review-mandate.png",
+    t: "AI Writes Faster Than Humans Can Review",
+    venue: "Preprint · arXiv:2607.01904",
+    find: "A mandated doubling of merged pull requests was reached — and per-reviewer load roughly doubled with it.",
+    href: "https://arxiv.org/abs/2607.01904",
+  },
+  {
+    img: "/papers/speed-quality.png",
+    t: "Speed at the Cost of Quality",
+    venue: "MSR 2026",
+    find: "A large but transient velocity gain, alongside a persistent rise in complexity that drove the later slowdown.",
+    href: "https://doi.org/10.1145/3793302.3793349",
+  },
+  {
+    img: "/papers/ramp.png",
+    t: "A Few Pages of Markdown",
+    venue: "ASE 2026",
+    find: "Averages across adopters hide wide differences between teams. Repositories without committed AI configuration showed roughly twice the rise in cognitive complexity.",
+    href: "https://doi.org/10.1145/3832783.3837546",
+  },
+  {
+    img: "/papers/agents-vs-ides.png",
+    t: "AI IDEs or Autonomous Agents?",
+    venue: "MSR 2026",
+    find: "Agents and IDE assistants are not the same intervention and do not carry the same cost.",
+    href: "https://doi.org/10.1145/3793302.3793589",
+  },
+];
+
+/** Opens the measurement section, above the equation pane. */
+export function Position() {
+  return (
+    <>
+      <Reveal delay={60}>
+        <blockquote className="mt-9 border-l-2 border-ink pl-6 sm:pl-8">
+          <p className="h2 text-balance text-[1.55rem] leading-[1.25] sm:text-[1.95rem]">
+            The industry spent forty years learning not to count lines. Then it started
+            counting again.
+          </p>
+        </blockquote>
+      </Reveal>
+
+      <Reveal delay={110}>
+        <div className="mt-8 flex max-w-2xl flex-col gap-4 text-[1.0625rem] leading-relaxed text-ink-3">
+          <p>
+            Then AI arrived and the same number came back wearing a new name. Share of code
+            written by AI. Tokens consumed. Suggestions accepted. Every one of them counts the
+            act of writing —{" "}
+            <span className="font-semibold text-ink">
+              at the exact moment writing stopped being the expensive part
+            </span>
+            . Worse, a metric that was merely gameable when a human had to type it is unbounded
+            when a machine does.
+          </p>
+          <p>
+            So everyone else is still counting inputs: code produced, tokens burned, suggestions
+            taken. We measure what happened afterwards —{" "}
+            <span className="font-semibold text-ink">
+              what the work was worth, what it cost to get, what survived review, and what
+              quietly compounded
+            </span>
+            . Six terms, every one of them priced.
+          </p>
+        </div>
+      </Reveal>
+    </>
+  );
+}
+
+/** Follows the equation pane. */
+export function NumberIsNotAnAnswer() {
   return (
     <div className="border-y border-line bg-paper/60">
-      <section id="position" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
+      <section id="approach" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
         <Reveal>
-          <div className="max-w-3xl">
+          <div className="max-w-2xl">
             <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              The industry spent forty years learning not to count lines. Then it started
-              counting again.
-            </h2>
-            <div className="mt-6 flex flex-col gap-4 text-[1.0625rem] leading-relaxed text-ink-3">
-              <p>
-                Dijkstra called lines of code “a very costly measuring unit” because it rewards
-                writing more of them. Tom DeMarco, who gave us “you can&apos;t control what you
-                can&apos;t measure,” retracted it in 2009. Kent Beck filed the metric under
-                inputs: use it only if you have nothing else. That argument was settled.
-              </p>
-              <p>
-                Then AI arrived and the same number came back wearing a new name. Share of code
-                written by AI. Tokens consumed. Suggestions accepted. Every one of them counts
-                the act of writing —{" "}
-                <span className="font-semibold text-ink">
-                  at the exact moment writing stopped being the expensive part
-                </span>
-                . Worse, a metric that was merely gameable when a human had to type it is
-                unbounded when a machine does.
-              </p>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* the contrast */}
-        <Reveal delay={80}>
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-2">
-            <div className="bg-white p-7 sm:p-8">
-              <div className="flex items-center gap-2.5">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-                  Counted today
-                </span>
-                <span className="rounded border border-line px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-wide text-ink-4">
-                  Inputs
-                </span>
-              </div>
-              <ul className="mt-5 flex flex-col gap-3">
-                {COUNTED.map((c) => (
-                  <li key={c} className="flex items-center gap-3 text-[14.5px] text-ink-4">
-                    <span className="h-px w-4 shrink-0 bg-line-2" />
-                    <span className="line-through decoration-line-2">{c}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 border-t border-line pt-4 text-[13px] leading-relaxed text-ink-4">
-                All of these end at the moment the code is written. None survives contact with
-                what happened next.
-              </p>
-            </div>
-
-            <div className="bg-white p-7 sm:p-8">
-              <div className="flex items-center gap-2.5">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink">
-                  What we measure
-                </span>
-                <span
-                  className="rounded px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-wide"
-                  style={{
-                    color: "var(--t3)",
-                    background: "color-mix(in srgb, var(--t3) 11%, transparent)",
-                  }}
-                >
-                  Outcomes
-                </span>
-              </div>
-              <ul className="mt-5 flex flex-col gap-3">
-                {MEASURED.map((c) => (
-                  <li key={c} className="flex items-center gap-3 text-[14.5px] font-medium text-ink">
-                    <span
-                      className="h-1.5 w-1.5 shrink-0 rounded-full"
-                      style={{ background: "var(--t3)" }}
-                    />
-                    {c}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-6 border-t border-line pt-4 text-[13px] leading-relaxed text-ink-3">
-                Every one of these is only knowable after the fact. That is what makes them
-                harder to collect — and what makes them worth collecting.
-              </p>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* a number is not an answer */}
-        <Reveal delay={120}>
-          <div className="mt-16 max-w-3xl">
-            <h3 className="h2 text-balance text-[1.7rem] sm:text-[2.05rem]">
               A number is not an answer.
-            </h3>
-            <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-3">
+            </h2>
+            <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
               Our own research found that average effects across adopters hide wide differences
-              between teams — which means a benchmark built from other companies tells you very
-              little about yours. Tooling can produce the measurement. Deciding what it means for
-              your org is a research problem, and we staff it as one.
+              between teams — so a benchmark built from other companies tells you very little
+              about yours. Tooling can produce the measurement. Deciding what it means for your
+              org is a research problem, and we staff it as one.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-11 grid gap-5 md:grid-cols-3">
           {ROLES.map((r, i) => (
             <Reveal key={r.t} delay={i * 80}>
               <div className="h-full rounded-2xl border border-line bg-white p-7">
                 <span className="font-mono text-[11px] text-ink-4">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h4 className="mt-3 text-[1rem] font-bold text-ink">{r.t}</h4>
+                <h3 className="mt-3 text-[1rem] font-bold text-ink">{r.t}</h3>
                 <p className="mt-2.5 text-[13.5px] leading-relaxed text-ink-3">{r.d}</p>
               </div>
             </Reveal>
           ))}
         </div>
 
-        {/* the evidence */}
-        <Reveal delay={100}>
-          <div className="mt-16 max-w-3xl">
+        <Reveal delay={80}>
+          <div className="mt-16 max-w-2xl">
             <h3 className="h2 text-balance text-[1.7rem] sm:text-[2.05rem]">
               We didn&apos;t read this research. We wrote it.
             </h3>
@@ -212,33 +147,39 @@ export function Philosophy() {
           </div>
         </Reveal>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {PAPERS.map((p, i) => (
             <Reveal key={p.t} delay={(i % 2) * 80}>
               <a
                 href={p.href}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex h-full gap-4 rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift"
               >
-                <span
-                  className="mt-1 h-full w-[3px] shrink-0 rounded-full"
-                  style={{ background: p.band }}
-                />
-                <div className="min-w-0">
+                {/* the paper itself — a first page is harder to fake than a citation */}
+                <div className="relative h-[188px] overflow-hidden border-b border-line bg-paper">
+                  <Image
+                    src={p.img}
+                    alt={`First page of ${p.t}`}
+                    width={1347}
+                    height={800}
+                    className="w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
+                </div>
+                <div className="flex flex-1 flex-col p-6">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-4">
                       {p.venue}
                     </span>
-                    <span className="text-ink-4 transition-transform group-hover:translate-x-0.5">
+                    <span className="ml-auto text-ink-4 transition-transform group-hover:translate-x-0.5">
                       ↗
                     </span>
                   </div>
-                  <h4 className="mt-2 text-balance text-[15px] font-bold leading-snug text-ink">
+                  <h4 className="mt-2 text-balance text-[1rem] font-bold leading-snug text-ink">
                     {p.t}
                   </h4>
-                  <p className="mt-1 font-mono text-[11px] text-ink-4">{p.sub}</p>
-                  <p className="mt-3 text-[13.5px] leading-relaxed text-ink-3">{p.find}</p>
+                  <p className="mt-2.5 text-[13.5px] leading-relaxed text-ink-3">{p.find}</p>
                 </div>
               </a>
             </Reveal>
