@@ -69,9 +69,9 @@ export function Scrollytelling({ steps }: { steps: Step[] }) {
               <span
                 className="h-2.5 w-2.5 rounded-full transition-all duration-500"
                 style={{
-                  background: `var(--s${i + 1})`,
+                  background: "var(--ink)",
                   transform: active === i ? "scale(1)" : "scale(0.55)",
-                  opacity: active === i ? 1 : 0.35,
+                  opacity: active === i ? 1 : 0.3,
                 }}
               />
               <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-4">
@@ -122,7 +122,7 @@ export function Scrollytelling({ steps }: { steps: Step[] }) {
                 key={i}
                 className="h-[3px] flex-1 rounded-full transition-all duration-500"
                 style={{
-                  background: i <= active ? `var(--s${i + 1})` : "var(--line)",
+                  background: i <= active ? "var(--ink)" : "var(--line)",
                 }}
               />
             ))}

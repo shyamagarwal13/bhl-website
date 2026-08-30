@@ -173,7 +173,7 @@ function Model() {
       <Section id="model" className="py-24">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="spectrum-rule mb-7 w-16" />
+            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
               We measure every term.
             </h2>
@@ -228,7 +228,7 @@ function Story() {
       <Section id="platform" className="py-24">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="spectrum-rule mb-7 w-16" />
+            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
               Follow the dollar.
             </h2>
@@ -273,7 +273,7 @@ function How() {
       <Section id="how" className="py-24">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="spectrum-rule mb-7 w-16" />
+            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.75rem]">
               Connected in an afternoon. Useful the same day.
             </h2>
@@ -316,7 +316,7 @@ function Integrations() {
     <Section id="integrations" className="py-24">
       <Reveal>
         <div className="max-w-2xl">
-          <div className="spectrum-rule mb-7 w-16" />
+          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
           <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.75rem]">
             Connects to what you have.
           </h2>
@@ -382,7 +382,7 @@ function Security() {
       <Section id="security" className="py-24">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="spectrum-rule mb-7 w-16" />
+            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.75rem]">
               Built to pass the review before you have to ask.
             </h2>

@@ -79,7 +79,7 @@ export function Research() {
       <section id="research" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
         <Reveal>
           <div className="max-w-2xl">
-            <div className="spectrum-rule mb-7 w-16" />
+            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
               We didn&apos;t read the research. We wrote it.
             </h2>
@@ -175,7 +175,7 @@ export function YourTeam() {
     <section className="mx-auto max-w-[var(--maxw)] px-6 py-24">
       <Reveal>
         <div className="max-w-2xl">
-          <div className="spectrum-rule mb-7 w-16" />
+          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
           <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
             Every team has a different cost function.
           </h2>

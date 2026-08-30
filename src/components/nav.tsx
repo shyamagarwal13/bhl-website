@@ -31,13 +31,8 @@ export function Nav() {
 
   return (
     <>
-      {/*
-        Announcement bar — bold ink, with the spectrum as its top edge rather than a
-        decorative stripe: the identity introduces itself in the first three pixels of
-        the page, then gets out of the way.
-      */}
+      {/* Announcement bar — bold ink, no stripe. */}
       <div className="relative z-50 bg-ink">
-        <div className="spectrum-rule rounded-none" style={{ height: 3 }} />
         <div className="px-4 py-2.5 text-center">
           <a
             href="#platform"
