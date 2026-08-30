@@ -173,12 +173,31 @@ function railPad(el: HTMLElement) {
 
 export function EquationPanel() {
   const [i, setI] = useState(0);
+  const [pinned, setPinned] = useState(false);
+  const outer = useRef<HTMLDivElement>(null);
   const rail = useRef<HTMLDivElement>(null);
   const cards = useRef<(HTMLDivElement | null)[]>([]);
   const cur = TERMS[i];
 
+  // Scroll-driving is desktop-only, and off entirely for reduced-motion readers.
+  useEffect(() => {
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setPinned(wide.matches && !calm.matches);
+    sync();
+    wide.addEventListener("change", sync);
+    calm.addEventListener("change", sync);
+    return () => {
+      wide.removeEventListener("change", sync);
+      calm.removeEventListener("change", sync);
+    };
+  }, []);
+
   /*
    * Active term = the card whose left edge is nearest the rail's content edge.
+   *
+   * Still correct when the rail is driven by page scroll, because that path sets
+   * scrollLeft on the rail and this listener fires from it.
    *
    * Deliberately a scroll listener and not an IntersectionObserver: an IO callback only
    * receives entries whose visibility *changed*, so reducing over `entries` to find the
@@ -218,17 +237,67 @@ export function EquationPanel() {
     };
   }, []);
 
-  // scrollIntoView also scrolls ancestors and re-settles against snap points, which made
-  // it unreliable here. Setting scrollLeft on the rail directly is deterministic.
-  const go = (n: number) => {
+  /*
+   * Vertical page scroll drives the rail.
+   *
+   * The panel pins while a tall spacer scrolls past it; progress through that spacer maps
+   * to scrollLeft on the rail, so reading down the page walks through the six terms
+   * without the reader having to notice a horizontal control exists.
+   *
+   * Desktop only. On a phone this would mean hijacking the one gesture the reader has,
+   * and a pinned panel taller than the viewport traps them — there the rail stays an
+   * ordinary swipeable strip.
+   */
+  useEffect(() => {
+    if (!pinned) return;
+    const outerEl = outer.current;
     const root = rail.current;
-    const el = cards.current[Math.max(0, Math.min(TERMS.length - 1, n))];
+    if (!outerEl || !root) return;
+
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const travel = outerEl.offsetHeight - window.innerHeight;
+      if (travel <= 0) return;
+      const passed = window.scrollY - outerEl.offsetTop;
+      const progress = Math.max(0, Math.min(1, passed / travel));
+      root.scrollLeft = progress * (root.scrollWidth - root.clientWidth);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    apply();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [pinned]);
+
+  /** Chips jump: scroll the page to the point whose progress selects term n. */
+  const go = (n: number) => {
+    const idx = Math.max(0, Math.min(TERMS.length - 1, n));
+    const root = rail.current;
+    if (pinned && outer.current) {
+      const travel = outer.current.offsetHeight - window.innerHeight;
+      const frac = idx / (TERMS.length - 1);
+      window.scrollTo({ top: outer.current.offsetTop + travel * frac, behavior: "smooth" });
+      return;
+    }
+    const el = cards.current[idx];
     if (!root || !el) return;
     const delta = el.getBoundingClientRect().left - root.getBoundingClientRect().left;
     root.scrollTo({ left: root.scrollLeft + delta - railPad(root), behavior: "smooth" });
   };
 
   return (
+    <div
+      ref={outer}
+      style={pinned ? { height: `calc(100vh + ${(TERMS.length - 1) * 46}vh)` } : undefined}
+    >
+      <div className={pinned ? "sticky top-[92px]" : ""}>
     <div className="relative overflow-hidden rounded-[26px] border border-line bg-white py-8 lift sm:py-10">
       <div
         aria-hidden="true"
@@ -309,7 +378,9 @@ export function EquationPanel() {
         <div className="relative mt-8">
           <div
             ref={rail}
-            className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-2 sm:px-10"
+            className={`no-scrollbar flex gap-5 px-5 pb-2 sm:px-10 ${
+              pinned ? "overflow-x-hidden" : "snap-x snap-mandatory overflow-x-auto"
+            }`}
           >
             {TERMS.map((t, n) => (
               <div
@@ -357,16 +428,6 @@ export function EquationPanel() {
                     ))}
                   </ul>
 
-                  {t.cite && (
-                    <a
-                      href={t.cite.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-auto pt-4 text-[11.5px] text-ink-4 underline decoration-line-2 underline-offset-4 transition-colors hover:text-ink"
-                    >
-                      Our research: {t.cite.short} ↗
-                    </a>
-                  )}
                 </article>
               </div>
             ))}
@@ -419,6 +480,8 @@ export function EquationPanel() {
             →
           </button>
         </div>
+      </div>
+    </div>
       </div>
     </div>
   );
