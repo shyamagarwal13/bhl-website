@@ -25,7 +25,7 @@ const ROLES = [
   },
   {
     t: "Our researchers say what it means",
-    d: "The people who published the work below read your numbers directly, with the caveats stated. A dashboard cannot tell you which of six terms is the one to move this quarter.",
+    d: "The people who published the work below read your numbers directly, with the caveats stated. You don't just get software — you get people who understand your business in detail, and a dashboard cannot tell you which of six terms is the one to move this quarter.",
   },
   {
     t: "Fitted to your constraints",
@@ -104,6 +104,13 @@ export function Position() {
             <p className="mb-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
               What happened
             </p>
+            <p className="mb-4">
+              For four decades the industry agreed that counting lines was a poor way to
+              measure software. Dijkstra called it a costly measuring unit. Tom DeMarco
+              retracted his own “you can&apos;t control what you can&apos;t measure.” Kent Beck
+              filed it under inputs — use it only if you have nothing else. The argument was
+              settled and the metric was retired.
+            </p>
             <p>
               Then AI arrived and the same number came back wearing a new name. Share of code
               written by AI. Tokens consumed. Suggestions accepted. Every one of them counts the
@@ -121,8 +128,9 @@ export function Position() {
               What we do instead
             </p>
             <p>
-              Everyone else is still counting inputs: code produced, tokens burned, suggestions
-              taken. We measure what happened afterwards.
+              Lines of code. Pull requests merged. Tokens burned. Each is a real number, and
+              each is an incomplete picture — they describe what was produced, never what it
+              was worth or what it cost to keep. We measure what happened afterwards.
             </p>
             <ul className="mt-4 flex flex-col gap-2">
               {[
@@ -184,7 +192,10 @@ export function NumberIsNotAnAnswer() {
 
         <Reveal delay={80}>
           <div className="mt-16 max-w-2xl">
-            <h3 className="h2 text-balance text-[1.7rem] sm:text-[2.05rem]">
+            <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+              Selected papers
+            </p>
+            <h3 className="h2 mt-3 text-balance text-[1.7rem] sm:text-[2.05rem]">
               We didn&apos;t read this research. We wrote it.
             </h3>
             <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-3">

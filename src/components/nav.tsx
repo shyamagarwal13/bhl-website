@@ -9,7 +9,6 @@ const LINKS = [
   { label: "The model", href: "#model" },
   { label: "Our approach", href: "#approach" },
   { label: "Use cases", href: "#use-cases" },
-  { label: "Security", href: "#security" },
 ];
 
 export function Nav() {

@@ -15,7 +15,6 @@ const COLUMNS = [
     links: [
       { l: "The model", href: "#model" },
       { l: "Use cases", href: "#use-cases" },
-      { l: "Security", href: "#security" },
       { l: "Request a demo", href: "#demo" },
     ],
   },

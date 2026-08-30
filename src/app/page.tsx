@@ -189,65 +189,6 @@ function Model() {
   );
 }
 
-/* --- security ------------------------------------------------------------- */
-
-function Security() {
-  const items = [
-    {
-      t: "Metrics, never content",
-      d: "We extract counts, timings and identifiers. Prompts, completions and source code never leave your systems.",
-    },
-    {
-      t: "Read-only by design",
-      d: "Least-privilege scopes on every integration. Behold has no write access to your repositories.",
-    },
-    {
-      t: "Encrypted end to end",
-      d: "TLS in transit, AES-256 at rest. Provider credentials are encrypted with per-record keys.",
-    },
-    {
-      t: "Aggregate by default",
-      d: "Individual-level views stay off unless an admin deliberately enables them. This is not a surveillance tool.",
-    },
-    { t: "SSO and SCIM", d: "SAML single sign-on and directory provisioning, with role-based access control." },
-    {
-      t: "Your deployment, if needed",
-      d: "Self-hosted and VPC options for teams whose policy won't allow a third-party clone.",
-    },
-  ];
-  return (
-    <div className="border-y border-line bg-paper/60">
-      <Section id="security" className="py-24">
-        <Reveal>
-          <div className="max-w-2xl">
-            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.75rem]">
-              Built to pass the review before you have to ask.
-            </h2>
-            <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Engineering telemetry is sensitive and measurement tools have earned scepticism. Our
-              answer is to collect as little as possible: the numbers, and nothing readable.
-            </p>
-          </div>
-        </Reveal>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((i, n) => (
-            <Reveal key={i.t} delay={(n % 3) * 80}>
-              <div className="h-full rounded-2xl border border-line bg-white p-6">
-                <h3 className="text-[15px] font-bold text-ink">{i.t}</h3>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-ink-3">{i.d}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <p className="mt-8 font-mono text-xs text-ink-4">
-          SOC 2 Type II in progress · DPA and sub-processor list available on request
-        </p>
-      </Section>
-    </div>
-  );
-}
-
 /* --- CTA ------------------------------------------------------------------ */
 
 function Cta() {
@@ -294,7 +235,6 @@ export default function Home() {
         <Model />
         <NumberIsNotAnAnswer />
         <UseCases />
-        <Security />
         <Cta />
       </main>
       <Footer />

@@ -25,8 +25,8 @@ const S = { w: 20, h: 20, viewBox: "0 0 24 24", fill: "none", strokeWidth: 1.7 }
 
 const CASES: Case[] = [
   {
-    q: "Defend the AI budget",
-    d: "Put a figure on what the spend produced — by team, by stage, by merged change — instead of arguing from a provider invoice and a velocity chart.",
+    q: "Attribute AI Spend to Delivered Work",
+    d: "Resolve provider invoices and tool costs down to the team, repository and merged change they produced, so investment decisions rest on unit economics rather than a total and an assumption.",
     terms: ["P", "F"],
     band: "var(--t1)",
     icon: (
@@ -37,8 +37,8 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Find the spend that bought nothing",
-    d: "Work that was abandoned before merge or reverted after it still cost full price. Counting it apart from what survived is the difference between a spend report and an answer.",
+    q: "Quantify Rework and Abandoned Investment",
+    d: "Separate work that shipped and remained in production from work abandoned before merge or reverted after it, and price each independently. Both consumed the same budget; only one returned anything.",
     terms: ["L(t)", "P"],
     band: "var(--t4)",
     icon: (
@@ -49,8 +49,8 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "See review capacity fail before it does",
-    d: "Effectiveness falls exactly when volume rises, and it falls quietly. Watching the ratio rather than the queue gives you months of warning instead of an incident.",
+    q: "Monitor Review Capacity and Effectiveness",
+    d: "Track the proportion of changes merged on first review alongside reviewer load, so declining review depth is visible as a trend rather than discovered through a production incident.",
     terms: ["E", "R"],
     band: "var(--t5)",
     icon: (
@@ -61,8 +61,8 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Fix the friction, not the people",
-    d: "A slow build is charged to every engineer, every day, and never lands on an invoice. Locate it precisely enough to fix, and prove the fix worked.",
+    q: "Locate and Price Developer Friction",
+    d: "Combine delivery telemetry with targeted developer input to identify where time is lost across the lifecycle, ranked by the hours each source of friction costs the organisation.",
     terms: ["T"],
     band: "var(--t2)",
     icon: (
@@ -73,19 +73,15 @@ const CASES: Case[] = [
     ),
   },
   {
-    q: "Compare teams without pretending they're the same",
-    d: "A payments team and a growth team don't share a cost function. Unit cost normalized for the work each actually does, so the comparison survives being questioned.",
+    q: "Benchmark Teams on Comparable Terms",
+    d: "Normalise unit cost for the work each team actually performs, so comparisons between a payments platform and a growth surface hold up to scrutiny from the teams being compared.",
     terms: ["P", "T"],
     band: "var(--t3)",
-    icon: (
-      <>
-        <path d="M4 20V10M10 20V4M16 20v-7M22 20v-11" strokeLinecap="round" />
-      </>
-    ),
+    icon: <path d="M4 20V10M10 20V4M16 20v-7M22 20v-11" strokeLinecap="round" />,
   },
   {
-    q: "Give finance numbers it can file",
-    d: "Unit economics reconciled to the invoice, with the formula attached to every figure — so capitalization and board reporting don't need a translation layer.",
+    q: "Produce Audit-Ready Engineering Economics",
+    d: "Report unit economics reconciled to provider billing, with the derivation attached to every figure — suitable for capitalisation, R&D claims and board reporting without a translation layer.",
     terms: ["F", "P"],
     band: "var(--t1)",
     icon: (
@@ -96,7 +92,6 @@ const CASES: Case[] = [
     ),
   },
 ];
-
 export function UseCases() {
   return (
     <div className="border-y border-line bg-paper/60">
@@ -105,11 +100,11 @@ export function UseCases() {
           <div className="max-w-2xl">
             <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              Six questions you can finally answer.
+              What engineering leaders use it for.
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Each one is a conversation engineering leaders are already having without the
-              numbers to settle it. The tag on every card is the term of the equation it moves.
+              Each of these is a decision already being made without the evidence to settle it.
+              The tag on every card names the terms of the model that decision moves.
             </p>
           </div>
         </Reveal>

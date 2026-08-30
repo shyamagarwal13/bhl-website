@@ -4,21 +4,24 @@ import { useEffect, useRef, useState } from "react";
 import { TermChart } from "./term-charts";
 
 /*
- * The engineering value equation, as a rail of instruments.
+ * The engineering value equation, read down the page.
  *
  * The previous version scattered six full-width cards down a scroll-driven column, which
  * left screens of dead space between a term and the equation it belonged to. This holds
  * the whole model in a single dark panel: equation on top, term selector under it,
  * detail below — so the variable and its explanation are always in the same frame.
  *
- * All six terms sit side by side on a horizontal rail. Nothing is hidden behind a click:
- * scrolling the rail moves through the terms, and whichever card is nearest the centre
- * lights its variable in the equation above. Tabs still work as jump targets, so a reader
- * who wants R goes straight there.
+ * Terms scroll vertically on the left while the instrument panel pins on the right and
+ * swaps to match. Built on `position: sticky` plus a scroll listener rather than scroll
+ * maths: sticky is the browser's own pinning, so it can't drift or judder against
+ * momentum scrolling.
  *
- * Horizontal rather than the vertical pinned-scroll used in the delivery-stage section —
- * repeating that device would make the second one read as a tic, and a rail lets the six
- * instruments be compared against each other rather than seen one at a time.
+ * The equation lives inside the pinned panel rather than above the section, so the
+ * variable and the instrument that measures it are always on screen together — which was
+ * the failure of every earlier version of this section.
+ *
+ * Below `lg` the pin is dropped and each term carries its own panel: a frozen panel taller
+ * than a phone viewport traps the reader.
  *
  * Light, like the rest of the page — a lone dark slab in the middle of a light document
  * reads as a different site's component that wandered in.
@@ -166,57 +169,58 @@ function Arrow({ good }: { good: boolean }) {
   );
 }
 
-/** The rail's left padding, which is the x-position both the observer and go() anchor to. */
-function railPad(el: HTMLElement) {
-  return parseFloat(getComputedStyle(el).paddingLeft) || 0;
+function Equation({ active }: { active: string }) {
+  return (
+    <div className="flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1.5">
+      {TOKENS.map((tok, n) => {
+        const isVar = !!tok.t;
+        const on = isVar && (tok.t === active || tok.t === "V");
+        const color =
+          tok.t === "V"
+            ? "var(--ink)"
+            : isVar
+              ? TERMS.find((t) => t.k === tok.t)!.band
+              : "var(--ink-4)";
+        return (
+          <span
+            key={n}
+            className="font-mono font-bold transition-all duration-500"
+            style={{
+              color,
+              opacity: !isVar ? 1 : on ? 1 : 0.3,
+              fontSize: "clamp(0.95rem, 1.55vw, 1.45rem)",
+            }}
+          >
+            {tok.s}
+          </span>
+        );
+      })}
+    </div>
+  );
 }
 
 export function EquationPanel() {
   const [i, setI] = useState(0);
-  const [pinned, setPinned] = useState(false);
-  const outer = useRef<HTMLDivElement>(null);
-  const rail = useRef<HTMLDivElement>(null);
   const cards = useRef<(HTMLDivElement | null)[]>([]);
   const cur = TERMS[i];
 
-  // Scroll-driving is desktop-only, and off entirely for reduced-motion readers.
-  useEffect(() => {
-    const wide = window.matchMedia("(min-width: 1024px)");
-    const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setPinned(wide.matches && !calm.matches);
-    sync();
-    wide.addEventListener("change", sync);
-    calm.addEventListener("change", sync);
-    return () => {
-      wide.removeEventListener("change", sync);
-      calm.removeEventListener("change", sync);
-    };
-  }, []);
-
   /*
-   * Active term = the card whose left edge is nearest the rail's content edge.
-   *
-   * Still correct when the rail is driven by page scroll, because that path sets
-   * scrollLeft on the rail and this listener fires from it.
-   *
-   * Deliberately a scroll listener and not an IntersectionObserver: an IO callback only
-   * receives entries whose visibility *changed*, so reducing over `entries` to find the
-   * closest card searched a partial set and settled on the wrong term — clicking the T
-   * chip highlighted L(t). Reading positions on scroll considers every card every time.
-   * rAF-throttled, passive, so it costs nothing.
+   * Active term = the card nearest the vertical middle of the viewport. A scroll listener
+   * rather than an IntersectionObserver: an IO callback only carries entries whose
+   * visibility changed, so reducing over them to find the nearest card searches a partial
+   * set and settles on the wrong term.
    */
   useEffect(() => {
-    const root = rail.current;
-    if (!root) return;
     let raf = 0;
     const update = () => {
       raf = 0;
-      const anchor = root.getBoundingClientRect().left + railPad(root);
+      const mid = window.innerHeight / 2;
       let best = 0;
       let bestD = Infinity;
       cards.current.forEach((el, n) => {
         if (!el) return;
-        const d = Math.abs(el.getBoundingClientRect().left - anchor);
+        const r = el.getBoundingClientRect();
+        const d = Math.abs(r.top + r.height / 2 - mid);
         if (d < bestD) {
           bestD = d;
           best = n;
@@ -227,261 +231,106 @@ export function EquationPanel() {
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
-    root.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    update();
-    return () => {
-      root.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  /*
-   * Vertical page scroll drives the rail.
-   *
-   * The panel pins while a tall spacer scrolls past it; progress through that spacer maps
-   * to scrollLeft on the rail, so reading down the page walks through the six terms
-   * without the reader having to notice a horizontal control exists.
-   *
-   * Desktop only. On a phone this would mean hijacking the one gesture the reader has,
-   * and a pinned panel taller than the viewport traps them — there the rail stays an
-   * ordinary swipeable strip.
-   */
-  useEffect(() => {
-    if (!pinned) return;
-    const outerEl = outer.current;
-    const root = rail.current;
-    if (!outerEl || !root) return;
-
-    let raf = 0;
-    const apply = () => {
-      raf = 0;
-      const travel = outerEl.offsetHeight - window.innerHeight;
-      if (travel <= 0) return;
-      const passed = window.scrollY - outerEl.offsetTop;
-      const progress = Math.max(0, Math.min(1, passed / travel));
-      root.scrollLeft = progress * (root.scrollWidth - root.clientWidth);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(apply);
-    };
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    apply();
+    update();
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(raf);
     };
-  }, [pinned]);
-
-  /** Chips jump: scroll the page to the point whose progress selects term n. */
-  const go = (n: number) => {
-    const idx = Math.max(0, Math.min(TERMS.length - 1, n));
-    const root = rail.current;
-    if (pinned && outer.current) {
-      const travel = outer.current.offsetHeight - window.innerHeight;
-      const frac = idx / (TERMS.length - 1);
-      window.scrollTo({ top: outer.current.offsetTop + travel * frac, behavior: "smooth" });
-      return;
-    }
-    const el = cards.current[idx];
-    if (!root || !el) return;
-    const delta = el.getBoundingClientRect().left - root.getBoundingClientRect().left;
-    root.scrollTo({ left: root.scrollLeft + delta - railPad(root), behavior: "smooth" });
-  };
+  }, []);
 
   return (
-    <div
-      ref={outer}
-      style={pinned ? { height: `calc(100vh + ${(TERMS.length - 1) * 46}vh)` } : undefined}
-    >
-      <div className={pinned ? "sticky top-[92px]" : ""}>
-    <div className="relative overflow-hidden rounded-[26px] border border-line bg-white py-8 lift sm:py-10">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 transition-all duration-700"
-        style={{
-          background: `radial-gradient(80% 46% at 50% -16%, color-mix(in srgb, ${cur.band} 13%, transparent), transparent 70%)`,
-        }}
-      />
-
-      <div className="relative">
-        <div className="px-5 sm:px-10">
-          <div className="flex flex-wrap items-baseline justify-center gap-x-2 gap-y-2 sm:gap-x-3">
-            {TOKENS.map((tok, n) => {
-              const isVar = !!tok.t;
-              const on = isVar && (tok.t === cur.k || tok.t === "V");
-              const color =
-                tok.t === "V"
-                  ? "var(--ink)"
-                  : isVar
-                    ? TERMS.find((t) => t.k === tok.t)!.band
-                    : "var(--ink-4)";
-              return (
-                <span
-                  key={n}
-                  className="font-mono font-bold transition-all duration-500"
-                  style={{
-                    color,
-                    opacity: !isVar ? 1 : on ? 1 : 0.32,
-                    fontSize: "clamp(1.15rem, 3.1vw, 2.35rem)",
-                  }}
-                >
-                  {tok.s}
-                </span>
-              );
-            })}
-          </div>
-
-          <p className="mt-4 text-center font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-4">
-            Engineering value = what it was worth − what it cost to get
-          </p>
-
-          {/* jump targets — the rail is the primary control, these are shortcuts */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {TERMS.map((t, n) => {
-              const on = n === i;
-              return (
-                <button
-                  key={t.k}
-                  onClick={() => go(n)}
-                  aria-label={`Show ${t.name}`}
-                  className="flex items-center gap-2 rounded-full border px-3 py-1.5 transition-all duration-300"
-                  style={{
-                    borderColor: on ? t.band : "var(--line)",
-                    background: on
-                      ? `color-mix(in srgb, ${t.band} 9%, transparent)`
-                      : "var(--white)",
-                  }}
-                >
-                  <span
-                    className="font-mono text-[12.5px] font-bold"
-                    style={{ color: on ? t.band : "var(--ink-4)" }}
-                  >
-                    {t.sym}
-                  </span>
-                  <span
-                    className="hidden text-[12px] font-medium sm:inline"
-                    style={{ color: on ? "var(--ink)" : "var(--ink-3)" }}
-                  >
-                    {t.name}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* the rail */}
-        <div className="relative mt-8">
+    <div className="grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16">
+      {/* terms */}
+      <div className="flex min-w-0 flex-col">
+        {TERMS.map((t, n) => (
           <div
-            ref={rail}
-            className={`no-scrollbar flex gap-5 px-5 pb-2 sm:px-10 ${
-              pinned ? "overflow-x-hidden" : "snap-x snap-mandatory overflow-x-auto"
-            }`}
+            key={t.k}
+            ref={(el) => {
+              cards.current[n] = el;
+            }}
+            className="border-t border-line py-9 first:border-t-0 lg:flex lg:min-h-[62vh] lg:flex-col lg:justify-center lg:border-t-0 lg:py-10"
           >
-            {TERMS.map((t, n) => (
-              <div
-                key={t.k}
-                ref={(el) => {
-                  cards.current[n] = el;
-                }}
-                className="w-[min(84vw,392px)] shrink-0 snap-start"
+            <div className="flex items-baseline gap-3.5">
+              <span
+                className="font-mono text-[2rem] font-extrabold leading-none transition-colors duration-500"
+                style={{ color: i === n ? t.band : "var(--ink-4)" }}
               >
-                <article
-                  className="flex h-full flex-col rounded-2xl border bg-paper p-5 transition-all duration-500"
-                  style={{
-                    borderColor: i === n ? t.band : "var(--line)",
-                    opacity: i === n ? 1 : 0.62,
-                  }}
+                {t.sym}
+              </span>
+              <div>
+                <h3
+                  className="text-[1.15rem] font-bold transition-colors duration-500"
+                  style={{ color: i === n ? "var(--ink)" : "var(--ink-3)" }}
                 >
-                  <TermChart k={t.k} band={t.band} />
-
-                  <div className="mt-5 flex items-baseline gap-3">
-                    <span
-                      className="font-mono text-[1.65rem] font-extrabold leading-none"
-                      style={{ color: t.band }}
-                    >
-                      {t.sym}
-                    </span>
-                    <div className="min-w-0">
-                      <h3 className="text-[15px] font-bold text-ink">{t.name}</h3>
-                      <p className="font-mono text-[10.5px] text-ink-4">{t.unit}</p>
-                    </div>
-                  </div>
-
-                  <p className="mt-3 text-[13.5px] leading-relaxed text-ink-3">{t.body}</p>
-
-                  <ul className="mt-4 flex flex-col gap-2">
-                    {t.drivers.map((d) => (
-                      <li key={d.text} className="flex items-start gap-2.5 text-[12.5px] text-ink-2">
-                        <span
-                          className="mt-[2px] shrink-0"
-                          style={{ color: d.good ? "var(--pos)" : "var(--neg)" }}
-                        >
-                          <Arrow good={d.good} />
-                        </span>
-                        <span>{d.text}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                </article>
+                  {t.name}
+                </h3>
+                <p className="font-mono text-[10.5px] text-ink-4">{t.unit}</p>
               </div>
-            ))}
+            </div>
 
-            {/*
-              Trailing spacer. Without it the rail runs out of scroll before the last
-              cards can reach the left edge, so clicking the R chip scrolled as far as it
-              could and left L(t) highlighted — the chip and the highlight disagreed.
-            */}
-            <div
-              aria-hidden="true"
-              className="shrink-0"
-              style={{ width: "calc(100% - min(84vw, 392px))" }}
-            />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-3">{t.body}</p>
+
+            <ul className="mt-5 flex flex-col gap-2.5">
+              {t.drivers.map((d) => (
+                <li key={d.text} className="flex items-start gap-2.5 text-[13.5px] text-ink-2">
+                  <span
+                    className="mt-[2px] shrink-0"
+                    style={{ color: d.good ? "var(--pos)" : "var(--neg)" }}
+                  >
+                    <Arrow good={d.good} />
+                  </span>
+                  <span>{d.text}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* on a phone the panel travels with its term instead of pinning */}
+            <div className="mt-6 lg:hidden">
+              <TermChart k={t.k} band={t.band} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* pinned instrument */}
+      <div className="hidden min-w-0 lg:block">
+        <div className="sticky top-[calc(50vh-230px)]">
+          <div className="rounded-2xl border border-line bg-white p-6 lift">
+            <Equation active={cur.k} />
+            <div className="mt-5 border-t border-line pt-5">
+              <div className="relative min-h-[330px]">
+                {TERMS.map((t, n) => (
+                  <div
+                    key={t.k}
+                    aria-hidden={i !== n}
+                    className="transition-all duration-500"
+                    style={{
+                      position: n === 0 ? "relative" : "absolute",
+                      inset: n === 0 ? undefined : 0,
+                      opacity: i === n ? 1 : 0,
+                      pointerEvents: i === n ? "auto" : "none",
+                    }}
+                  >
+                    <TermChart k={t.k} band={t.band} />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* edge fades, so cards read as continuing past the frame */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white to-transparent" />
-        </div>
-
-        {/* rail controls */}
-        <div className="mt-6 flex items-center justify-center gap-4 px-5 sm:px-10">
-          <button
-            onClick={() => go(i - 1)}
-            disabled={i === 0}
-            aria-label="Previous term"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white text-ink-3 transition-colors hover:border-line-2 hover:text-ink disabled:opacity-35"
-          >
-            ←
-          </button>
-          <div className="flex gap-1.5">
+          <div className="mt-6 flex gap-1.5">
             {TERMS.map((t, n) => (
               <span
                 key={t.k}
-                className="h-1.5 rounded-full transition-all duration-300"
-                style={{
-                  width: i === n ? 22 : 6,
-                  background: i === n ? t.band : "var(--line-2)",
-                }}
+                className="h-[3px] flex-1 rounded-full transition-all duration-500"
+                style={{ background: n <= i ? t.band : "var(--line)" }}
               />
             ))}
           </div>
-          <button
-            onClick={() => go(i + 1)}
-            disabled={i === TERMS.length - 1}
-            aria-label="Next term"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white text-ink-3 transition-colors hover:border-line-2 hover:text-ink disabled:opacity-35"
-          >
-            →
-          </button>
         </div>
-      </div>
-    </div>
       </div>
     </div>
   );
