@@ -3,6 +3,7 @@ import { Footer } from "@/components/footer";
 import { DemoForm } from "@/components/demo-form";
 import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
+import { SpendFlow } from "@/components/spend-flow";
 import { Marquee } from "@/components/marquee";
 import { Scrollytelling, type Step } from "@/components/scrollytelling";
 import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
@@ -29,23 +30,35 @@ function Hero() {
   return (
     <div className="refraction grain relative overflow-hidden">
       <Section className="relative pt-20 sm:pt-24">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-4xl text-center">
           <Reveal>
-            <p className="eyebrow">AI unit economics for software delivery</p>
+            {/* The category term as a chip rather than a stretched mono eyebrow — the
+                phrase is too long to survive 0.16em tracking at 11px, which is what made
+                it look cramped. A pill gives it a shape and lets it sit in sentence case. */}
+            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 py-1.5 pl-2 pr-3.5 backdrop-blur-sm">
+              <span className="spectrum-rule w-5" />
+              <span className="text-[12.5px] font-semibold tracking-tight text-ink-2">
+                AI unit economics for software delivery
+              </span>
+            </span>
           </Reveal>
 
           <Reveal delay={80}>
-            <h1 className="display mt-5 text-balance text-[2.7rem] sm:text-[4rem]">
-              One number in.
-              <br />
-              <span className="refract">A spectrum out.</span>
+            {/* Each sentence balances on its own. text-balance across the whole heading
+                treats it as one block and orphaned "bill." on a line by itself. */}
+            <h1 className="display mx-auto mt-6 max-w-3xl text-[2.15rem] sm:text-[3rem]">
+              <span className="block text-balance">What is your AI budget actually buying?</span>
+              <span className="refract block text-balance">
+                Full-spectrum accounting of your AI bill.
+              </span>
             </h1>
           </Reveal>
 
           <Reveal delay={160}>
-            <p className="mx-auto mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-ink-3">
-              Trace every AI dollar through your entire SDLC — planning, building, review and
-              release — and see, stage by stage, what it actually shipped.
+            <p className="mx-auto mt-7 max-w-xl text-[1.0625rem] leading-relaxed text-ink-3">
+              Trace and optimise every AI dollar through your entire SDLC. Behold turns your
+              developer and AI tool data into one honest picture: what you put in, what you got
+              out, both in dollars.
             </p>
           </Reveal>
 
@@ -55,6 +68,12 @@ function Hero() {
             </div>
           </Reveal>
         </div>
+
+        <Reveal delay={300}>
+          <div className="mx-auto mt-14 max-w-3xl">
+            <SpendFlow />
+          </div>
+        </Reveal>
 
         <Reveal delay={320}>
           <div className="mt-16">

@@ -36,6 +36,14 @@
   --s4: #f59e0b; /* amber   */
   --s5: #f2564b; /* coral   */
 
+  /* Text-safe spectrum. The display bands are tuned for fills and hit 2.1–2.8:1 on
+     white — fine behind a bar, illegible as type. These darkened stops keep the same
+     hue order above the 3:1 large-text floor (measured 4.9–7.9:1). */
+  --t1: #4338ca;
+  --t2: #0369a1;
+  --t3: #0f766e;
+  --t4: #a16207;
+
   --pos: #10b5a0;
   --neg: #f2564b;
 
@@ -111,7 +119,7 @@ body {
 
 /* Emphasis inside a headline — the one place colour enters the type. */
 .refract {
-  background: linear-gradient(96deg, var(--s1), var(--s2) 34%, var(--s3) 62%, var(--s4) 100%);
+  background: linear-gradient(96deg, var(--t1), var(--t2) 34%, var(--t3) 62%, var(--t4) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
