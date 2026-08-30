@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { Wordmark } from "./brand";
 
+// Anchors track the sections that exist; a nav link to a removed section is a dead
+// scroll that looks like a broken page.
 const LINKS = [
-  { label: "Platform", href: "#platform" },
-  { label: "How it works", href: "#how" },
-  { label: "Integrations", href: "#integrations" },
+  { label: "The model", href: "#model" },
+  { label: "Our approach", href: "#approach" },
+  { label: "Use cases", href: "#use-cases" },
   { label: "Security", href: "#security" },
 ];
 
@@ -35,7 +37,7 @@ export function Nav() {
       <div className="relative z-50 bg-ink">
         <div className="px-4 py-2.5 text-center">
           <a
-            href="#platform"
+            href="#model"
             className="group inline-flex items-center gap-2.5 text-[12.5px] text-white/75 transition-colors hover:text-white"
           >
             <span className="rounded bg-s4 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-ink">

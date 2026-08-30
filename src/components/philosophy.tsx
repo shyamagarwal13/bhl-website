@@ -18,7 +18,10 @@ import { Reveal } from "./reveal";
 const ROLES = [
   {
     t: "Our agents produce the measurement",
-    d: "Custom-built agents run against your repositories and tool data to compute every term continuously — no survey, no timesheet, no self-reporting.",
+    // Not "no surveys": developer experience is partly how the work feels, and no
+    // repository can see that. Claiming a fully passive pipeline would be false, and
+    // false on the page arguing for measurement rigour is the worst place for it.
+    d: "Custom-built agents read your repositories, provider usage and tool data directly, so the cost and delivery terms are computed from systems rather than self-reported. The one thing no system can see is how the work feels — for that we ask, briefly and rarely.",
   },
   {
     t: "Our researchers say what it means",
@@ -65,36 +68,80 @@ const PAPERS = [
 export function Position() {
   return (
     <>
+      {/*
+        The quote is set as an object rather than a second headline. Two display-weight
+        statements stacked — the h2 and this — were competing for the same job; giving the
+        quote a card, a lighter weight and a hanging quote mark makes it read as a
+        quotation and lets the heading stay the heading.
+      */}
       <Reveal delay={60}>
-        <blockquote className="mt-9 border-l-2 border-ink pl-6 sm:pl-8">
-          <p className="h2 text-balance text-[1.55rem] leading-[1.25] sm:text-[1.95rem]">
-            The industry spent forty years learning not to count lines. Then it started
-            counting again.
-          </p>
-        </blockquote>
+        <figure className="relative mt-10 overflow-hidden rounded-2xl border border-line bg-white px-7 py-8 lift sm:px-10 sm:py-10">
+          <span
+            aria-hidden="true"
+            // fully inside the card: at -top-6 the overflow clip sliced it and it read as
+            // a rendering artifact rather than a quote mark
+            className="pointer-events-none absolute right-7 top-5 select-none font-mono text-[4.5rem] leading-none text-line"
+          >
+            &rdquo;
+          </span>
+          <blockquote className="relative max-w-3xl">
+            <p className="text-balance text-[1.45rem] font-semibold leading-[1.32] tracking-[-0.02em] text-ink sm:text-[1.85rem]">
+              The industry spent forty years learning not to count lines. Then it started
+              counting again.
+            </p>
+          </blockquote>
+        </figure>
       </Reveal>
 
+      {/*
+        Two columns, so the argument reads as a turn rather than a wall: what went wrong on
+        the left, what we do instead on the right. It also halves the line length, which at
+        one full-width measure was uncomfortably long.
+      */}
       <Reveal delay={110}>
-        <div className="mt-8 flex max-w-2xl flex-col gap-4 text-[1.0625rem] leading-relaxed text-ink-3">
-          <p>
-            Then AI arrived and the same number came back wearing a new name. Share of code
-            written by AI. Tokens consumed. Suggestions accepted. Every one of them counts the
-            act of writing —{" "}
-            <span className="font-semibold text-ink">
-              at the exact moment writing stopped being the expensive part
-            </span>
-            . Worse, a metric that was merely gameable when a human had to type it is unbounded
-            when a machine does.
-          </p>
-          <p>
-            So everyone else is still counting inputs: code produced, tokens burned, suggestions
-            taken. We measure what happened afterwards —{" "}
-            <span className="font-semibold text-ink">
-              what the work was worth, what it cost to get, what survived review, and what
-              quietly compounded
-            </span>
-            . Six terms, every one of them priced.
-          </p>
+        <div className="mt-10 grid gap-8 text-[15.5px] leading-relaxed text-ink-3 lg:grid-cols-2 lg:gap-14">
+          <div>
+            <p className="mb-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+              What happened
+            </p>
+            <p>
+              Then AI arrived and the same number came back wearing a new name. Share of code
+              written by AI. Tokens consumed. Suggestions accepted. Every one of them counts the
+              act of writing —{" "}
+              <span className="font-semibold text-ink">
+                at the exact moment writing stopped being the expensive part
+              </span>
+              . Worse, a metric that was merely gameable when a human had to type it is
+              unbounded when a machine does.
+            </p>
+          </div>
+
+          <div>
+            <p className="mb-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+              What we do instead
+            </p>
+            <p>
+              Everyone else is still counting inputs: code produced, tokens burned, suggestions
+              taken. We measure what happened afterwards.
+            </p>
+            <ul className="mt-4 flex flex-col gap-2">
+              {[
+                "What the work was worth",
+                "What it cost to get",
+                "What survived review",
+                "What quietly compounded",
+              ].map((x) => (
+                <li key={x} className="flex items-center gap-2.5 text-[15px] font-medium text-ink">
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full"
+                    style={{ background: "var(--t3)" }}
+                  />
+                  {x}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4">Six terms, every one of them priced.</p>
+          </div>
         </div>
       </Reveal>
     </>

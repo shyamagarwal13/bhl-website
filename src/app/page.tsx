@@ -4,11 +4,9 @@ import { DemoForm } from "@/components/demo-form";
 import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
-import { Scrollytelling, type Step } from "@/components/scrollytelling";
 import { EquationPanel } from "@/components/equation";
 import { UseCases } from "@/components/use-cases";
 import { NumberIsNotAnAnswer, Position } from "@/components/philosophy";
-import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
 
 function Section({
   id,
@@ -191,164 +189,6 @@ function Model() {
   );
 }
 
-/* --- the pinned scroll story ---------------------------------------------- */
-
-const STEPS: Step[] = [
-  {
-    k: "split",
-    title: "One invoice. Four stages.",
-    body: "Your provider sends a single figure. Behold refracts it across the delivery lifecycle, so every dollar has a stage attached to it before anyone starts arguing about value.",
-    visual: <StageSplit active={0} />,
-  },
-  {
-    k: "build",
-    title: "Price the work that shipped.",
-    body: "Half the budget lands here. We divide it by what actually reached the main branch, giving a unit cost you can compare across teams without pretending they do the same job.",
-    visual: <BuildCost />,
-  },
-  {
-    k: "review",
-    title: "Cost the second look.",
-    body: "Revision rounds are real spend and nobody budgets for them. When a team's rework cost climbs, that is a signal about the work going in — not about the reviewers.",
-    visual: <ReviewCost />,
-  },
-  {
-    k: "release",
-    title: "Separate shipped from spent.",
-    body: "Work that was abandoned or reverted still cost money. Counting it apart from what survived is the difference between a spend report and an ROI answer.",
-    visual: <ReleaseOutcome />,
-  },
-];
-
-function Story() {
-  return (
-    <div className="border-y border-line bg-paper/60">
-      <Section id="platform" className="py-24">
-        <Reveal>
-          <div className="max-w-2xl">
-            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              Follow the dollar.
-            </h2>
-            <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Every other tool tells you what your engineers did. The question your board is
-              actually asking is what it cost and what came back. That answer only exists if the
-              spend is attributed stage by stage — which is the whole product.
-            </p>
-          </div>
-        </Reveal>
-
-        <div className="mt-16">
-          <Scrollytelling steps={STEPS} />
-        </div>
-      </Section>
-    </div>
-  );
-}
-
-/* --- how it works --------------------------------------------------------- */
-
-function How() {
-  const steps = [
-    {
-      t: "Connect",
-      d: "Read-only access to your Git provider and model providers — a GitHub or GitLab app, an admin API key, and any AI gateway you already run.",
-      f: "Under 30 minutes",
-    },
-    {
-      t: "Measure",
-      d: "We ingest pull requests, reviews, commits and usage, then compute every metric from that source data, with the formula shown beside the number.",
-      f: "Insights the same day",
-    },
-    {
-      t: "Act",
-      d: "Composable dashboards for each audience, benchmarks against comparable orgs, and reporting your finance team will accept as-is.",
-      f: "Board-ready by first review",
-    },
-  ];
-  return (
-    <div className="border-y border-line bg-paper/60">
-      <Section id="how" className="py-24">
-        <Reveal>
-          <div className="max-w-2xl">
-            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.75rem]">
-              Connected in an afternoon. Useful the same day.
-            </h2>
-          </div>
-        </Reveal>
-        <ol className="mt-12 grid gap-5 md:grid-cols-3">
-          {steps.map((s, i) => (
-            <Reveal as="li" key={s.t} delay={i * 100}>
-              <div className="h-full rounded-2xl border border-line bg-white p-7">
-                <span
-                  className="block h-[3px] w-8 rounded-full"
-                  style={{ background: `var(--s${i + 1})` }}
-                />
-                <h3 className="mt-5 text-[17px] font-bold text-ink">{s.t}</h3>
-                <p className="mt-2.5 text-[14px] leading-relaxed text-ink-3">{s.d}</p>
-                <p className="mt-5 border-t border-line pt-4 font-mono text-[11px] font-semibold text-ink-4">
-                  {s.f}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </ol>
-      </Section>
-    </div>
-  );
-}
-
-/* --- integrations --------------------------------------------------------- */
-
-function Integrations() {
-  const groups = [
-    { g: "Source control", items: ["GitHub", "GitLab", "Bitbucket", "Azure Repos"] },
-    { g: "AI & agents", items: ["Claude Code", "GitHub Copilot", "Cursor", "Codex", "Gemini"] },
-    { g: "Model providers", items: ["Anthropic", "OpenAI", "AWS Bedrock", "Google Vertex"] },
-    { g: "Gateways", items: ["LiteLLM", "Portkey", "Cloudflare AI Gateway"] },
-    { g: "Planning", items: ["Jira", "Linear", "Azure Boards"] },
-    { g: "Delivery", items: ["Jenkins", "CircleCI", "GitHub Actions", "PagerDuty", "Slack"] },
-  ];
-  return (
-    <Section id="integrations" className="py-24">
-      <Reveal>
-        <div className="max-w-2xl">
-          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-          <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.75rem]">
-            Connects to what you have.
-          </h2>
-          <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-            Read-only, least-privilege scopes throughout. If you already route model traffic
-            through a gateway, that one connection covers most of your spend picture on day one.
-          </p>
-        </div>
-      </Reveal>
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {groups.map((g, i) => (
-          <Reveal key={g.g} delay={(i % 3) * 80}>
-            <div className="h-full rounded-2xl border border-line bg-white p-6">
-              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-4">
-                {g.g}
-              </div>
-              <ul className="mt-4 flex flex-wrap gap-2">
-                {g.items.map((it) => (
-                  <li
-                    key={it}
-                    className="rounded-lg border border-line bg-paper px-2.5 py-1.5 text-[13px] font-medium text-ink-2"
-                  >
-                    {it}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
 /* --- security ------------------------------------------------------------- */
 
 function Security() {
@@ -454,9 +294,6 @@ export default function Home() {
         <Model />
         <NumberIsNotAnAnswer />
         <UseCases />
-        <Story />
-        <How />
-        <Integrations />
         <Security />
         <Cta />
       </main>

@@ -4,17 +4,17 @@ const COLUMNS = [
   {
     h: "Platform",
     links: [
-      { l: "AI spend intelligence", href: "#platform" },
-      { l: "Engineering output", href: "#platform" },
-      { l: "Developer experience", href: "#platform" },
-      { l: "Code health", href: "#platform" },
+      { l: "AI spend intelligence", href: "#model" },
+      { l: "Engineering output", href: "#model" },
+      { l: "Developer experience", href: "#model" },
+      { l: "Code health", href: "#model" },
     ],
   },
   {
     h: "Product",
     links: [
-      { l: "How it works", href: "#how" },
-      { l: "Integrations", href: "#integrations" },
+      { l: "The model", href: "#model" },
+      { l: "Use cases", href: "#use-cases" },
       { l: "Security", href: "#security" },
       { l: "Request a demo", href: "#demo" },
     ],
