@@ -5,7 +5,7 @@ import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
 import { Scrollytelling, type Step } from "@/components/scrollytelling";
-import { EquationScroll } from "@/components/equation";
+import { EquationPanel } from "@/components/equation";
 import { Research, YourTeam } from "@/components/research";
 import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
 
@@ -185,8 +185,8 @@ function Model() {
           </div>
         </Reveal>
 
-        <div className="mt-14">
-          <EquationScroll />
+        <div className="mt-12">
+          <EquationPanel />
         </div>
       </Section>
     </div>
