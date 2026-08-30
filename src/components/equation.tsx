@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TermChart } from "./term-charts";
 
 /*
  * The engineering value equation, as one contained instrument panel.
@@ -252,8 +253,16 @@ export function EquationPanel() {
           })}
         </div>
 
+        {/*
+          Each term gets the view you'd actually open in the app. The claim of this
+          section is that we measure all six, and a panel per term is what makes that
+          concrete rather than asserted.
+        */}
         <div className="mt-8 rounded-2xl border border-line bg-paper p-6 sm:p-8">
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-12">
+          {/* Fixed floor: term copy varies in length (E carries three drivers), so without
+              it the panel grew and shrank by ~76px and the page jumped under the cursor
+              every time you changed tabs. */}
+          <div className="grid gap-8 lg:min-h-[352px] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-10">
             <div className="min-w-0">
               <div className="flex items-baseline gap-4">
                 <span
@@ -272,14 +281,16 @@ export function EquationPanel() {
                   <p className="mt-0.5 font-mono text-[11px] text-ink-4">{cur.unit}</p>
                 </div>
               </div>
-              <p className="mt-5 text-[15px] leading-relaxed text-ink-3">{cur.body}</p>
-            </div>
 
-            <div className="flex min-w-0 flex-col justify-between gap-6">
-              <ul className="flex flex-col gap-3">
+              <p className="mt-5 text-[15px] leading-relaxed text-ink-3">{cur.body}</p>
+
+              <ul className="mt-6 flex flex-col gap-3">
                 {cur.drivers.map((d) => (
                   <li key={d.text} className="flex items-start gap-3 text-[14px] text-ink-2">
-                    <span className="mt-[3px] shrink-0" style={{ color: d.good ? "var(--pos)" : "var(--neg)" }}>
+                    <span
+                      className="mt-[3px] shrink-0"
+                      style={{ color: d.good ? "var(--pos)" : "var(--neg)" }}
+                    >
                       <Arrow good={d.good} />
                     </span>
                     <span>{d.text}</span>
@@ -292,13 +303,23 @@ export function EquationPanel() {
                   href={cur.cite.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex w-fit items-center gap-2 rounded-full border border-line bg-white px-3.5 py-2 text-[12.5px] text-ink-2 transition-colors hover:border-line-2 hover:text-ink"
+                  className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-line bg-white px-3.5 py-2 text-[12.5px] text-ink-2 transition-colors hover:border-line-2 hover:text-ink"
                 >
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: cur.band }} />
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full"
+                    style={{ background: cur.band }}
+                  />
                   Our research: {cur.cite.short}
                   <span aria-hidden="true">↗</span>
                 </a>
               )}
+            </div>
+
+            <div className="min-w-0">
+              <TermChart k={cur.k} band={cur.band} />
+              <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
+                How Behold measures {cur.sym}
+              </p>
             </div>
           </div>
         </div>
