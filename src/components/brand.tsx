@@ -18,7 +18,7 @@ import Link from "next/link";
  */
 
 const CAP = 42;
-const W = 95;
+const W = 92.5;
 
 /*
  * B is a drawn letter, not stacked rectangles: two bowls on true arcs, the lower one
@@ -26,6 +26,11 @@ const W = 95;
  * at large sizes — the difference between a constructed monogram and a designed one.
  * H and L stay orthogonal, since they have no curves to draw, and their crossbar and
  * foot align to the B's waist and baseline so the three sit on one system.
+ *
+ * Sidebearings are optical, not metric. B|H is curve-to-stem: the bowl recedes above and
+ * below its widest point, trapping white that a flat edge wouldn't, so that pair is set
+ * 5.5 units apart against 8 for the stem-to-stem H|L. Equal numbers there looked like a
+ * gap after the B.
  */
 const B_PATH =
   // outer silhouette, then the two counters (evenodd knocks them out)
@@ -38,12 +43,12 @@ function Letters({ fill }: { fill: string }) {
     <g fill={fill}>
       <path d={B_PATH} fillRule="evenodd" />
       {/* H — crossbar centered on the B's waist */}
-      <rect x="38" y="0" width="7.5" height={CAP} />
-      <rect x="57" y="0" width="7.5" height={CAP} />
-      <rect x="45.5" y="12.75" width="11.5" height="7.5" />
+      <rect x="35.5" y="0" width="7.5" height={CAP} />
+      <rect x="54.5" y="0" width="7.5" height={CAP} />
+      <rect x="43" y="12.75" width="11.5" height="7.5" />
       {/* L — foot on the B's baseline */}
-      <rect x="72.5" y="0" width="7.5" height={CAP} />
-      <rect x="72.5" y="34.5" width="22.5" height="7.5" />
+      <rect x="70" y="0" width="7.5" height={CAP} />
+      <rect x="70" y="34.5" width="22.5" height="7.5" />
     </g>
   );
 }
@@ -78,7 +83,7 @@ export function LogoTile({ size = 32 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 100 100" fill="none" role="img" aria-label="BHL">
       <rect width="100" height="100" rx="22" fill="var(--ink)" />
-      <g transform="translate(15.5 29.5) scale(0.705)">
+      <g transform="translate(17 35) scale(0.72)">
         <Letters fill="#ffffff" />
       </g>
     </svg>
