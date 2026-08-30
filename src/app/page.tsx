@@ -58,11 +58,15 @@ function Hero() {
                 Two marks, not four: the action and the unit. Marking the middle clauses
                 too made the paragraph read as a page of someone else's revision notes —
                 when everything is emphasised, nothing is.
+
+                Both in the same amber. A real highlighter is one colour; two different
+                ones in a single paragraph reads as a colour-coding system the reader is
+                expected to decode, and there's nothing to decode here.
             */}
             <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[1.95] text-ink-3">
               <span
                 className="mark whitespace-nowrap font-semibold text-ink"
-                style={{ background: "color-mix(in srgb, var(--s1) 18%, transparent)" }}
+                style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
               >
                 Trace and optimise
               </span>{" "}
