@@ -7,6 +7,7 @@ import { Marquee } from "@/components/marquee";
 import { Scrollytelling, type Step } from "@/components/scrollytelling";
 import { EquationPanel } from "@/components/equation";
 import { Research, YourTeam } from "@/components/research";
+import { UseCases } from "@/components/use-cases";
 import { BuildCost, ReleaseOutcome, ReviewCost, StageSplit } from "@/components/viz";
 
 function Section({
@@ -175,12 +176,12 @@ function Model() {
           <div className="max-w-2xl">
             <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              We measure every term.
+              Scientific measurement of your engineering value.
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
               Engineering value is not throughput and it is not spend. It is what the work was
               worth, minus everything it cost to get there — including the costs that arrive
-              late. Six terms. We instrument all of them.
+              late. Six terms, each one measured, each one published on.
             </p>
           </div>
         </Reveal>
@@ -454,6 +455,7 @@ export default function Home() {
         <Hero />
         <ReadsFrom />
         <Model />
+        <UseCases />
         <Story />
         <Research />
         <YourTeam />
