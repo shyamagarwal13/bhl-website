@@ -3,19 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 
 /*
- * The dark statement band: text fills in word by word as the section scrolls past.
+ * The statement band: text fills in word by word as the section scrolls past.
  *
- * The figures are from our own ASE '26 paper rather than a borrowed industry statistic —
- * verifiable, and the point of the whole positioning. The caption keeps the paper's own
- * caveat: the contrast is observational and published as hypothesis-generating, so the
- * copy says "showed" and not "caused". Overstating it here would undercut the section two
- * screens down that argues for stated limitations.
+ * Deep indigo rather than ink — the page already ends on an ink CTA, and two identical
+ * black bands read as the same section appearing twice. Sized at 170vh with a 68vh panel
+ * so it's a beat in the page rather than a full-screen takeover you have to scroll out of.
  *
- * Words are pre-split at module scope so the array identity is stable across renders.
+ * Both figures are attributed and checked, not paraphrased from memory: adoption from
+ * Google's DORA via our own 2× mandate paper, returns from MIT's 2025 enterprise study.
+ * The claim we build on top of them — that the gap is fit, not tooling — is ours, and is
+ * marked as ours by sitting in a different sentence.
  */
-const LEAD = "The problem isn't AI. It's implementation.";
+const LEAD = "A single metric cannot tell you how your engineering organization is performing.";
 const BODY =
-  "In our own study of repositories adopting coding agents, those without committed AI configuration showed roughly twice the rise in cognitive complexity as those with it — 53% against 27%. Same tools. Very different outcomes. We are researchers and industry practitioners with more than a decade in developer productivity and software engineering, and closing that gap is the work.";
+  "You need to know what the work was worth, what it cost to get, and what it left behind — read against your own constraints. Every company has different requirements and different limits. There is no one size that fits, and the same number means different things in different organizations. Around 90% of developers now use AI tools, yet MIT found 95% of enterprise GenAI pilots returned nothing measurable. That gap is not a tooling problem. We are researchers and industry practitioners with more than a decade in developer productivity and software engineering, and closing it is our work.";
 
 const WORDS = `${LEAD} ${BODY}`.split(" ");
 const LEAD_COUNT = LEAD.split(" ").length;
@@ -36,9 +37,8 @@ export function Statement() {
       const travel = el.offsetHeight - window.innerHeight;
       if (travel <= 0) return setLit(WORDS.length);
       const passed = window.scrollY - el.offsetTop;
-      // finish a little before the section leaves, so the last words aren't read
-      // while they're still dim
-      const p = Math.max(0, Math.min(1, passed / travel)) / 0.78;
+      // complete before the band leaves, so the last words aren't read while still dim
+      const p = Math.max(0, Math.min(1, passed / travel)) / 0.72;
       setLit(Math.min(1, p) * WORDS.length);
     };
     const onScroll = () => {
@@ -55,17 +55,31 @@ export function Statement() {
   }, []);
 
   return (
-    <div ref={outer} style={{ height: "260vh" }} className="bg-ink">
-      <div className="sticky top-0 flex min-h-screen items-center">
-        <div className="mx-auto w-full max-w-[var(--maxw)] px-6">
-          <p className="mx-auto max-w-4xl text-balance text-[1.5rem] font-semibold leading-[1.45] tracking-[-0.02em] sm:text-[2.1rem] lg:text-[2.4rem]">
+    <div
+      ref={outer}
+      style={{
+        height: "170vh",
+        background:
+          "linear-gradient(165deg, #1c1946 0%, #14132f 52%, #100f26 100%)",
+      }}
+    >
+      <div className="sticky top-0 flex min-h-[68vh] items-center py-20">
+        <div className="relative mx-auto w-full max-w-[var(--maxw)] px-6">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(60% 55% at 15% 0%, rgba(129,140,248,0.16), transparent 70%)",
+            }}
+          />
+          <p className="relative mx-auto max-w-4xl text-balance text-[1.35rem] font-semibold leading-[1.5] tracking-[-0.015em] sm:text-[1.7rem] lg:text-[1.95rem]">
             {WORDS.map((w, i) => (
               <span
                 key={i}
                 style={{
-                  // each word crosses from dim to lit over roughly one word of travel
-                  opacity: Math.max(0.18, Math.min(1, lit - i)),
-                  color: i < LEAD_COUNT ? "#ffffff" : "rgba(255,255,255,0.92)",
+                  opacity: Math.max(0.16, Math.min(1, lit - i)),
+                  color: i < LEAD_COUNT ? "#ffffff" : "rgba(255,255,255,0.9)",
                   transition: "opacity 120ms linear",
                 }}
               >
@@ -74,10 +88,9 @@ export function Statement() {
             ))}
           </p>
 
-          <p className="mx-auto mt-8 max-w-4xl font-mono text-[11px] leading-relaxed text-white/35">
-            A Few Pages of Markdown — Committed AI Configuration and Lower Quality Cost after
-            Coding-Agent Adoption. ASE 2026. The contrast is observational and reported as
-            hypothesis-generating.
+          <p className="relative mx-auto mt-9 max-w-4xl font-mono text-[10.5px] leading-relaxed text-white/35">
+            Adoption: Google DORA, 2025. Returns: MIT Media Lab / Project NANDA, “The GenAI
+            Divide — State of AI in Business,” 2025.
           </p>
         </div>
       </div>
