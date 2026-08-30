@@ -46,7 +46,7 @@ function Hero() {
             {/* Sized to hold each sentence on a single line from lg up; it still wraps
                 on narrow screens, where two balanced lines read better than 20px type. */}
             <h1 className="display mx-auto mt-6 max-w-[19ch] text-[2.05rem] sm:max-w-none sm:text-[2.6rem] lg:text-[2.85rem]">
-              <span className="block text-balance">What is your AI budget actually buying?</span>
+              <span className="block text-balance">Where&apos;s your AI budget going?</span>
               <span className="refract block text-balance">
                 Full-spectrum accounting of your AI bill.
               </span>
@@ -55,11 +55,11 @@ function Hero() {
 
           <Reveal delay={160}>
             {/*
-                Four marks, in spectrum order left to right: s1 → s2 → s3 → s4. The
-                sentence is itself refracted, so the colour is carrying the concept
-                rather than just picking out words at random.
+                Two marks, not four: the action and the unit. Marking the middle clauses
+                too made the paragraph read as a page of someone else's revision notes —
+                when everything is emphasised, nothing is.
             */}
-            <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[2] text-ink-3">
+            <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[1.95] text-ink-3">
               <span
                 className="mark whitespace-nowrap font-semibold text-ink"
                 style={{ background: "color-mix(in srgb, var(--s1) 18%, transparent)" }}
@@ -67,26 +67,12 @@ function Hero() {
                 Trace and optimise
               </span>{" "}
               every AI dollar through your entire SDLC. Behold turns your developer and AI tool
-              data into one honest picture:{" "}
+              data into one honest picture: what you put in, what you got out, all in{" "}
               <span
-                className="mark whitespace-nowrap font-semibold text-ink"
-                style={{ background: "color-mix(in srgb, var(--s2) 20%, transparent)" }}
+                className="mark whitespace-nowrap font-extrabold text-ink"
+                style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
               >
-                what you put in
-              </span>
-              ,{" "}
-              <span
-                className="mark whitespace-nowrap font-semibold text-ink"
-                style={{ background: "color-mix(in srgb, var(--s3) 24%, transparent)" }}
-              >
-                what you got out
-              </span>
-              , both in{" "}
-              <span
-                className="mark whitespace-nowrap font-semibold text-ink"
-                style={{ background: "color-mix(in srgb, var(--s4) 30%, transparent)" }}
-              >
-                dollars
+                $$$
               </span>
               .
             </p>
