@@ -9,12 +9,43 @@ import { Reveal } from "./reveal";
  * what we measure instead. It sits above the equation pane so a reader knows why a new
  * measurement is needed before being shown one.
  *
- * `NumberIsNotAnAnswer` follows the pane: the claim is that you get researchers, not just
- * software, and the papers are the entire proof of it — no explanatory cards in between,
- * because the work should carry the claim on its own. The paper images are real first
- * pages rendered from the PDFs; a screenshot of the actual paper is harder to fake than a
- * citation, which is the point.
+ * `NumberIsNotAnAnswer` follows the pane: two panels for the two things you actually buy —
+ * the platform that produces the measurement, and the researchers who decide what to do
+ * about it — then the papers as evidence for the second one. The paper images are real
+ * first pages rendered from the PDFs; a screenshot of the actual paper is harder to fake
+ * than a citation, which is the point.
  */
+
+// The two things a customer actually receives. Kept as separate panels rather than one
+// paragraph because the whole claim is that they are different purchases — a competitor
+// sells the left one alone, and blurring them would give that away for free.
+const HALVES = [
+  {
+    eyebrow: "The platform",
+    band: "var(--t1)",
+    lead: "Our dashboards and tools get you the measurement.",
+    body: "Agents read your repositories, provider billing and tool data directly, so every term in the model is computed from systems rather than assembled by hand — and recomputed as the work changes, not reconstructed for a quarterly deck.",
+    points: [
+      "AI and engineering cost attributed to teams and initiatives",
+      "Delivery, review and quality effects — not acceptance rates",
+      // we do ask people things; the use-cases section says so, and claiming a fully
+      // passive pipeline on the page arguing for measurement rigour would be the worst
+      // possible place to overstate
+      "Where a signal only exists in people's heads, we ask — briefly, and rarely",
+    ],
+  },
+  {
+    eyebrow: "The people",
+    band: "var(--t3)",
+    lead: "Our experts design the strategy around your constraints.",
+    body: "The researchers who published the work below read your numbers themselves, with the caveats stated. A regulated bank and a consumer startup do not share a cost function, and no dashboard can tell you which of six terms is the one to move this quarter.",
+    points: [
+      "The model calibrated to your codebase and review culture",
+      "Interventions ranked by what they are worth to you, not to a benchmark",
+      "Findings you can take to a board, with the limits named",
+    ],
+  },
+];
 
 const PAPERS = [
   {
@@ -148,18 +179,56 @@ export function NumberIsNotAnAnswer() {
           <div className="max-w-2xl">
             <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              At Behold, you don&apos;t just get a dashboard.
+              You don&apos;t just get a dashboard. You get experts.
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              You get experts who deeply understand the field.
+              The measurement is automated. What to do about it is not.
             </p>
           </div>
         </Reveal>
 
+        {/* the two halves of what you buy, stated separately so neither absorbs the other */}
+        <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">
+          {HALVES.map((h, i) => (
+            <Reveal key={h.eyebrow} delay={i * 90}>
+              <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-8 sm:p-9">
+                <div className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full" style={{ background: h.band }} />
+                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+                    {h.eyebrow}
+                  </span>
+                </div>
+                <h3 className="mt-5 text-balance text-[1.2rem] font-bold leading-snug text-ink sm:text-[1.35rem]">
+                  {h.lead}
+                </h3>
+                <p className="mt-3.5 text-[14px] leading-relaxed text-ink-3">{h.body}</p>
+                {/* mt-auto on the wrapper, so the rule lands at the same height in both
+                    cards even when one body runs a line longer */}
+                <div className="mt-auto pt-7">
+                  <ul className="flex flex-col gap-2.5 border-t border-line pt-6">
+                    {h.points.map((x) => (
+                      <li key={x} className="flex gap-2.5 text-[13.5px] leading-relaxed text-ink-2">
+                        <span
+                          className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ background: h.band }}
+                        />
+                        {x}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
         <Reveal delay={80}>
-          <p className="mt-14 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-            Selected work
-          </p>
+          <div className="mt-16 flex items-center gap-4">
+            <p className="shrink-0 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+              Selected work
+            </p>
+            <span className="h-px flex-1 bg-line" />
+          </div>
         </Reveal>
 
         <div className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -172,7 +241,7 @@ export function NumberIsNotAnAnswer() {
                 className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift"
               >
                 {/* the paper itself — a first page is harder to fake than a citation */}
-                <div className="relative h-[188px] overflow-hidden border-b border-line bg-paper">
+                <div className="relative h-[156px] overflow-hidden border-b border-line bg-paper">
                   <Image
                     src={p.img}
                     alt={`First page of ${p.t}`}
