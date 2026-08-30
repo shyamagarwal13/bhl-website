@@ -1,4 +1,9 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { Reveal } from "./reveal";
+import { EquationStrip } from "./equation";
+import { TermChart } from "./term-charts";
 
 /*
  * Use cases.
@@ -11,12 +16,22 @@ import { Reveal } from "./reveal";
  *
  * Deliberately no "Learn more" links: there is nothing behind them yet, and a grid of six
  * dead links is worse than a grid of six honest statements.
+ *
+ * Read vertically with a pinned panel: the case scrolls on the left while the right shows
+ * the equation with that case's terms lit and the instrument for its primary term. That
+ * makes the "Moves: P, F" tag literal — you see which part of the model the decision
+ * touches, and what you'd actually be looking at.
+ *
+ * Below `lg` the pin is dropped; a frozen panel taller than a phone viewport traps the
+ * reader.
  */
 
 type Case = {
   q: string;
   d: string;
   terms: string[];
+  /** which term's instrument to show alongside — the case's primary lever */
+  chart: string;
   band: string;
   icon: React.ReactNode;
 };
@@ -26,6 +41,7 @@ const S = { w: 20, h: 20, viewBox: "0 0 24 24", fill: "none", strokeWidth: 1.7 }
 const CASES: Case[] = [
   {
     q: "Attribute AI Spend to Delivered Work",
+    chart: "P",
     d: "Resolve provider invoices and tool costs down to the team, repository and merged change they produced, so investment decisions rest on unit economics rather than a total and an assumption.",
     terms: ["P", "F"],
     band: "var(--t1)",
@@ -38,6 +54,7 @@ const CASES: Case[] = [
   },
   {
     q: "Quantify Rework and Abandoned Investment",
+    chart: "L",
     d: "Separate work that shipped and remained in production from work abandoned before merge or reverted after it, and price each independently. Both consumed the same budget; only one returned anything.",
     terms: ["L(t)", "P"],
     band: "var(--t4)",
@@ -50,6 +67,7 @@ const CASES: Case[] = [
   },
   {
     q: "Monitor Review Capacity and Effectiveness",
+    chart: "E",
     d: "Track the proportion of changes merged on first review alongside reviewer load, so declining review depth is visible as a trend rather than discovered through a production incident.",
     terms: ["E", "R"],
     band: "var(--t5)",
@@ -62,6 +80,7 @@ const CASES: Case[] = [
   },
   {
     q: "Locate and Price Developer Friction",
+    chart: "T",
     d: "Combine delivery telemetry with targeted developer input to identify where time is lost across the lifecycle, ranked by the hours each source of friction costs the organisation.",
     terms: ["T"],
     band: "var(--t2)",
@@ -74,6 +93,7 @@ const CASES: Case[] = [
   },
   {
     q: "Benchmark Teams on Comparable Terms",
+    chart: "P",
     d: "Normalise unit cost for the work each team actually performs, so comparisons between a payments platform and a growth surface hold up to scrutiny from the teams being compared.",
     terms: ["P", "T"],
     band: "var(--t3)",
@@ -81,6 +101,7 @@ const CASES: Case[] = [
   },
   {
     q: "Produce Audit-Ready Engineering Economics",
+    chart: "F",
     d: "Report unit economics reconciled to provider billing, with the derivation attached to every figure — suitable for capitalisation, R&D claims and board reporting without a translation layer.",
     terms: ["F", "P"],
     band: "var(--t1)",
@@ -93,6 +114,41 @@ const CASES: Case[] = [
   },
 ];
 export function UseCases() {
+  const [i, setI] = useState(0);
+  const cards = useRef<(HTMLDivElement | null)[]>([]);
+  const cur = CASES[i];
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const mid = window.innerHeight / 2;
+      let best = 0;
+      let bestD = Infinity;
+      cards.current.forEach((el, n) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < bestD) {
+          bestD = d;
+          best = n;
+        }
+      });
+      setI(best);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <div className="border-y border-line bg-paper/60">
       <section id="use-cases" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
@@ -104,21 +160,29 @@ export function UseCases() {
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
               Each of these is a decision already being made without the evidence to settle it.
-              The tag on every card names the terms of the model that decision moves.
+              The tag on every case names the terms of the model that decision moves.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {CASES.map((c, i) => (
-            <Reveal key={c.q} delay={(i % 3) * 80}>
-              <article className="flex h-full flex-col rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift">
+        <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16">
+          <div className="flex min-w-0 flex-col">
+            {CASES.map((c, n) => (
+              <div
+                key={c.q}
+                ref={(el) => {
+                  cards.current[n] = el;
+                }}
+                className="border-t border-line py-9 first:border-t-0 lg:flex lg:min-h-[54vh] lg:flex-col lg:justify-center lg:border-t-0 lg:py-10"
+              >
                 <span
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-500"
                   style={{
-                    borderColor: `color-mix(in srgb, ${c.band} 28%, transparent)`,
-                    background: `color-mix(in srgb, ${c.band} 8%, transparent)`,
-                    color: c.band,
+                    borderColor:
+                      i === n ? `color-mix(in srgb, ${c.band} 45%, transparent)` : "var(--line)",
+                    background:
+                      i === n ? `color-mix(in srgb, ${c.band} 9%, transparent)` : "transparent",
+                    color: i === n ? c.band : "var(--ink-4)",
                   }}
                 >
                   <svg {...S} stroke="currentColor" aria-hidden="true">
@@ -126,12 +190,15 @@ export function UseCases() {
                   </svg>
                 </span>
 
-                <h3 className="mt-5 text-balance text-[1.05rem] font-bold leading-snug text-ink">
+                <h3
+                  className="mt-5 max-w-md text-balance text-[1.3rem] font-bold leading-snug transition-colors duration-500 sm:text-[1.5rem]"
+                  style={{ color: i === n ? "var(--ink)" : "var(--ink-3)" }}
+                >
                   {c.q}
                 </h3>
-                <p className="mt-2.5 flex-1 text-[13.5px] leading-relaxed text-ink-3">{c.d}</p>
+                <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-ink-3">{c.d}</p>
 
-                <div className="mt-6 flex items-center gap-2 border-t border-line pt-4">
+                <div className="mt-5 flex items-center gap-2">
                   <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
                     Moves
                   </span>
@@ -148,9 +215,50 @@ export function UseCases() {
                     </span>
                   ))}
                 </div>
-              </article>
-            </Reveal>
-          ))}
+
+                <div className="mt-6 lg:hidden">
+                  <TermChart k={c.chart} band={c.band} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden min-w-0 lg:block">
+            <div className="sticky top-[calc(50vh-220px)]">
+              <div className="rounded-2xl border border-line bg-white p-6 lift">
+                <EquationStrip active={cur.terms.map((t) => (t === "L(t)" ? "L" : t))} />
+                <div className="mt-5 border-t border-line pt-5">
+                  <div className="relative min-h-[318px]">
+                    {CASES.map((c, n) => (
+                      <div
+                        key={c.q}
+                        aria-hidden={i !== n}
+                        className="transition-opacity duration-500"
+                        style={{
+                          position: n === 0 ? "relative" : "absolute",
+                          inset: n === 0 ? undefined : 0,
+                          opacity: i === n ? 1 : 0,
+                          pointerEvents: i === n ? "auto" : "none",
+                        }}
+                      >
+                        <TermChart k={c.chart} band={c.band} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 flex gap-1.5">
+                {CASES.map((c, n) => (
+                  <span
+                    key={c.q}
+                    className="h-[3px] flex-1 rounded-full transition-all duration-500"
+                    style={{ background: n <= i ? c.band : "var(--line)" }}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
