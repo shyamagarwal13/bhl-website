@@ -165,7 +165,7 @@ export function ProductShot() {
         {/* sidebar */}
         <aside className="hidden w-[132px] shrink-0 border-r border-line bg-paper/60 p-3 lg:block">
           <div className="mb-3 flex items-center gap-1.5">
-            <span className="h-4 w-4 rounded bg-gradient-to-br from-s1 to-s3" />
+            <span className="h-4 w-4 rounded bg-ink" />
             <span className="text-[11px] font-bold tracking-tight text-ink">Behold</span>
           </div>
           {["Overview", "AI Spend", "Delivery", "DevEx", "Code health", "People"].map((n, i) => (
