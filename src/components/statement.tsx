@@ -13,13 +13,12 @@ import { useEffect, useRef, useState } from "react";
  * Words light as the card rises, with a faint halo on the lit ones so the sentence reads
  * as filling with light rather than only changing opacity.
  *
- * Figures are attributed and were checked before being written down: adoption from
- * Google's DORA (as cited in our own 2x mandate paper), returns from MIT's 2025
- * enterprise study. The inference on top of them — that the gap is fit, not tooling — is
- * ours, and sits in its own sentence so it can't be read as something the sources said.
+ * The adoption claim is attributed (Google's DORA, as cited in our own 2x mandate paper).
+ * The inference on top of it — that the gap is fit, not tooling — is ours, and sits in its
+ * own sentence so it can't be read as something the source said.
  */
 const LEAD =
-  "Around 90% of developers now use AI tools. MIT found 95% of enterprise pilots returned nothing measurable.";
+  "AI adoption in SDLC workflows is near-universal, but most organizations have no way to study how it is impacting their software.";
 const BODY =
   "That gap is not a tooling problem. Every organization has different constraints, and no single metric can tell you how yours is performing. We are researchers and practitioners with more than a decade in developer productivity and software engineering. Closing that gap is our work.";
 
@@ -100,8 +99,7 @@ export function Statement() {
         </p>
 
         <p className="relative mt-9 font-mono text-[10.5px] leading-relaxed text-white/30">
-          Adoption: Google DORA, 2025. Returns: MIT Media Lab / Project NANDA, “The GenAI
-          Divide — State of AI in Business,” 2025.
+          Adoption: Google DORA, 2025.
         </p>
       </div>
     </section>

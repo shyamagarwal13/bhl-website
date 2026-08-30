@@ -9,29 +9,12 @@ import { Reveal } from "./reveal";
  * what we measure instead. It sits above the equation pane so a reader knows why a new
  * measurement is needed before being shown one.
  *
- * `NumberIsNotAnAnswer` follows the pane: measurement alone doesn't decide anything, and
- * the papers are the evidence for that claim rather than a separate credentials section.
- * The paper images are real first pages rendered from the PDFs — a screenshot of the
- * actual paper is harder to fake than a citation, which is the point.
+ * `NumberIsNotAnAnswer` follows the pane: the claim is that you get researchers, not just
+ * software, and the papers are the entire proof of it — no explanatory cards in between,
+ * because the work should carry the claim on its own. The paper images are real first
+ * pages rendered from the PDFs; a screenshot of the actual paper is harder to fake than a
+ * citation, which is the point.
  */
-
-const ROLES = [
-  {
-    t: "Our agents produce the measurement",
-    // Not "no surveys": developer experience is partly how the work feels, and no
-    // repository can see that. Claiming a fully passive pipeline would be false, and
-    // false on the page arguing for measurement rigour is the worst place for it.
-    d: "Custom-built agents read your repositories, provider usage and tool data directly, so the cost and delivery terms are computed from systems rather than self-reported. The one thing no system can see is how the work feels — for that we ask, briefly and rarely.",
-  },
-  {
-    t: "Our researchers say what it means",
-    d: "The people who published the work below read your numbers directly, with the caveats stated. You don't just get software — you get people who understand your business in detail, and a dashboard cannot tell you which of six terms is the one to move this quarter.",
-  },
-  {
-    t: "Fitted to your constraints",
-    d: "A regulated bank and a consumer startup do not share a cost function. The model is calibrated to your codebase, review culture and risk tolerance — not to a benchmark of companies you have nothing in common with.",
-  },
-];
 
 const PAPERS = [
   {
@@ -165,42 +148,21 @@ export function NumberIsNotAnAnswer() {
           <div className="max-w-2xl">
             <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
             <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              A number is not an answer.
+              At Behold, you don&apos;t just get a dashboard.
             </h2>
             <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Our own research found that average effects across adopters hide wide differences
-              between teams — so a benchmark built from other companies tells you very little
-              about yours. Tooling can produce the measurement. Deciding what it means for your
-              org is a research problem, and we staff it as one.
+              You get experts who deeply understand the field.
             </p>
           </div>
         </Reveal>
-
-        <div className="mt-11 grid gap-5 md:grid-cols-3">
-          {ROLES.map((r, i) => (
-            <Reveal key={r.t} delay={i * 80}>
-              <div className="h-full rounded-2xl border border-line bg-white p-7">
-                <span className="font-mono text-[11px] text-ink-4">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-3 text-[1rem] font-bold text-ink">{r.t}</h3>
-                <p className="mt-2.5 text-[13.5px] leading-relaxed text-ink-3">{r.d}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
 
         <Reveal delay={80}>
-          <div className="mt-16 max-w-2xl">
-            <h3 className="h2 text-balance text-[1.7rem] sm:text-[2.05rem]">Selected work</h3>
-            <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-3">
-              Peer-reviewed at Carnegie Mellon and Stanford, with the data and the limitations
-              stated. The model on this page is built on these findings.
-            </p>
-          </div>
+          <p className="mt-14 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+            Selected work
+          </p>
         </Reveal>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
           {PAPERS.map((p, i) => (
             <Reveal key={p.t} delay={(i % 2) * 80}>
               <a
