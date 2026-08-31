@@ -42,13 +42,22 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
           capturedFrom: onDark ? "cta" : "hero",
         }),
       });
-      const json = (await res.json().catch(() => null)) as { error?: string } | null;
-      if (!res.ok) throw new Error(json?.error ?? "Request failed");
+
+      // A reply that isn't ok is not the same failure as no reply at all, and collapsing
+      // the two into one catch made "rate limited" and "database down" both read as
+      // "couldn't reach the server" — which sent us looking at the network when the
+      // server had already said exactly what was wrong.
+      if (!res.ok) {
+        const json = (await res.json().catch(() => null)) as { error?: string } | null;
+        setError(json?.error ?? `Something went wrong (${res.status}). Please try again.`);
+        return;
+      }
+
+      // don't open the dialog unless the email is stored: otherwise it collects details
+      // against a record that does not exist, and the person leaves thinking they reached us
       setEmail(parsed.data);
       setDialogOpen(true);
     } catch {
-      // don't open the dialog on failure: it would collect details against an email the
-      // server never stored, and the person would leave thinking they had reached us
       setError("We couldn't reach the server. Try again, or email hello@beholdlabs.com.");
     } finally {
       setBusy(false);

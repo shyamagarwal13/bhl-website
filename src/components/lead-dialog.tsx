@@ -120,8 +120,13 @@ export function LeadDialog({ open, email, onClose }: Props) {
         headers: { "content-type": "application/json" },
         body: JSON.stringify(parsed.data),
       });
-      const json = (await res.json().catch(() => null)) as { error?: string } | null;
-      if (!res.ok) throw new Error(json?.error ?? "Request failed");
+      // same split as the pill: the server's own words when it answered, the network
+      // message only when it didn't
+      if (!res.ok) {
+        const json = (await res.json().catch(() => null)) as { error?: string } | null;
+        setError(json?.error ?? `Something went wrong (${res.status}). Please try again.`);
+        return;
+      }
       setDone(true);
     } catch {
       setError("We couldn't save that. Email hello@beholdlabs.com and we'll pick it up.");
