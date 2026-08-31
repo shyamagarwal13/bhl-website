@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { Wordmark } from "./brand";
 import { HEARD_ABOUT, detailsSchema } from "@/lib/leads";
 
 /*
@@ -167,15 +168,19 @@ export function LeadDialog({ open, email, onClose }: Props) {
           </svg>
         </button>
 
+        {/* The dialog sits in the top layer with the page dimmed behind it, so it loses
+            every other cue about whose site it belongs to. The lockup replaces the section
+            rule the rest of the page uses as a header mark. `href={null}` because a link
+            out of a modal is a trap door. */}
+        <div className="mb-7">
+          <Wordmark size={22} href={null} />
+        </div>
+
         {done ? (
-          <div className="py-6 text-center">
-            <div className="mb-6 h-[3px] w-12 rounded-full bg-ink" />
+          <div className="pb-2">
             <h2 id={`${uid}-dialog-title`} className="h2 text-balance text-[1.6rem] sm:text-[1.9rem]">
-              Thanks — that helps.
+              Thank you, we&apos;ll be in touch soon.
             </h2>
-            <p className="mx-auto mt-3 max-w-sm text-[14.5px] leading-relaxed text-ink-3">
-              We reply within a day, from a person who has read what you sent.
-            </p>
             <button
               type="button"
               onClick={() => ref.current?.close()}
@@ -186,13 +191,11 @@ export function LeadDialog({ open, email, onClose }: Props) {
           </div>
         ) : (
           <>
-            <div className="mb-6 h-[3px] w-12 rounded-full bg-ink" />
             <h2 id={`${uid}-dialog-title`} className="h2 text-balance text-[1.6rem] sm:text-[1.9rem]">
               Tell us a little more.
             </h2>
             <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-ink-3">
-              You&apos;re on the list either way. This only decides who replies and what
-              they&apos;ve looked at first. Every field is optional.
+              You&apos;re on the list either way.
             </p>
 
             <form onSubmit={submit} className="mt-7">
@@ -220,12 +223,8 @@ export function LeadDialog({ open, email, onClose }: Props) {
                   // uncontrolled input would keep showing the first address submitted
                   value={email}
                   readOnly
-                  aria-describedby={`${uid}-email-note`}
                   className={`${input} cursor-default bg-paper text-ink-3`}
                 />
-                <p id={`${uid}-email-note`} className="mt-1.5 text-[12px] text-ink-4">
-                  Already saved. Close this box and we still have it.
-                </p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
