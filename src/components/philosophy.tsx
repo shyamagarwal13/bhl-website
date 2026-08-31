@@ -122,10 +122,11 @@ export function Position() {
             </p>
             <p className="mb-4">
               For four decades the industry agreed that counting lines was a poor way to
-              measure software. Dijkstra called it a costly measuring unit. Tom DeMarco
-              retracted his own “you can&apos;t control what you can&apos;t measure.” Kent Beck
-              filed it under inputs — use it only if you have nothing else. The argument was
-              settled and the metric was retired.
+              measure software. It rewards volume, and the engineers you most want to keep are
+              the ones who remove volume. A rewrite that deletes two thousand lines and a
+              feature that adds two thousand score as opposites, when the first is often worth
+              more. Anyone measured on the number learns to write more code than the problem
+              needs. The argument was settled and the metric was retired.
             </p>
             <p>
               Then AI arrived and the same number came back wearing a new name. Share of code

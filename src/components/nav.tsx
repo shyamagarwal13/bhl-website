@@ -71,10 +71,7 @@ export function Nav() {
             ))}
           </ul>
 
-          <div className="ml-auto hidden items-center gap-3 md:flex">
-            <a href="#demo" className="px-2 text-[13.5px] font-medium text-ink-3 hover:text-ink">
-              Sign in
-            </a>
+          <div className="ml-auto hidden items-center md:flex">
             <a
               href="#demo"
               className="rounded-full bg-ink px-4 py-2 text-[13.5px] font-bold text-white transition-transform hover:scale-[1.03]"
