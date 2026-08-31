@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Wordmark } from "./brand";
-import { HEARD_ABOUT, detailsSchema } from "@/lib/leads";
+import { HEARD_ABOUT, detailsSchema, emailSchema } from "@/lib/leads";
 
 /*
  * The second step, shown after the pill has already banked the email.
@@ -19,6 +19,8 @@ import { HEARD_ABOUT, detailsSchema } from "@/lib/leads";
 type Props = {
   open: boolean;
   email: string;
+  /** true when a pill already posted the address, so it is shown rather than asked for */
+  locked: boolean;
   onClose: () => void;
 };
 
@@ -48,11 +50,12 @@ const FIELDS: Field[] = [
 
 // Always the light treatment, including when the pill that opened it sits on the dark CTA
 // panel: a dark dialog over a dark panel loses its edges.
-export function LeadDialog({ open, email, onClose }: Props) {
+export function LeadDialog({ open, email, locked, onClose }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
-  // Both pills on the page mount a dialog, so hardcoded ids appeared twice in the DOM
-  // and `for` pointed at whichever input the parser saw first. useId namespaces them.
+  // ids are namespaced even though there is now one dialog, because `for` breaking
+  // silently is the kind of bug that only shows up in a screen reader
   const uid = useId();
+  const [emailValue, setEmailValue] = useState(email);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -68,6 +71,8 @@ export function LeadDialog({ open, email, onClose }: Props) {
       // thank-you from the first round
       setDone(false);
       setError(null);
+      setHeard("");
+      setEmailValue(email);
       el.showModal();
       document.body.style.overflow = "hidden";
     } else if (!open && el.open) {
@@ -76,7 +81,7 @@ export function LeadDialog({ open, email, onClose }: Props) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [open, email]);
 
   // Escape and the close button both fire `close`; route them through the same handler so
   // the parent's state cannot drift out of sync with the element's.
@@ -97,7 +102,8 @@ export function LeadDialog({ open, email, onClose }: Props) {
 
     const data = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
     const payload = {
-      email,
+      email: emailValue,
+      capturedFrom: locked ? undefined : ("nav" as const),
       firstName: data.firstName,
       lastName: data.lastName,
       jobTitle: data.jobTitle,
@@ -110,7 +116,13 @@ export function LeadDialog({ open, email, onClose }: Props) {
 
     const parsed = detailsSchema.safeParse(payload);
     if (!parsed.success) {
-      setError("Check the fields and try again.");
+      // when the pill captured the address this cannot fail on the email, so the message
+      // only needs to point at the email in the nav case
+      setError(
+        emailSchema.safeParse(emailValue).success
+          ? "Check the fields and try again."
+          : "Enter a valid work email.",
+      );
       return;
     }
 
@@ -194,9 +206,13 @@ export function LeadDialog({ open, email, onClose }: Props) {
             <h2 id={`${uid}-dialog-title`} className="h2 text-balance text-[1.6rem] sm:text-[1.9rem]">
               Tell us a little more.
             </h2>
-            <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-ink-3">
-              You&apos;re on the list either way.
-            </p>
+            {/* only true when a pill already banked the address; from the nav there is
+                nothing on the list yet and the line would be a lie */}
+            {locked && (
+              <p className="mt-3 max-w-md text-[14.5px] leading-relaxed text-ink-3">
+                You&apos;re on the list either way.
+              </p>
+            )}
 
             <form onSubmit={submit} className="mt-7">
               {/* honeypot: off-screen rather than display:none, which some bots skip */}
@@ -221,9 +237,16 @@ export function LeadDialog({ open, email, onClose }: Props) {
                   type="email"
                   // controlled, not defaultValue: the dialog is never unmounted, so an
                   // uncontrolled input would keep showing the first address submitted
-                  value={email}
-                  readOnly
-                  className={`${input} cursor-default bg-paper text-ink-3`}
+                  value={emailValue}
+                  onChange={(e) => setEmailValue(e.target.value)}
+                  readOnly={locked}
+                  required={!locked}
+                  autoFocus={!locked}
+                  autoComplete="email"
+                  placeholder={locked ? undefined : "you@company.com"}
+                  className={
+                    locked ? `${input} cursor-default bg-paper text-ink-3` : input
+                  }
                 />
               </div>
 

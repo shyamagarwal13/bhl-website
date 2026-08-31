@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { ContactProvider } from "@/components/contact";
 import "./globals.css";
 
 // One family doing display and text. Jakarta has enough character at 800 to carry a
@@ -59,7 +60,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable} ${hand.variable}`}>
-      <body className="min-h-screen">{children}</body>
+      <body className="min-h-screen">
+        {/* holds the single contact dialog, so the nav can open it without a pill */}
+        <ContactProvider>{children}</ContactProvider>
+      </body>
     </html>
   );
 }

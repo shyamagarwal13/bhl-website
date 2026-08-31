@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Wordmark } from "./brand";
+import { useContact } from "./contact";
 
 // Anchors track the sections that exist; a nav link to a removed section is a dead
 // scroll that looks like a broken page.
@@ -12,6 +13,7 @@ const LINKS = [
 ];
 
 export function Nav() {
+  const openContact = useContact();
   const [open, setOpen] = useState(false);
   const [past, setPast] = useState(false);
 
@@ -71,13 +73,16 @@ export function Nav() {
             ))}
           </ul>
 
+          {/* opens the dialog rather than scrolling to the pill at the foot of the page:
+              a nav CTA that answers with a scroll makes the reader do the work twice */}
           <div className="ml-auto hidden items-center md:flex">
-            <a
-              href="#demo"
+            <button
+              type="button"
+              onClick={() => openContact()}
               className="rounded-full bg-ink px-4 py-2 text-[13.5px] font-bold text-white transition-transform hover:scale-[1.03]"
             >
               Get in touch
-            </a>
+            </button>
           </div>
 
           <button
@@ -108,13 +113,16 @@ export function Nav() {
                 </li>
               ))}
             </ul>
-            <a
-              href="#demo"
-              onClick={() => setOpen(false)}
-              className="mt-3 block rounded-full bg-ink px-4 py-3 text-center text-sm font-bold text-white"
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                openContact();
+              }}
+              className="mt-3 block w-full rounded-full bg-ink px-4 py-3 text-center text-sm font-bold text-white"
             >
               Get in touch
-            </a>
+            </button>
           </div>
         )}
       </header>

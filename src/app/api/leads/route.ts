@@ -143,7 +143,9 @@ export async function PATCH(req: Request) {
     // who lands here without a step-one row still gets recorded in full
     await db
       .insert(leads)
-      .values({ email: d.email, ...fields })
+      // capturedFrom is in the insert but not in the update set, so it records where we
+      // first met someone and a later visit through a different door cannot rewrite it
+      .values({ email: d.email, capturedFrom: d.capturedFrom, ...fields })
       .onConflictDoUpdate({ target: leads.email, set: fields });
     return ok();
   } catch (err) {

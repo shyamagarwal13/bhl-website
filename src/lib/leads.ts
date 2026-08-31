@@ -48,6 +48,9 @@ export const captureSchema = z.object({
  */
 export const detailsSchema = z.object({
   email: emailSchema,
+  // "nav" only: the pills set this on the capture step, but a lead that arrives straight
+  // through the dialog has no capture step to set it
+  capturedFrom: z.enum(["hero", "cta", "nav"]).optional(),
   firstName: optionalText(120),
   lastName: optionalText(120),
   jobTitle: optionalText(160),

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LeadDialog } from "./lead-dialog";
+import { useContact } from "./contact";
 import { emailSchema } from "@/lib/leads";
 
 /*
@@ -19,7 +19,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const openContact = useContact();
   const onDark = tone === "dark";
 
   async function submit(e: React.FormEvent) {
@@ -56,7 +56,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
       // don't open the dialog unless the email is stored: otherwise it collects details
       // against a record that does not exist, and the person leaves thinking they reached us
       setEmail(parsed.data);
-      setDialogOpen(true);
+      openContact(parsed.data);
     } catch {
       setError("We couldn't reach the server. Try again, or email hello@beholdlabs.com.");
     } finally {
@@ -118,8 +118,6 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
           {error}
         </p>
       )}
-
-      <LeadDialog open={dialogOpen} email={email} onClose={() => setDialogOpen(false)} />
     </div>
   );
 }
