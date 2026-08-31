@@ -89,8 +89,12 @@ function Hero() {
               {/* The relative box wraps only the form. Put it on the flex row instead and
                   `left-full` resolves against the full container width, which pushes the
                   note off the right edge where the section's overflow-hidden silently
-                  eats it — no layout overflow to warn you, just missing content. */}
-              <div className="relative">
+                  eats it — no layout overflow to warn you, just missing content.
+
+                  It needs its own width: as a bare flex item it shrank to fit its contents,
+                  so the form's `max-w-[440px]` never resolved and the pill sat at 375px.
+                  That left the placeholder 20px of slack, which any font fallback ate. */}
+              <div className="relative w-full max-w-[440px]">
                 <DemoForm />
                 <span
                   aria-hidden="true"
@@ -196,7 +200,9 @@ function Cta() {
   return (
     <Section className="py-24">
       <Reveal>
-        <div className="relative overflow-hidden rounded-3xl bg-ink px-8 py-20 text-center">
+        {/* px-8 on a 320px screen leaves the panel 208px of usable width, which is 2px more
+            than the email placeholder needs; drop to px-6 there for real headroom */}
+        <div className="relative overflow-hidden rounded-3xl bg-ink px-6 py-20 text-center sm:px-8">
           {/* The prism again, this time as light inside the dark. */}
           <div
             className="pointer-events-none absolute inset-0 opacity-70"

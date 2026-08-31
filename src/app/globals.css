@@ -104,10 +104,15 @@ body {
   color: var(--ink);
 }
 
-:where(a, button, input, select, [tabindex]):focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
-  border-radius: 6px;
+/* In @layer base so component utilities can override it. Unlayered, this beat Tailwind's
+   layered `focus:outline-none` no matter the specificity, and the email input drew a square
+   ink ring inside its rounded pill. */
+@layer base {
+  :where(a, button, input, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 }
 
 /* --- type ----------------------------------------------------------------- */

@@ -76,7 +76,7 @@ export function Nav() {
               href="#demo"
               className="rounded-full bg-ink px-4 py-2 text-[13.5px] font-bold text-white transition-transform hover:scale-[1.03]"
             >
-              Request a demo
+              Get in touch
             </a>
           </div>
 
@@ -113,7 +113,7 @@ export function Nav() {
               onClick={() => setOpen(false)}
               className="mt-3 block rounded-full bg-ink px-4 py-3 text-center text-sm font-bold text-white"
             >
-              Request a demo
+              Get in touch
             </a>
           </div>
         )}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /*
- * Demo request.
+ * Contact form.
  *
  * Backend-free by design for now: it composes a prefilled mail draft, so the form works
  * on day one with nothing deployed and no lead data sitting in a third party. Swap the
@@ -17,9 +17,11 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
+    // the draft has to match the button that opened it; a "Demo request" subject under a
+    // "Get in touch" button reads as presumptuous
     window.location.href = `mailto:${INBOX}?subject=${encodeURIComponent(
-      "Demo request",
-    )}&body=${encodeURIComponent(`I'd like to see Behold.\n\nWork email: ${email}`)}`;
+      "Getting in touch",
+    )}&body=${encodeURIComponent(`I'd like to talk to the Behold team.\n\nWork email: ${email}`)}`;
   }
 
   /*
@@ -34,8 +36,12 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
   return (
     <form
       onSubmit={submit}
-      className={`mx-auto flex w-full max-w-[440px] flex-col gap-1.5 rounded-3xl border p-1.5 sm:flex-row sm:items-center sm:rounded-full ${
-        onDark ? "border-white/20 bg-white/10 backdrop-blur-md" : "border-line-2 bg-white lift"
+      // the focus ring goes on the pill, not the bare input, so it follows the shape the
+      // user sees; the input's own ring is suppressed in the same breath
+      className={`mx-auto flex w-full max-w-[440px] flex-col gap-1.5 rounded-3xl border p-1.5 outline-offset-2 has-[input:focus-visible]:outline-2 sm:flex-row sm:items-center sm:rounded-full ${
+        onDark
+          ? "border-white/20 bg-white/10 backdrop-blur-md has-[input:focus-visible]:outline-white"
+          : "border-line-2 bg-white lift has-[input:focus-visible]:outline-ink"
       }`}
     >
       <input
@@ -45,7 +51,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="What's your work email?"
         aria-label="Work email"
-        className={`h-10 w-full min-w-0 bg-transparent px-4 text-[14px] focus:outline-none sm:w-auto sm:flex-1 ${
+        className={`h-10 w-full min-w-0 bg-transparent px-4 text-[14px] focus-visible:outline-none sm:w-auto sm:flex-1 ${
           onDark ? "text-white placeholder:text-white/60" : "text-ink placeholder:text-ink-4"
         }`}
       />
@@ -55,7 +61,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
           onDark ? "bg-white text-ink" : "bg-ink text-white"
         }`}
       >
-        Request a demo
+        Get in touch
       </button>
     </form>
   );
