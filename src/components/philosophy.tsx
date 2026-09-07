@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { PapersRail } from "./papers-rail";
 import { Reveal } from "./reveal";
 
 /*
@@ -6,10 +6,10 @@ import { Reveal } from "./reveal";
  *
  * `Position` is the copy that opens the measurement section: the pull quote, the story of
  * how the industry un-learned and then re-learned a bad metric, and a plain statement of
- * what we measure instead. It sits above the equation pane so a reader knows why a new
- * measurement is needed before being shown one.
+ * what we measure instead. It sits above the product showcase so a reader knows why a new
+ * measurement is needed before being shown the instruments.
  *
- * `NumberIsNotAnAnswer` follows the pane: two panels for the two things you actually buy —
+ * `NumberIsNotAnAnswer` follows the showcase: two panels for the two things you actually buy —
  * the platform that produces the measurement, and the researchers who decide what to do
  * about it — then the papers as evidence for the second one. The paper images are real
  * first pages rendered from the PDFs; a screenshot of the actual paper is harder to fake
@@ -80,7 +80,7 @@ const PAPERS = [
   },
 ];
 
-/** Opens the measurement section, above the equation pane. */
+/** Opens the measurement section, above the product showcase. */
 export function Position() {
   return (
     <>
@@ -177,7 +177,7 @@ export function Position() {
   );
 }
 
-/** Follows the equation pane. */
+/** Follows the product showcase. */
 export function NumberIsNotAnAnswer() {
   return (
     <div className="border-y border-line bg-paper/60">
@@ -230,52 +230,10 @@ export function NumberIsNotAnAnswer() {
         </div>
 
         <Reveal delay={80}>
-          <div className="mt-16 flex items-center gap-4">
-            <p className="shrink-0 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-              Selected work
-            </p>
-            <span className="h-px flex-1 bg-line" />
+          <div className="mt-16">
+            <PapersRail papers={PAPERS} />
           </div>
         </Reveal>
-
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
-          {PAPERS.map((p, i) => (
-            <Reveal key={p.t} delay={(i % 2) * 80}>
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift"
-              >
-                {/* the paper itself — a first page is harder to fake than a citation */}
-                <div className="relative h-[156px] overflow-hidden border-b border-line bg-paper">
-                  <Image
-                    src={p.img}
-                    alt={`First page of ${p.t}`}
-                    width={1347}
-                    height={800}
-                    className="w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                  />
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
-                </div>
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-4">
-                      {p.venue}
-                    </span>
-                    <span className="ml-auto text-ink-4 transition-transform group-hover:translate-x-0.5">
-                      ↗
-                    </span>
-                  </div>
-                  <h4 className="mt-2 text-balance text-[1rem] font-bold leading-snug text-ink">
-                    {p.t}
-                  </h4>
-                  <p className="mt-2.5 text-[13.5px] leading-relaxed text-ink-3">{p.find}</p>
-                </div>
-              </a>
-            </Reveal>
-          ))}
-        </div>
       </section>
     </div>
   );

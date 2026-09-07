@@ -1,16 +1,17 @@
 /*
- * One product panel per equation term.
+ * The chart kit.
  *
- * The section claims we measure all six terms. These are the instruments that back the
- * claim — each term gets the actual view you'd open in the app, so the model stops being
- * a diagram and becomes a product tour. Drawn in SVG/CSS for the same reasons as the hero
- * shot: sharp at any size, themed with the brand, no image bandwidth, can't go stale.
+ * A product window and the four things we draw inside one. Extracted so the showcase
+ * panels and anything added later share one visual language instead of each inventing a
+ * frame. Drawn in SVG and CSS rather than shipped as images: sharp at any size, themed
+ * with the brand tokens, no image bandwidth, and it cannot go stale the way a screenshot
+ * of last quarter's UI does.
  *
- * Illustrative sample data, kept consistent with the $48,214 figure used elsewhere on
- * the page — P's panel sums to it, so a reader who adds up the site doesn't catch us out.
+ * Sample data throughout, kept internally consistent with the $48,214 used elsewhere on
+ * the page so a reader who adds up the site does not catch us out.
  */
 
-function Frame({
+export function Frame({
   title,
   filter,
   value,
@@ -73,9 +74,9 @@ function Frame({
   );
 }
 
-const H = 108; // shared chart height so every panel is the same size when swapped
+export const H = 108; // shared chart height so every panel is the same size when swapped
 
-function Bars({
+export function Bars({
   data,
   band,
   labels,
@@ -118,7 +119,7 @@ function Bars({
   );
 }
 
-function Line({
+export function Line({
   pts,
   band,
   threshold,
@@ -182,7 +183,7 @@ function Line({
   );
 }
 
-function Rows({ rows, band }: { rows: { l: string; v: string; pct: number }[]; band: string }) {
+export function Rows({ rows, band }: { rows: { l: string; v: string; pct: number }[]; band: string }) {
   return (
     <div className="flex flex-col gap-2.5" style={{ minHeight: H }}>
       {rows.map((r) => (
@@ -200,125 +201,5 @@ function Rows({ rows, band }: { rows: { l: string; v: string; pct: number }[]; b
         </div>
       ))}
     </div>
-  );
-}
-
-const MONTHS = ["J", "F", "M", "A", "M", "J"];
-
-export function TermChart({ k, band }: { k: string; band: string }) {
-  if (k === "F") {
-    return (
-      <Frame
-        title="app.beholdlabs.com/value"
-        filter="Last 2 quarters"
-        value="$4.1M"
-        unit="ARR shipped"
-        delta="+18%"
-        deltaGood
-        band={band}
-      >
-        <Rows
-          band={band}
-          rows={[
-            { l: "Billing rebuild", v: "$1.6M", pct: 92 },
-            { l: "Self-serve onboard", v: "$1.1M", pct: 64 },
-            { l: "Mobile checkout", v: "$0.9M", pct: 52 },
-            { l: "Search relevance", v: "$0.5M", pct: 29 },
-          ]}
-        />
-      </Frame>
-    );
-  }
-  if (k === "T") {
-    return (
-      <Frame
-        title="app.beholdlabs.com/delivery"
-        filter="Last 6 months"
-        value="9.4"
-        unit="days, idea → production"
-        delta="−31%"
-        deltaGood
-        band={band}
-      >
-        <Line
-          pts={[21, 19, 17.5, 14, 12, 9.4]}
-          band={band}
-          threshold={12}
-          labels={MONTHS}
-        />
-      </Frame>
-    );
-  }
-  if (k === "P") {
-    return (
-      <Frame
-        title="app.beholdlabs.com/ai-spend"
-        filter="Last 6 months"
-        value="$24,760"
-        unit="build-stage spend"
-        delta="+12%"
-        deltaGood={false}
-        band={band}
-      >
-        <Rows
-          band={band}
-          rows={[
-            { l: "Platform", v: "$9.4k", pct: 92 },
-            { l: "Payments", v: "$6.1k", pct: 61 },
-            { l: "Growth", v: "$5.0k", pct: 49 },
-            { l: "Mobile", v: "$2.6k", pct: 26 },
-          ]}
-        />
-      </Frame>
-    );
-  }
-  if (k === "L") {
-    return (
-      <Frame
-        title="app.beholdlabs.com/code-health"
-        filter="Since adoption"
-        value="+41%"
-        unit="complexity in changed files"
-        delta="12 hotspots"
-        deltaGood={false}
-        band={band}
-      >
-        <Line pts={[100, 106, 115, 121, 132, 141]} band={band} labels={MONTHS} />
-      </Frame>
-    );
-  }
-  if (k === "E") {
-    return (
-      <Frame
-        title="app.beholdlabs.com/review"
-        filter="Last 5 months"
-        value="58%"
-        unit="merged on first review"
-        delta="−14pts"
-        deltaGood={false}
-        band={band}
-      >
-        {/* filled = caught at first review, ghost = needed another round */}
-        <Bars
-          band={band}
-          data={[78, 74, 69, 63, 58]}
-          ghost={[100, 100, 100, 100, 100]}
-          labels={["Jan", "Feb", "Mar", "Apr", "May"]}
-        />
-      </Frame>
-    );
-  }
-  return (
-    <Frame
-      title="app.beholdlabs.com/review-load"
-      filter="Last 6 months"
-      value="41"
-      unit="PRs per reviewer, median"
-      delta="+96%"
-      deltaGood={false}
-      band={band}
-    >
-      <Bars band={band} data={[21, 24, 27, 31, 36, 41]} labels={MONTHS} />
-    </Frame>
   );
 }

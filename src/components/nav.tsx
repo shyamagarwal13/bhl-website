@@ -7,7 +7,7 @@ import { useContact } from "./contact";
 // Anchors track the sections that exist; a nav link to a removed section is a dead
 // scroll that looks like a broken page.
 const LINKS = [
-  { label: "The model", href: "#model" },
+  { label: "What we do", href: "#model" },
   { label: "Use cases", href: "#use-cases" },
   { label: "Our approach", href: "#approach" },
 ];

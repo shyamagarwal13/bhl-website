@@ -4,7 +4,7 @@ import { DemoForm } from "@/components/demo-form";
 import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
 import { Marquee } from "@/components/marquee";
-import { EquationPanel } from "@/components/equation";
+import { Showcase } from "@/components/showcase";
 import { UseCases } from "@/components/use-cases";
 import { Statement } from "@/components/statement";
 import { NumberIsNotAnAnswer, Position } from "@/components/philosophy";
@@ -169,7 +169,7 @@ function ReadsFrom() {
   );
 }
 
-/* --- the model ------------------------------------------------------------ */
+/* --- what we do ----------------------------------------------------------- */
 
 function Model() {
   return (
@@ -187,7 +187,7 @@ function Model() {
         <Position />
 
         <div className="mt-12">
-          <EquationPanel />
+          <Showcase />
         </div>
       </Section>
     </div>
