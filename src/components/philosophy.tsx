@@ -147,7 +147,7 @@ export function Position() {
             <p>
               Lines of code. Pull requests merged. Tokens burned. None of these tell the real
               story of what the work was worth or what it cost to keep. We measure what
-              happened afterwards.
+              happened afterwards:
             </p>
             <ul className="mt-4 flex flex-col gap-2">
               {[
@@ -165,6 +165,11 @@ export function Position() {
                 </li>
               ))}
             </ul>
+            {/* the payoff of the list, and the answer to the obvious objection: every one
+                of these is a dollar figure, so none of it rests on a proxy */}
+            <p className="mt-4">
+              All mapped to $, so you don&apos;t have to worry about proxy metrics.
+            </p>
           </div>
         </div>
       </Reveal>
