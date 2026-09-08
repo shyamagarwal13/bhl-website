@@ -11,69 +11,6 @@
  * the page so a reader who adds up the site does not catch us out.
  */
 
-export function Frame({
-  title,
-  filter,
-  value,
-  unit,
-  delta,
-  deltaGood,
-  band,
-  children,
-}: {
-  title: string;
-  filter: string;
-  value: string;
-  unit: string;
-  delta?: string;
-  deltaGood?: boolean;
-  band: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="overflow-hidden rounded-xl border border-line bg-white">
-      {/* a hairline of the term's colour along the top edge ties the window to the
-          variable it belongs to without repeating the letter a third time */}
-      <div className="h-[3px] w-full" style={{ background: band }} />
-      <div className="flex items-center gap-2 border-b border-line bg-paper px-3 py-2">
-        <span className="flex gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-line-2" />
-          <span className="h-1.5 w-1.5 rounded-full bg-line-2" />
-          <span className="h-1.5 w-1.5 rounded-full bg-line-2" />
-        </span>
-        <span className="ml-1.5 truncate font-mono text-[9.5px] text-ink-4">{title}</span>
-        <span className="ml-auto shrink-0 rounded border border-line bg-white px-1.5 py-0.5 font-mono text-[9px] text-ink-4">
-          {filter}
-        </span>
-      </div>
-      <div className="p-4">
-        <div className="flex items-end justify-between gap-3">
-          <div className="min-w-0">
-            <div className="tabular text-[1.6rem] font-extrabold leading-none tracking-tight text-ink">
-              {value}
-            </div>
-            <div className="mt-1.5 truncate text-[11.5px] text-ink-3">{unit}</div>
-          </div>
-          {delta && (
-            <span
-              className="tabular shrink-0 rounded-md px-2 py-1 font-mono text-[11px] font-bold"
-              style={{
-                color: deltaGood ? "var(--pos)" : "var(--neg)",
-                background: deltaGood
-                  ? "color-mix(in srgb, var(--pos) 11%, transparent)"
-                  : "color-mix(in srgb, var(--neg) 11%, transparent)",
-              }}
-            >
-              {delta}
-            </span>
-          )}
-        </div>
-        <div className="mt-4">{children}</div>
-      </div>
-    </div>
-  );
-}
-
 export const H = 108; // shared chart height so every panel is the same size when swapped
 
 export function Bars({
