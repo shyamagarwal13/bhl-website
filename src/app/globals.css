@@ -272,6 +272,22 @@ body {
   animation: marquee 38s linear infinite;
 }
 
+/* The papers rail. Same -50% loop as the logo marquee, slower because these are cards you
+   are meant to read rather than logos you are meant to recognise.
+
+   It pauses under the pointer and on focus, which the logo strip does not need: these are
+   links, and a link drifting out from under the cursor cannot be clicked. */
+.papers-track {
+  animation: marquee 70s linear infinite;
+}
+
+.papers-track:hover,
+.papers-track:focus-within,
+/* :active covers touch, where there is no hover to pause on */
+.papers-track:active {
+  animation-play-state: paused;
+}
+
 /* Showcase: the countdown under the active tab, and the arrival of a panel. Both are
    switched off wholesale by the reduced-motion block at the end of this file. */
 @keyframes showcase-progress {
