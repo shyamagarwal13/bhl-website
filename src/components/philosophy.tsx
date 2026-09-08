@@ -78,6 +78,16 @@ const PAPERS = [
     find: "Agents and IDE assistants are not the same intervention and do not carry the same cost.",
     href: "https://doi.org/10.1145/3793302.3793589",
   },
+  {
+    img: "/papers/opinions-3100.png",
+    t: "3100 Opinions on Code Review in an AI World",
+    venue: "Preprint · arXiv:2607.07980",
+    // the finding that matters here is the instability, not the headcount of documents:
+    // it is the strongest available argument that a surface metric read once is not
+    // evidence, which is the whole reason this page exists
+    find: "Agent-authored pull requests are reviewed less often and merged several times faster, yet the direction of those trends flips under equally defensible analysis choices.",
+    href: "https://arxiv.org/abs/2607.07980",
+  },
 ];
 
 /** Opens the measurement section, above the product showcase. */

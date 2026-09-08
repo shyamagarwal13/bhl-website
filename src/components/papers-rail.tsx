@@ -15,6 +15,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * script never runs. The buttons exist because a mouse user on a desktop has no obvious way
  * to scroll a horizontal region, and they hide themselves at each end rather than sitting
  * there disabled.
+ *
+ * It advances on its own so a reader who never touches it still sees past the third card,
+ * and wraps back to the start rather than stopping, since a rail that halts at the end
+ * looks broken. Three cards to a screen on desktop, two on tablet, one and a peek on a
+ * phone. The timer stops on hover, on focus, off screen, and under reduced motion: the
+ * cards are links, and a link that moves while you aim at it is a trap.
  */
 
 type Paper = {
@@ -25,10 +31,15 @@ type Paper = {
   href: string;
 };
 
+const ADVANCE_MS = 4200;
+
 export function PapersRail({ papers }: { papers: Paper[] }) {
   const rail = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [reduced, setReduced] = useState(false);
 
   const measure = useCallback(() => {
     const el = rail.current;
@@ -50,6 +61,42 @@ export function PapersRail({ papers }: { papers: Paper[] }) {
     };
   }, [measure]);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const set = () => setReduced(mq.matches);
+    set();
+    mq.addEventListener("change", set);
+    return () => mq.removeEventListener("change", set);
+  }, []);
+
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), {
+      threshold: 0.3,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView || paused || reduced) return;
+    const id = window.setInterval(() => {
+      const el = rail.current;
+      if (!el) return;
+      const card = el.querySelector("a");
+      const step = card ? card.getBoundingClientRect().width + 20 : el.clientWidth * 0.8;
+      // wrap instead of stopping; 2px of slack because sub-pixel widths mean scrollLeft
+      // rarely lands exactly on the end
+      if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
+        el.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        el.scrollBy({ left: step, behavior: "smooth" });
+      }
+    }, ADVANCE_MS);
+    return () => window.clearInterval(id);
+  }, [inView, paused, reduced]);
+
   const nudge = (dir: 1 | -1) => {
     const el = rail.current;
     if (!el) return;
@@ -63,7 +110,13 @@ export function PapersRail({ papers }: { papers: Paper[] }) {
     "flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white text-ink-3 transition-colors hover:border-line-2 hover:text-ink disabled:pointer-events-none disabled:opacity-0";
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
       <div className="mb-4 flex items-center gap-4">
         <p className="shrink-0 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
           Selected work
@@ -110,7 +163,10 @@ export function PapersRail({ papers }: { papers: Paper[] }) {
             href={p.href}
             target="_blank"
             rel="noreferrer"
-            className="group flex w-[290px] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift sm:w-[330px]"
+            /* basis is computed from the gap so three sit exactly in the frame at lg,
+               two at sm, and one plus a peek on a phone, which is what tells a reader
+               the row continues */
+            className="group flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-line bg-white transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)]"
           >
             {/* the paper itself: a first page is harder to fake than a citation */}
             <div className="relative h-[150px] overflow-hidden border-b border-line bg-paper">

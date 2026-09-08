@@ -218,7 +218,7 @@ function Cta() {
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-white/70">
               We&apos;re working with a small number of engineering organizations to get this
-              right. Connect a repository and see your own numbers — no slide deck required.
+              right. Connect a repository and see your own numbers.
             </p>
             <div id="demo" className="mt-9 flex scroll-mt-32 justify-center">
               <DemoForm tone="dark" />
