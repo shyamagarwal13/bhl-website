@@ -52,7 +52,6 @@ export function HowWeSee() {
   return (
     <section id="how-we-see" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
       <SectionHead
-        label="How we measure"
         width="wide"
         title={<>We read the work itself.</>}
         lead={

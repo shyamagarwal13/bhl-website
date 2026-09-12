@@ -118,7 +118,6 @@ export function TwoDashboards() {
     <div className="border-y border-line bg-paper-2">
       <section id="slop" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
         <SectionHead
-          label="The contradiction"
           width="wide"
           title="Same team. Same quarter. Two dashboards."
           lead="Both of these are accurate. One of them is what your tooling reports and what gets taken to the board. The other is what the quarter actually cost you."

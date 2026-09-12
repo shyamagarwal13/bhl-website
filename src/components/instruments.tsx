@@ -165,7 +165,6 @@ export function Instruments() {
     <div className="border-y border-line bg-paper-2">
       <section id="instruments" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
       <SectionHead
-          label="Our instruments"
           width="wide"
           title={<>We answer the right questions.</>}
           lead={<>These are the two we keep coming back to in the research, and the two we would want to work out with you first.</>}

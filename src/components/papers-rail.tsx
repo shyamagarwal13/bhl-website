@@ -31,12 +31,7 @@ type Paper = {
 export function PapersRail({ papers }: { papers: Paper[] }) {
   return (
     <div>
-      <div className="mb-4 flex items-center gap-4">
-        <p className="shrink-0 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-          Selected work
-        </p>
-        <span className="h-px flex-1 bg-line" />
-      </div>
+      <div className="mb-6 h-px w-full bg-line" />
 
       {/*
         Full-bleed on the left and right of the section so cards drift in and out of the

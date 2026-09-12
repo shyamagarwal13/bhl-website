@@ -78,7 +78,6 @@ export function Platform() {
   return (
     <section id="platform" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
       <SectionHead
-          label="The platform"
           width="wide"
           title={<>Three products, and the people behind them.</>}
           lead={<>Get access to engineering measurement, AI spend attribution and model routing — and to the researchers who work out what the numbers mean.</>}

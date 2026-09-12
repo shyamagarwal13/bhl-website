@@ -19,7 +19,9 @@ export function SectionHead({
   lead,
   width = "narrow",
 }: {
-  label: string;
+  /** Optional. Most sections do without: a mono caption above every heading became
+      wallpaper, and none of them told the reader anything the heading did not. */
+  label?: string;
   title: React.ReactNode;
   lead?: React.ReactNode;
   /** how far the heading is allowed to run before it wraps */
@@ -30,12 +32,16 @@ export function SectionHead({
       <div>
         {/* rule and label span the whole measure; the heading below is constrained, which
             is what produces the stepped, opening-out feel as you descend the page */}
-        <div className="flex items-baseline gap-5">
-          <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-3">
-            {label}
-          </span>
-          <span className="rule mb-1 flex-1" />
-        </div>
+        {label ? (
+          <div className="flex items-baseline gap-5">
+            <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-3">
+              {label}
+            </span>
+            <span className="rule mb-1 flex-1" />
+          </div>
+        ) : (
+          <span className="rule block" />
+        )}
 
         <h2
           className={`h2 mt-8 text-balance text-[2.1rem] sm:text-[2.7rem] ${

@@ -99,7 +99,6 @@ export function NumberIsNotAnAnswer() {
     <div className="border-y border-line bg-paper-2/60">
       <section id="approach" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
         <SectionHead
-          label="What you buy"
           width="wide"
           title={<>You don&apos;t just get a dashboard. You get experts.</>}
           lead={<>The measurement is automated. What to do about it is not.</>}

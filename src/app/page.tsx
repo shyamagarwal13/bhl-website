@@ -184,7 +184,6 @@ function Product() {
   return (
     <Section id="model" className="pb-24">
       <SectionHead
-        label="In the product"
         width="wide"
         title={<>One instrument, pointed at the whole lifecycle.</>}
       />
