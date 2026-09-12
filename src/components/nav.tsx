@@ -7,9 +7,9 @@ import { useContact } from "./contact";
 // Anchors track the sections that exist; a nav link to a removed section is a dead
 // scroll that looks like a broken page.
 // Root-relative rather than bare fragments: these same links render on the product pages,
-// where a bare "#platform" is a link to a section that is not on the document.
+// where a bare fragment is a link to a section that is not on the document.
 const LINKS = [
-  { label: "Platform", href: "/#platform" },
+  { label: "Platform", href: "/#model" },
   { label: "Use cases", href: "/#use-cases" },
   { label: "Research", href: "/#approach" },
 ];

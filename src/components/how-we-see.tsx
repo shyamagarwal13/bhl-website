@@ -1,68 +1,36 @@
 /*
- * How we measure, and why it is not the other two ways.
+ * Why measuring this needs more than one instrument — and a person.
  *
- * The heading used to read "Two instruments exist. Neither can see this," which had two
- * faults: "this" pointed at something the reader had not been told yet, and the sentence
- * asserted a survey of the world we never carried out. It also opened on competitors, which
- * puts someone else in the reader's head before we have said what we do.
+ * This section used to set telemetry and surveys up as two rival camps and place us outside
+ * both. That was a bad argument for us to be making, because we use both: telemetry is how
+ * you establish what happened, surveys are how you learn how it felt, and neither is a
+ * competitor. The three-card comparison went with it.
  *
- * It now leads with our own method and lets the three entries below draw the contrast, which
- * they do perfectly well without the headline claiming it.
- * Telemetry vendors read events — commits, pull requests, tokens, agent runs, incidents —
- * and an event stream cannot contain a judgment, only its residue. Survey vendors read
- * self-report, which is lagging, gameable, and measures how the work felt rather than what
- * it was. Saying so plainly is fair comment and it is also the clearest way to explain what
- * we do differently, which is to read the artifact itself.
- *
- * The third column is the only one that gets the ink treatment. Two neutral cards and one
- * dark one is the whole argument in a glance, before a word is read.
- *
- * Opens with the lines-of-code history because it is the same mistake with a new name, and
- * because a reader who has been in the industry for fifteen years has lived it.
+ * What remains is the actual claim. There is a great deal to account for now, each instrument
+ * reaches only part of it, and every organisation adopts AI differently enough that a reading
+ * from one does not transfer to another — which is where the last term comes in. That lands
+ * as an equation because it is one, and it is the only place on this page where type moves.
  */
 
 import { Reveal } from "./reveal";
-import { SectionHead } from "./section-head";
 
-const LENSES = [
-  {
-    eyebrow: "Telemetry",
-    who: "Most tools",
-    lead: "Reads the events.",
-    body: "Commits, pull requests, tokens, agent runs, incidents. An event stream is an excellent record of what happened and a poor one of whether it should have. Judgment leaves almost no trace in it.",
-    dark: false,
-  },
-  {
-    eyebrow: "Surveys",
-    who: "The developer-experience tools",
-    lead: "Reads the feelings.",
-    body: "Ask people how the work went. Honest, useful, and lagging by a quarter. It captures how the work felt to do, which is not the same thing as what the work was worth to keep.",
-    dark: false,
-  },
-  {
-    eyebrow: "The work itself",
-    who: "Behold",
-    lead: "Reads the artifact.",
-    body: "What was rejected and why. What was quietly rewritten six weeks later. Where a reviewer changed the direction rather than the wording. Judgment does leave a trace — just not in the event log.",
-    dark: true,
-  },
+/* The terms, in the order you would say them. Each carries what it is actually good for, so
+   the equation teaches instead of merely asserting. */
+const TERMS = [
+  { t: "Telemetry", d: "What happened. Commits, pull requests, tokens, agent runs." },
+  { t: "Surveys", d: "How it felt to the people doing it, which telemetry never shows." },
+  { t: "Experts", d: "What it means here, because no two organisations use this the same way." },
 ];
 
 export function HowWeSee() {
   return (
     <section id="how-we-see" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-      <SectionHead
-        width="wide"
-        title={<>We read the work itself.</>}
-        lead={
-          <>
-            Judgment leaves a trace. Not in the event log and not in a survey, but in what got
-            rejected, what got redirected, and what was quietly rewritten six weeks later.
-          </>
-        }
-      />
+      <Reveal>
+        <span className="rule block" />
+      </Reveal>
 
-      {/* the history, as a quotation rather than a second headline */}
+      {/* The history opens the section directly. It is a better first line than any heading
+          we were putting above it, so there is no heading. */}
       <Reveal delay={60}>
         <figure className="relative mt-10 overflow-hidden rounded-2xl border border-line bg-white px-7 py-8 lift sm:px-10 sm:py-10">
           <span
@@ -81,13 +49,13 @@ export function HowWeSee() {
       </Reveal>
 
       <Reveal delay={110}>
-        <div className="mt-10 grid gap-8 text-[15.5px] leading-relaxed text-ink-3 lg:grid-cols-2 lg:gap-14">
+        <div className="mt-10 grid gap-8 text-[15.5px] leading-relaxed text-ink-3 lg:grid-cols-2 lg:gap-16">
           <p>
             For four decades the industry agreed that counting lines was a poor way to measure
             software. It rewards volume, and the engineers you most want to keep are the ones
-            who remove volume. A rewrite that deletes two thousand lines and a feature that
-            adds two thousand score as opposites, when the first is often worth more. The
-            argument was settled and the metric was retired.
+            who remove volume. A rewrite that deletes two thousand lines and a feature that adds
+            two thousand score as opposites, when the first is often worth more. The argument
+            was settled and the metric was retired.
           </p>
           <p>
             Then AI arrived and the same number came back wearing a new name. Share of code
@@ -102,45 +70,76 @@ export function HowWeSee() {
         </div>
       </Reveal>
 
-      <div className="mt-14 grid items-stretch gap-5 lg:grid-cols-3">
-        {LENSES.map((l, i) => (
-          <Reveal key={l.eyebrow} delay={i * 90}>
-            <div
-              className={`flex h-full flex-col rounded-2xl border p-7 sm:p-8 ${
-                l.dark ? "border-ink/10 bg-ink lift" : "border-line bg-white"
-              }`}
-            >
-              <div className="flex items-baseline justify-between gap-3">
-                <span
-                  className={`font-mono text-[10.5px] uppercase tracking-[0.16em] ${
-                    l.dark ? "text-white/50" : "text-ink-4"
-                  }`}
-                >
-                  {l.eyebrow}
+      <Reveal delay={150}>
+        <p className="mt-12 max-w-3xl text-[1.0625rem] leading-[1.8] text-ink-2">
+          So there is a great deal to account for now, and no single instrument reaches all of
+          it. We use telemetry to establish what happened, and we ask people directly where the
+          answer only exists in their heads. Then the part that actually decides the outcome:
+          every organisation adopts this differently enough that a reading taken from one does
+          not transfer to another.
+        </p>
+      </Reveal>
+
+      {/* --- the equation -----------------------------------------------------------------
+          The one place on this page where type moves. The terms arrive in the order you would
+          speak them, the relation lands last and heaviest, and everything animates on
+          transform and opacity so the reduced-motion rule switches it off cleanly. */}
+      <div className="mt-16 border-t border-line pt-14">
+        <Reveal>
+          <div>
+            <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
+              {TERMS.map((x, i) => (
+                <span key={x.t} className="flex items-baseline gap-x-5">
+                  {i > 0 && (
+                    <span
+                      className="term-in figure text-[2rem] text-ink-4 sm:text-[2.6rem]"
+                      style={{ ["--d" as string]: `${i * 190 - 95}ms` }}
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+                  )}
+                  <span
+                    className="term-in h2 text-[2.4rem] text-ink sm:text-[3.4rem]"
+                    style={{ ["--d" as string]: `${i * 190}ms` }}
+                  >
+                    {x.t}
+                  </span>
                 </span>
-                <span
-                  className={`text-right text-[11px] ${l.dark ? "text-white/40" : "text-ink-4"}`}
-                >
-                  {l.who}
-                </span>
-              </div>
-              <h3
-                className={`mt-5 text-[1.15rem] font-bold leading-snug ${
-                  l.dark ? "text-white" : "text-ink"
-                }`}
+              ))}
+
+              <span
+                className="term-in figure text-[2.4rem] sm:text-[3.2rem]"
+                style={{ ["--d" as string]: "650ms", color: "var(--s5)" }}
+                aria-hidden="true"
               >
-                {l.lead}
-              </h3>
-              <p
-                className={`mt-3.5 text-[13.5px] leading-relaxed ${
-                  l.dark ? "text-white/65" : "text-ink-3"
-                }`}
+                &#8811;
+              </span>
+              <span
+                className="term-in h2 text-[2.4rem] text-ink-3 sm:text-[3.4rem]"
+                style={{ ["--d" as string]: "730ms" }}
               >
-                {l.body}
-              </p>
+                any one of them
+              </span>
             </div>
-          </Reveal>
-        ))}
+
+            {/* what each term is for, set under the term it belongs to */}
+            <dl className="mt-10 grid gap-x-10 gap-y-6 border-t border-line pt-8 sm:grid-cols-3">
+              {TERMS.map((x, i) => (
+                <div
+                  key={x.t}
+                  className="term-in"
+                  style={{ ["--d" as string]: `${860 + i * 90}ms` }}
+                >
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-4">
+                    {x.t}
+                  </dt>
+                  <dd className="mt-2.5 text-[14px] leading-relaxed text-ink-3">{x.d}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

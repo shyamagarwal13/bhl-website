@@ -11,7 +11,6 @@ import { NumberIsNotAnAnswer } from "@/components/philosophy";
 import { SectionHead } from "@/components/section-head";
 import { TwoDashboards } from "@/components/two-dashboards";
 import { Instruments } from "@/components/instruments";
-import { Platform } from "@/components/platform";
 import { HowWeSee } from "@/components/how-we-see";
 
 function Section({
@@ -250,7 +249,6 @@ export default function Home() {
         <TwoDashboards />
         <HowWeSee />
         <Instruments />
-        <Platform />
         <Product />
         <UseCases />
         <Statement />

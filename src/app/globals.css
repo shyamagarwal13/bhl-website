@@ -479,6 +479,29 @@ body {
   counter-reset: t var(--tick);
 }
 
+/* Terms of the equation arriving in the order you would say them. Kept to transform and
+   opacity, and gated on the section actually being in view so the sequence is not already
+   over by the time the reader gets there. */
+@keyframes term-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.term-in {
+  opacity: 0;
+}
+
+[data-reveal="in"] .term-in {
+  animation: term-in 520ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: var(--d, 0ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -492,6 +515,14 @@ body {
   [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+
+  /* the equation terms start at opacity 0, so switching the animation off is not enough */
+  .term-in,
+  [data-reveal="in"] .term-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   /* The bars and meters are animated from scaleX(0), so switching the animation off is not

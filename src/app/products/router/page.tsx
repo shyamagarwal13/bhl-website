@@ -86,7 +86,7 @@ export default function Page() {
             "Roll back a routing policy the moment the bar moves",
           ]}
           panel={
-            <Card title="What we watch" meta="illustrative">
+            <Card title="What we watch">
               <ul className="flex flex-col gap-3">
                 <Bar label="Spend" pct={64} value="down" band="var(--t3)" />
                 <Bar label="Pass rate" pct={92} value="held" band="var(--s1)" delay={100} />

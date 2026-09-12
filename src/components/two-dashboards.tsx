@@ -173,9 +173,6 @@ export function TwoDashboards() {
           </p>
         </Reveal>
 
-        <p className="mt-8 font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-4">
-          Illustrative figures
-        </p>
       </section>
     </div>
   );

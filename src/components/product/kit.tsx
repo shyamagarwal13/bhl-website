@@ -243,10 +243,10 @@ export function ProductCta({ line }: { line: string }) {
                 Get in touch
               </Link>
               <Link
-                href="/#platform"
+                href="/#model"
                 className="rounded-full border border-white/25 px-6 py-3 text-[14px] font-bold text-white transition-colors hover:bg-white/10"
               >
-                See the whole platform
+                See what we build
               </Link>
             </div>
           </div>
