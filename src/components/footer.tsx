@@ -13,7 +13,7 @@ const COLUMNS = [
     h: "The argument",
     links: [
       { l: "Two readings of a quarter", href: "/#slop" },
-      { l: "Why a third instrument", href: "/#how-we-see" },
+      { l: "How we measure", href: "/#how-we-see" },
       { l: "Use cases", href: "/#use-cases" },
     ],
   },

@@ -79,7 +79,7 @@ const MENU: {
     band: "var(--t3)",
     items: [
       { t: "Research", d: "The published work behind the numbers", href: "/#approach" },
-      { t: "How we measure", d: "Telemetry, surveys, and the third instrument", href: "/#how-we-see" },
+      { t: "How we measure", d: "What we read, and what it leaves out", href: "/#how-we-see" },
       { t: "Use cases", d: "The decisions this is bought to make", href: "/#use-cases" },
     ],
   },

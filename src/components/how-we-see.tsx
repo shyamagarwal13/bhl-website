@@ -1,7 +1,13 @@
 /*
- * Why a third instrument is needed at all.
+ * How we measure, and why it is not the other two ways.
  *
- * The competitive set splits cleanly in two, and both halves are blind in the same place.
+ * The heading used to read "Two instruments exist. Neither can see this," which had two
+ * faults: "this" pointed at something the reader had not been told yet, and the sentence
+ * asserted a survey of the world we never carried out. It also opened on competitors, which
+ * puts someone else in the reader's head before we have said what we do.
+ *
+ * It now leads with our own method and lets the three entries below draw the contrast, which
+ * they do perfectly well without the headline claiming it.
  * Telemetry vendors read events — commits, pull requests, tokens, agent runs, incidents —
  * and an event stream cannot contain a judgment, only its residue. Survey vendors read
  * self-report, which is lagging, gameable, and measures how the work felt rather than what
@@ -46,10 +52,16 @@ export function HowWeSee() {
   return (
     <section id="how-we-see" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
       <SectionHead
-          label="Why a third instrument"
-          width="wide"
-          title={<>Two instruments exist. Neither can see this.</>}
-        />
+        label="How we measure"
+        width="wide"
+        title={<>We read the work itself.</>}
+        lead={
+          <>
+            Judgment leaves a trace. Not in the event log and not in a survey, but in what got
+            rejected, what got redirected, and what was quietly rewritten six weeks later.
+          </>
+        }
+      />
 
       {/* the history, as a quotation rather than a second headline */}
       <Reveal delay={60}>
