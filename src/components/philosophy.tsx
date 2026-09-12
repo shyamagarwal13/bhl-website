@@ -2,18 +2,20 @@ import { PapersRail } from "./papers-rail";
 import { Reveal } from "./reveal";
 
 /*
- * The argument that sets up the model, and the one that follows it.
+ * The two things you actually buy, and the evidence for the second one.
  *
- * `Position` is the copy that opens the measurement section: the pull quote, the story of
- * how the industry un-learned and then re-learned a bad metric, and a plain statement of
- * what we measure instead. It sits above the product showcase so a reader knows why a new
- * measurement is needed before being shown the instruments.
+ * Two panels: the platform that produces the measurement, and the researchers who decide
+ * what to do about it. Then the papers. The paper images are real first pages rendered from
+ * the PDFs, because a screenshot of the actual paper is harder to fake than a citation.
  *
- * `NumberIsNotAnAnswer` follows the showcase: two panels for the two things you actually buy —
- * the platform that produces the measurement, and the researchers who decide what to do
- * about it — then the papers as evidence for the second one. The paper images are real
- * first pages rendered from the PDFs; a screenshot of the actual paper is harder to fake
- * than a citation, which is the point.
+ * The consulting half is not a garnish on the product, it is the answer to the obvious
+ * objection to this whole position. Once you claim to measure judgment rather than output,
+ * a reader is entitled to ask who decides what good judgment looks like — so the names and
+ * the institutions have to be on the page, and the published work has to be one click away.
+ *
+ * Note that academic credibility is contested ground in this category rather than a
+ * differentiator on its own: at least one competitor leads with a Stanford affiliation. The
+ * defensible version is not "we are researchers" but "here is the work, read it".
  */
 
 // The two things a customer actually receives. Kept as separate panels rather than one
@@ -24,7 +26,7 @@ const HALVES = [
     eyebrow: "The platform",
     band: "var(--t1)",
     lead: "Our dashboards and tools get you the measurement.",
-    body: "Agents read your repositories, provider billing and tool data directly, so every term in the model is computed from your systems and recomputed as the work changes. Nothing waits for a quarterly spreadsheet.",
+    body: "Agents read your repositories, provider billing and tool data directly, so every number you see is computed from your systems and recomputed as the work changes. Nothing waits for a quarterly spreadsheet.",
     points: [
       "AI and engineering cost attributed to teams and initiatives",
       // the one negation kept in this section: every assistant dashboard on the market
@@ -40,9 +42,9 @@ const HALVES = [
     eyebrow: "The people",
     band: "var(--t3)",
     lead: "Our experts design the strategy around your constraints.",
-    body: "The researchers who published the work below read your numbers themselves, with the caveats stated. A regulated bank and a consumer startup do not share a cost function, and no dashboard can tell you which of six terms is the one to move this quarter.",
+    body: "Researchers from Carnegie Mellon, Microsoft and Google who published the work below read your numbers themselves, with the caveats stated. A regulated bank and a consumer startup do not share a cost function, and no dashboard can tell you which number is the one to move this quarter.",
     points: [
-      "The model calibrated to your codebase and review culture",
+      "A cost model calibrated to your codebase and review culture",
       "Interventions ranked by what they are worth to you",
       "Findings you can take to a board, with the limits named",
     ],
@@ -54,7 +56,7 @@ const PAPERS = [
     img: "/papers/review-mandate.png",
     t: "AI Writes Faster Than Humans Can Review",
     venue: "Preprint · arXiv:2607.01904",
-    find: "A mandated doubling of merged pull requests was reached — and per-reviewer load roughly doubled with it.",
+    find: "The mandate to double merged pull requests worked. Reviewer load roughly doubled with it.",
     href: "https://arxiv.org/abs/2607.01904",
   },
   {
@@ -89,103 +91,6 @@ const PAPERS = [
     href: "https://arxiv.org/abs/2607.07980",
   },
 ];
-
-/** Opens the measurement section, above the product showcase. */
-export function Position() {
-  return (
-    <>
-      {/*
-        The quote is set as an object rather than a second headline. Two display-weight
-        statements stacked — the h2 and this — were competing for the same job; giving the
-        quote a card, a lighter weight and a hanging quote mark makes it read as a
-        quotation and lets the heading stay the heading.
-      */}
-      <Reveal delay={60}>
-        <figure className="relative mt-10 overflow-hidden rounded-2xl border border-line bg-white px-7 py-8 lift sm:px-10 sm:py-10">
-          <span
-            aria-hidden="true"
-            // fully inside the card: at -top-6 the overflow clip sliced it and it read as
-            // a rendering artifact rather than a quote mark
-            className="pointer-events-none absolute right-7 top-5 select-none font-mono text-[4.5rem] leading-none text-line"
-          >
-            &rdquo;
-          </span>
-          <blockquote className="relative max-w-3xl">
-            <p className="text-balance text-[1.45rem] font-semibold leading-[1.32] tracking-[-0.02em] text-ink sm:text-[1.85rem]">
-              The industry spent forty years learning not to count lines. Then it started
-              counting again.
-            </p>
-          </blockquote>
-        </figure>
-      </Reveal>
-
-      {/*
-        Two columns, so the argument reads as a turn rather than a wall: what went wrong on
-        the left, what we do instead on the right. It also halves the line length, which at
-        one full-width measure was uncomfortably long.
-      */}
-      <Reveal delay={110}>
-        <div className="mt-10 grid gap-8 text-[15.5px] leading-relaxed text-ink-3 lg:grid-cols-2 lg:gap-14">
-          <div>
-            <p className="mb-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-              What happened
-            </p>
-            <p className="mb-4">
-              For four decades the industry agreed that counting lines was a poor way to
-              measure software. It rewards volume, and the engineers you most want to keep are
-              the ones who remove volume. A rewrite that deletes two thousand lines and a
-              feature that adds two thousand score as opposites, when the first is often worth
-              more. Anyone measured on the number learns to write more code than the problem
-              needs. The argument was settled and the metric was retired.
-            </p>
-            <p>
-              Then AI arrived and the same number came back wearing a new name. Share of code
-              written by AI. Tokens consumed. Suggestions accepted. Every one of them counts the
-              act of writing, and that too{" "}
-              <span className="font-semibold text-ink">
-                at the exact moment writing stopped being the expensive part
-              </span>
-              . Worse, a metric that was merely gameable when a human had to type it is
-              unbounded when a machine does.
-            </p>
-          </div>
-
-          <div>
-            <p className="mb-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-              What we do instead
-            </p>
-            <p>
-              Lines of code. Pull requests merged. Tokens burned. None of these tell the real
-              story of what the work was worth or what it cost to keep. We measure what
-              happened afterwards:
-            </p>
-            <ul className="mt-4 flex flex-col gap-2">
-              {[
-                "What the work was worth",
-                "What it cost to get",
-                "What survived review",
-                "What quietly compounded",
-              ].map((x) => (
-                <li key={x} className="flex items-center gap-2.5 text-[15px] font-medium text-ink">
-                  <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ background: "var(--t3)" }}
-                  />
-                  {x}
-                </li>
-              ))}
-            </ul>
-            {/* the payoff of the list, and the answer to the obvious objection: every one
-                of these is a dollar figure, so none of it rests on a proxy */}
-            <p className="mt-4">
-              All mapped to $, so you don&apos;t have to worry about proxy metrics.
-            </p>
-          </div>
-        </div>
-      </Reveal>
-    </>
-  );
-}
 
 /** Follows the product showcase. */
 export function NumberIsNotAnAnswer() {

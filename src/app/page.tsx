@@ -7,7 +7,11 @@ import { Marquee } from "@/components/marquee";
 import { Showcase } from "@/components/showcase";
 import { UseCases } from "@/components/use-cases";
 import { Statement } from "@/components/statement";
-import { NumberIsNotAnAnswer, Position } from "@/components/philosophy";
+import { NumberIsNotAnAnswer } from "@/components/philosophy";
+import { TwoDashboards } from "@/components/two-dashboards";
+import { Instruments } from "@/components/instruments";
+import { Platform } from "@/components/platform";
+import { HowWeSee } from "@/components/how-we-see";
 
 function Section({
   id,
@@ -39,7 +43,7 @@ function Hero() {
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 py-1.5 pl-2 pr-3.5 backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-ink" />
               <span className="text-[12.5px] font-semibold tracking-tight text-ink-2">
-                AI unit economics for software delivery
+                Creativity is the new productivity
               </span>
             </span>
           </Reveal>
@@ -48,9 +52,9 @@ function Hero() {
             {/* Sized to hold each sentence on a single line from lg up; it still wraps
                 on narrow screens, where two balanced lines read better than 20px type. */}
             <h1 className="display mx-auto mt-6 max-w-[19ch] text-[2.05rem] sm:max-w-none sm:text-[2.6rem] lg:text-[2.85rem]">
-              <span className="block text-balance">Where&apos;s your AI budget going?</span>
+              <span className="block text-balance">Every dashboard says you shipped more.</span>
               <span className="refract block text-balance">
-                Full-spectrum accounting of your AI bill.
+                We tell you if it was worth shipping.
               </span>
             </h1>
           </Reveal>
@@ -66,14 +70,15 @@ function Hero() {
                 expected to decode, and there's nothing to decode here.
             */}
             <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[1.95] text-ink-3">
+              When writing is free, volume stops being an achievement. Behold measures the{" "}
               <span
                 className="mark whitespace-nowrap font-semibold text-ink"
                 style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
               >
-                Trace and optimize
+                judgment
               </span>{" "}
-              every AI dollar through your entire SDLC. Behold turns your developer and AI tool
-              data into one honest picture: what you put in, what you got out, all in{" "}
+              behind the work: what it costs you to keep the slop, and where a person is still
+              the most valuable thing in the room. All of it in{" "}
               <span
                 className="mark whitespace-nowrap font-extrabold text-ink"
                 style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
@@ -171,26 +176,25 @@ function ReadsFrom() {
 
 /* --- what we do ----------------------------------------------------------- */
 
-function Model() {
+/* The visual proof of the parity claim: the grid above says what we do, this shows it.
+   Kept on the same white ground as `Platform` so the two read as one stretch of product
+   rather than two competing sections. */
+function Product() {
   return (
-    <div className="border-y border-line bg-paper">
-      <Section id="model" className="py-24">
-        <Reveal>
-          <div className="max-w-2xl">
-            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              Scientific measurement of your engineering value.
-            </h2>
-          </div>
-        </Reveal>
-
-        <Position />
-
-        <div className="mt-12">
-          <Showcase />
+    <Section id="model" className="pb-24">
+      <Reveal>
+        <div className="max-w-2xl">
+          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
+          <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
+            One instrument, pointed at the whole lifecycle.
+          </h2>
         </div>
-      </Section>
-    </div>
+      </Reveal>
+
+      <div className="mt-12">
+        <Showcase />
+      </div>
+    </Section>
   );
 }
 
@@ -236,10 +240,21 @@ export default function Home() {
   return (
     <>
       <Nav />
+      {/*
+        Section order is the argument, and the background bands alternate across it so no
+        two adjacent sections share a ground:
+
+          problem → why nothing existing sees it → our two numbers → the full surface,
+          stated then shown → who uses it → who we are → the evidence → ask.
+      */}
       <main>
         <Hero />
         <ReadsFrom />
-        <Model />
+        <TwoDashboards />
+        <HowWeSee />
+        <Instruments />
+        <Platform />
+        <Product />
         <UseCases />
         <Statement />
         <NumberIsNotAnAnswer />

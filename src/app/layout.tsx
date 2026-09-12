@@ -27,9 +27,9 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const title = "Behold — AI unit economics for software delivery";
+const title = "Behold — creativity is the new productivity";
 const description =
-  "Trace every AI dollar through your entire SDLC. Behold attributes AI spend across planning, building, review and release — with cost per merged pull request, and what shipped versus what was abandoned.";
+  "Every dashboard says you shipped more. Behold measures the judgment behind the work: what plausible-looking output costs after it merges, and where a person is still the most valuable thing in the room. Engineering and token intelligence, routing, review and agent observability included.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://beholdlabs.com"),
@@ -39,11 +39,13 @@ export const metadata: Metadata = {
   },
   description,
   keywords: [
-    "AI spend monitoring",
+    "AI slop",
     "engineering intelligence",
+    "AI code quality",
     "developer productivity",
-    "developer experience",
-    "AI ROI",
+    "AI spend monitoring",
+    "agent observability",
+    "model routing",
     "software engineering metrics",
   ],
   openGraph: {
