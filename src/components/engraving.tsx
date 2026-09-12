@@ -133,18 +133,22 @@ export function ReconciliationPlate({ className = "" }: { className?: string }) 
           transform={`rotate(-90 ${S / 2} ${S / 2})`}
         />
 
-        {/* as reported: the full claim */}
+        {/* as reported: the full claim, cut first */}
         <circle
+          className="draw"
           cx={S / 2}
           cy={S / 2}
           r={outerR}
           fill="none"
           stroke="var(--ink)"
           strokeWidth="1.4"
+          strokeDasharray={circ(outerR)}
+          style={{ ["--len" as string]: circ(outerR), ["--d" as string]: "60ms" }}
           transform={`rotate(-90 ${S / 2} ${S / 2})`}
         />
-        {/* as it arrived */}
+        {/* as it arrived: the shorter cut, staggered behind it so the shortfall opens up */}
         <circle
+          className="draw"
           cx={S / 2}
           cy={S / 2}
           r={innerR}
@@ -152,6 +156,7 @@ export function ReconciliationPlate({ className = "" }: { className?: string }) 
           stroke="var(--s1)"
           strokeWidth="1.4"
           strokeDasharray={`${circ(innerR) * arrived} ${circ(innerR)}`}
+          style={{ ["--len" as string]: circ(innerR) * arrived, ["--d" as string]: "220ms" }}
           transform={`rotate(-90 ${S / 2} ${S / 2})`}
         />
 
@@ -235,8 +240,8 @@ export function Stamp({
   return (
     <svg
       viewBox="0 0 340 104"
-      className={className}
-      style={{ transform: `rotate(${rotate}deg)` }}
+      className={`press ${className}`}
+      style={{ ["--rot" as string]: `${rotate}deg`, transform: `rotate(${rotate}deg)` }}
       aria-hidden="true"
     >
       <defs>

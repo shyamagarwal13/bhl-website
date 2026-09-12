@@ -24,9 +24,9 @@ export default function Page() {
         title="One beam in. A spectrum out."
         lead="Most requests do not need the expensive model. The hard part is not saving money, it is proving that quality held while you did — which requires measuring the work, not just the latency."
         stats={[
-          { k: "Spend reduction", v: "−31%" },
-          { k: "Pass rate held", v: "96.4%" },
-          { k: "Added latency", v: "38ms" },
+          { k: "Status", v: "In development" },
+          { k: "Design partners", v: "A handful" },
+          { k: "Measured on", v: "Your repos" },
         ]}
         art={<RouterArt />}
       />
@@ -86,15 +86,15 @@ export default function Page() {
             "Roll back a routing policy the moment the bar moves",
           ]}
           panel={
-            <Card title="Before and after" meta="8 weeks">
+            <Card title="What we watch" meta="illustrative">
               <ul className="flex flex-col gap-3">
-                <Bar label="Spend" pct={69} value="−31%" band="var(--t3)" />
-                <Bar label="Pass rate" pct={96} value="96.4%" band="var(--s1)" delay={100} />
-                <Bar label="Retries" pct={12} value="+1.1%" band="var(--s4)" delay={200} />
-                <Bar label="Rework" pct={8} value="flat" band="var(--paper-2)" delay={300} />
+                <Bar label="Spend" pct={64} value="down" band="var(--t3)" />
+                <Bar label="Pass rate" pct={92} value="held" band="var(--s1)" delay={100} />
+                <Bar label="Retries" pct={14} value="watch" band="var(--s4)" delay={200} />
+                <Bar label="Rework" pct={10} value="watch" band="var(--paper-2)" delay={300} />
               </ul>
               <p className="mt-5 border-t border-line pt-4 text-[12px] leading-relaxed text-ink-4">
-                The fourth bar is the one that matters. A router that saves 31% and raises
+                The fourth bar is the one that matters. A router that cuts the bill and raises
                 rework has not saved anything.
               </p>
             </Card>

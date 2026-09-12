@@ -25,9 +25,9 @@ export default function Page() {
         title="Every AI dollar, and what it actually bought."
         lead="Your provider can tell you what you spent. Nobody but you can tell you what it was worth, because the return shows up somewhere the invoice never looks: in what the work cost to keep."
         stats={[
-          { k: "Providers and tools", v: "14" },
-          { k: "Attribution methods", v: "3" },
-          { k: "Reconciles to invoice", v: "±0.5%" },
+          { k: "Design partners", v: "A handful" },
+          { k: "Attribution methods", v: "Three" },
+          { k: "Status", v: "In development" },
         ]}
         art={<TokenArt />}
       />

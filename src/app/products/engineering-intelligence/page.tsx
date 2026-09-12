@@ -25,9 +25,9 @@ export default function Page() {
         title="Know whether the work was any good."
         lead="Throughput tells you a team was busy. It cannot tell you whether anyone exercised judgment, and when producing is free that is the only question left worth asking."
         stats={[
-          { k: "Signals per change", v: "40+" },
-          { k: "Languages", v: "24" },
-          { k: "Time to first reading", v: "48h" },
+          { k: "Status", v: "In development" },
+          { k: "Design partners", v: "A handful" },
+          { k: "Grounded in", v: "Published work" },
         ]}
         art={<EngArt />}
       />

@@ -35,7 +35,7 @@ function SlopAccount() {
     <div className="w-full max-w-[460px]">
       <div className="flex items-baseline justify-between gap-4 border-b border-ink pb-3">
         <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">
-          Charges, this quarter
+          Worked example · charges
         </span>
         <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">USD</span>
       </div>
@@ -93,7 +93,7 @@ function JudgmentTally() {
     <div className="w-full max-w-[460px]">
       <div className="flex items-baseline justify-between gap-4 border-b border-ink pb-3">
         <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">
-          Review that changed direction
+          Worked example · review that changed direction
         </span>
         <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">
           0–100
@@ -202,11 +202,12 @@ export function Instruments() {
               <span className="rule mb-1 flex-1" />
             </div>
             <h2 className="h2 mt-8 max-w-3xl text-[2.1rem] sm:text-[2.7rem]">
-              Two readings nobody else computes.
+              Two questions we think are the right ones.
             </h2>
             <p className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-ink-3">
-              Everything in the next section, every vendor in this category has. These two are
-              ours, and they are the reason the rest of it is worth reading.
+              Most of what this category measures, everyone measures. These two are the ones we
+              keep coming back to in the research, and they are what we would want to work out
+              with you first.
             </p>
           </div>
         </Reveal>
@@ -215,26 +216,26 @@ export function Instruments() {
       <div className="mt-16">
         <Instrument
           index="01"
-          name="Slop Index"
+          name="What it cost to keep"
           tone="var(--s5)"
           reading="61"
           claim="What plausible work costs after it merges."
-          body="Computed from what gets rewritten, what drags review, what compounds as complexity, and what nobody can account for three weeks later. Priced, so the conversation happens in a budget meeting rather than a retro."
+          body="What gets rewritten, what drags review, what compounds as complexity, and what nobody can account for three weeks later. Put a price on it and the conversation moves from a retro to a budget meeting, which is where it belongs."
           priced="$412k"
-          pricedLabel="Charged this quarter"
+          pricedLabel="In this example"
           art={<SlopAccount />}
         />
         <Instrument
           flip
           index="02"
-          name="Judgment Rate"
+          name="Where judgment showed up"
           tone="var(--t3)"
           reading="22%"
           claim="Where a person changed the direction, not the syntax."
           claimBreaks={["Where a person changed", "the direction, not the syntax."]}
-          body="Read from the work itself: the rejections, the redirections, the designs thrown away before they cost anything. The only one of our numbers that rises when people think harder, and the only one that cannot be gamed by producing more."
+          body="The rejections, the redirections, the designs thrown away before they cost anything. It is the one thing we look at that rises when people think harder, and the one thing that cannot be gamed by producing more of anything."
           priced="$780k"
-          pricedLabel="Avoided this quarter"
+          pricedLabel="In this example"
           art={<JudgmentTally />}
         />
       </div>

@@ -1,28 +1,28 @@
 import { Wordmark } from "./brand";
+import { Seal } from "./engraving";
 
 const COLUMNS = [
   {
-    h: "Platform",
+    h: "Products",
     links: [
-      { l: "AI spend intelligence", href: "#model" },
-      { l: "Engineering output", href: "#model" },
-      { l: "Developer experience", href: "#model" },
-      { l: "Code health", href: "#model" },
+      { l: "Engineering intelligence", href: "/products/engineering-intelligence" },
+      { l: "Token intelligence", href: "/products/token-intelligence" },
+      { l: "Router", href: "/products/router" },
     ],
   },
   {
-    h: "Product",
+    h: "The argument",
     links: [
-      { l: "The model", href: "#model" },
-      { l: "Use cases", href: "#use-cases" },
-      { l: "Get in touch", href: "#demo" },
+      { l: "Two readings of a quarter", href: "/#slop" },
+      { l: "Why a third instrument", href: "/#how-we-see" },
+      { l: "What we look at", href: "/#instruments" },
     ],
   },
   {
     h: "Company",
     links: [
-      { l: "About", href: "#" },
-      { l: "Careers", href: "#" },
+      { l: "Research", href: "/#approach" },
+      { l: "Get in touch", href: "/#demo" },
       { l: "Contact", href: "mailto:hello@beholdlabs.com" },
     ],
   },
@@ -36,8 +36,8 @@ export function Footer() {
           <div>
             <Wordmark tone="white" />
             <p className="mt-4 max-w-xs text-[13.5px] leading-relaxed text-white/45">
-              AI unit economics for software delivery. Trace every AI dollar through your
-              entire SDLC.
+              A small research group measuring what AI-assisted engineering actually costs to
+              keep. Creativity is the new productivity.
             </p>
           </div>
 
@@ -62,7 +62,13 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
+        {/* The seal, pressed onto the foot of the document rather than floating in a band of
+            its own between two dark sections. Inverted to sit on ink. */}
+        <div className="mt-16 flex justify-end opacity-30 invert">
+          <Seal size={108} />
+        </div>
+
+        <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
           <p className="text-xs text-white/40">
             © {new Date().getFullYear()} Behold Labs. All rights reserved.
           </p>

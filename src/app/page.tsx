@@ -1,7 +1,7 @@
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { DemoForm } from "@/components/demo-form";
-import { ReconciliationPlate, Seal } from "@/components/engraving";
+import { ReconciliationPlate } from "@/components/engraving";
 import { Reveal } from "@/components/reveal";
 import { NumberIsNotAnAnswer } from "@/components/philosophy";
 import { SectionHead } from "@/components/section-head";
@@ -9,6 +9,7 @@ import { Instruments } from "@/components/instruments";
 import { Platform } from "@/components/platform";
 import { HowWeSee } from "@/components/how-we-see";
 import { Ledger } from "@/components/ledger";
+import { Showcase } from "@/components/showcase";
 import { StatementArtifact } from "@/components/statement-artifact";
 
 function Section({
@@ -118,16 +119,17 @@ function Cta() {
                 Bring evidence to the next budget conversation.
               </h2>
               <p className="mt-6 max-w-lg text-[1.0625rem] leading-relaxed text-white/60">
-                We&apos;re working with a small number of engineering organizations to get this
-                right. Connect a repository and see your own numbers.
+                We are a small team of researchers, early in this, and working with a few
+                engineering organisations to get it right. If the argument above sounds like
+                your quarter, we would like to hear about it.
               </p>
             </div>
 
             <div>
               <dl className="border-t border-white/12">
                 {[
-                  ["Typical Slop Index, first read", "58–71"],
-                  ["Time to first reading", "48h"],
+                  ["Organisations we work with at a time", "A handful"],
+                  ["What the first conversation costs", "Nothing"],
                 ].map(([k, v]) => (
                   <div
                     key={k}
@@ -173,15 +175,29 @@ export default function Home() {
         <Instruments />
         <StatementArtifact />
         <Platform />
+
+        {/* What we are building, shown rather than described. Kept after the product list and
+            explicitly labelled in progress: a consultancy this early should show the shape of
+            the tools without implying they are sitting there switched on. */}
+        <Section className="pb-24">
+          <SectionHead
+            label="What we are building"
+            width="wide"
+            title={<>The instruments, as they are taking shape.</>}
+            lead={
+              <>
+                In development with our design partners. We would rather show you the honest
+                state of it than a rendering of something finished.
+              </>
+            }
+          />
+          <div className="mt-12">
+            <Showcase />
+          </div>
+        </Section>
         <NumberIsNotAnAnswer />
         <Cta />
       </main>
-
-      {/* A blind deboss at the foot: no ink, shadow only, the way a certificate is sealed
-          rather than printed. Sits between the last section and the legal furniture. */}
-      <div className="flex justify-center border-t border-line py-14">
-        <Seal />
-      </div>
 
       <Footer />
     </>
