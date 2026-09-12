@@ -131,7 +131,7 @@ export function TwoDashboards() {
               title="A breakout quarter."
               rows={SEEN}
               tone="seen"
-              note="Nothing here is wrong. Every number is real, and every tool in this category will show you some version of it."
+              note="Nothing here is wrong. Every number is real, and every tool you already run will show you some version of it."
             />
           </Reveal>
           <Reveal delay={110}>

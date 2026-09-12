@@ -50,7 +50,6 @@ const MENU: {
         t: "Router",
         d: "The cheapest model that still clears your bar",
         href: "/products/router",
-        tag: "New",
       },
     ],
   },
@@ -265,7 +264,7 @@ export function Nav() {
                   Creativity is the new productivity.
                 </span>
                 <span className="text-[12.5px] text-ink-3">
-                  Everything above is table stakes. The first column is why you&apos;d switch.
+                  Measurement you can act on, and the researchers to read it with you.
                 </span>
               </div>
             </div>

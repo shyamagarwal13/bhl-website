@@ -59,7 +59,6 @@ const PRODUCTS: Product[] = [
   },
   {
     name: "Router",
-    tag: "New",
     band: "var(--s5)",
     lead: "One beam in. A spectrum out.",
     body: "Each request goes to the cheapest model that still clears your quality bar, with the bar measured on your repositories rather than a public leaderboard.",
@@ -81,8 +80,8 @@ export function Platform() {
       <SectionHead
           label="The platform"
           width="wide"
-          title={<>Three products. Everything the category does.</>}
-          lead={<>You should not have to give up routing, review or spend attribution to get a measurement you can trust. You don&apos;t.</>}
+          title={<>Three products, and the people behind them.</>}
+          lead={<>Get access to engineering measurement, AI spend attribution and model routing — and to the researchers who work out what the numbers mean.</>}
         />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-3">

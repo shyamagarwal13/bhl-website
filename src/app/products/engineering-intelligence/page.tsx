@@ -122,8 +122,8 @@ export default function Page() {
       <Band>
         <Signal
           eyebrow="Delivery and review"
-          title="Everything the category measures, measured properly."
-          body="You do not have to give up the standard reporting to get the two numbers above. Delivery, review health, quality and DORA are all here, attributed to teams and initiatives rather than to individuals, and benchmarked against organisations we will name rather than an industry average nobody can audit."
+          title="The standard reporting, done properly."
+          body="Delivery, review health, quality and DORA, attributed to teams and initiatives rather than to individuals, and benchmarked against organisations we will name rather than an industry average nobody can audit."
           points={[
             "DORA, with the distribution shown and not just the median",
             "Review as a gate or a bottleneck, per team and per repository",

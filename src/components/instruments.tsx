@@ -167,8 +167,8 @@ export function Instruments() {
       <SectionHead
           label="Our instruments"
           width="wide"
-          title={<>Two questions we think are the right ones.</>}
-          lead={<>Most of what this category measures, everyone measures. These two are the ones we keep coming back to in the research, and they are what we would want to work out with you first.</>}
+          title={<>We answer the right questions.</>}
+          lead={<>These are the two we keep coming back to in the research, and the two we would want to work out with you first.</>}
         />
 
       <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">

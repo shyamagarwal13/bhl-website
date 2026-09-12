@@ -21,7 +21,7 @@ import { SectionHead } from "./section-head";
 const LENSES = [
   {
     eyebrow: "Telemetry",
-    who: "Most of this category",
+    who: "Most tools",
     lead: "Reads the events.",
     body: "Commits, pull requests, tokens, agent runs, incidents. An event stream is an excellent record of what happened and a poor one of whether it should have. Judgment leaves almost no trace in it.",
     dark: false,
