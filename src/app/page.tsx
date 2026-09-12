@@ -8,6 +8,7 @@ import { Showcase } from "@/components/showcase";
 import { UseCases } from "@/components/use-cases";
 import { Statement } from "@/components/statement";
 import { NumberIsNotAnAnswer } from "@/components/philosophy";
+import { SectionHead } from "@/components/section-head";
 import { TwoDashboards } from "@/components/two-dashboards";
 import { Instruments } from "@/components/instruments";
 import { Platform } from "@/components/platform";
@@ -182,14 +183,11 @@ function ReadsFrom() {
 function Product() {
   return (
     <Section id="model" className="pb-24">
-      <Reveal>
-        <div className="max-w-2xl">
-          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-          <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-            One instrument, pointed at the whole lifecycle.
-          </h2>
-        </div>
-      </Reveal>
+      <SectionHead
+        label="In the product"
+        width="wide"
+        title={<>One instrument, pointed at the whole lifecycle.</>}
+      />
 
       <div className="mt-12">
         <Showcase />

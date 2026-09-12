@@ -3,50 +3,59 @@
 /*
   Behold Labs — design system.
 
-  CONCEPT: the prism.
+  CONCEPT: patina.
 
-  Behold is about seeing. A prism takes one undifferentiated beam and splits it into a
-  spectrum you can measure — which is exactly the product: one opaque number (AI spend)
-  refracted into bands you can act on (team, repo, pull request, outcome).
+  The prism explained what we do to a number. It did not explain what we are looking at,
+  which is time. Every claim on this site is about what happens to work *after* it merges:
+  what gets rewritten, what drags review, what compounds, what quietly decays. That is
+  oxidation, and oxidation already has a colour language that everybody reads without being
+  taught it.
 
-  So the identity is a spectrum, not a single brand color, and it is used literally:
-  five fixed bands that appear as rules, chart series, section markers and the hero
-  refraction. Primary actions are ink black — the color carries meaning, so it never
-  gets spent on a button.
+  Copper exposed to air turns verdigris and gets more valuable — that is judgment, the thing
+  that compounds. Iron exposed to air turns to rust and loses structure — that is slop. So
+  the two signal colours are not decorative opposites picked for contrast, they are the two
+  things that actually happen to material left out in the weather, and the whole page is the
+  assay.
+
+  The ground is cold sage paper rather than the warm cream this kind of page usually gets:
+  cream reads as nostalgia, and this is an instrument, not a memoir. Primary actions stay
+  ink — colour carries meaning here, so it is never spent on a button.
+
+  The five bands survive as --s1…--s5 so every chart keeps working, but they are now an
+  oxidation series running petrol → steel → verdigris → brass → rust.
 */
 
 :root {
-  /* Ground — cool paper, chosen not inherited */
+  /* Ground — cold sage paper, chosen not inherited */
   --white: #ffffff;
-  --paper: #f7f8fa;
-  --paper-2: #eef0f4;
-  --line: #e3e6ec;
-  --line-2: #cfd4de;
+  --paper: #eceee8;
+  --paper-2: #dfe2da;
+  --line: #d5d9cf;
+  --line-2: #bcc2b4;
 
-  /* Ink */
-  --ink: #0e1116;
-  --ink-2: #333a46;
-  --ink-3: #656e7f;
-  --ink-4: #99a1b0;
+  /* Ink — blue-black, so it reads as ink rather than as UI grey */
+  --ink: #12171a;
+  --ink-2: #2e383c;
+  --ink-3: #55646a;
+  --ink-4: #879599;
 
-  /* The spectrum — five bands, always in this order */
-  --s1: #4f46e5; /* indigo  */
-  --s2: #0ea5e9; /* azure   */
-  --s3: #10b5a0; /* teal    */
-  --s4: #f59e0b; /* amber   */
-  --s5: #f2564b; /* coral   */
+  /* The oxidation series — five bands, always in this order */
+  --s1: #1f5f6b; /* petrol    */
+  --s2: #4a7c8c; /* steel     */
+  --s3: #3e9e86; /* verdigris */
+  --s4: #a8843c; /* brass     */
+  --s5: #b4452c; /* rust      */
 
-  /* Text-safe spectrum. The display bands are tuned for fills and hit 2.1–2.8:1 on
-     white — fine behind a bar, illegible as type. These darkened stops keep the same
-     hue order above the 3:1 large-text floor (measured 4.9–7.9:1). */
-  --t1: #4338ca;
-  --t2: #0369a1;
-  --t3: #0f766e;
-  --t4: #a16207;
-  --t5: #be3428;
+  /* Text-safe series. The display bands are tuned for fills and sit too light for type on
+     paper; these darkened stops keep the same hue order above the 3:1 large-text floor. */
+  --t1: #17484f;
+  --t2: #35606d;
+  --t3: #2b7a66;
+  --t4: #7e6129;
+  --t5: #8e3421;
 
-  --pos: #10b5a0;
-  --neg: #f2564b;
+  --pos: #2b7a66;
+  --neg: #b4452c;
 
   --maxw: 1200px;
 }
@@ -76,7 +85,8 @@
   --color-pos: var(--pos);
   --color-neg: var(--neg);
 
-  --font-sans: var(--font-jakarta);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-display-face);
   --font-mono: var(--font-mono-face);
   --font-hand: var(--font-hand-face);
 }
@@ -85,14 +95,20 @@
   border-color: var(--line);
 }
 
+/*
+  Paper is the ground, not white. Three steps only, and they never swap roles: the page is
+  sage paper, a band that wants separation steps down to --paper-2, and anything that holds
+  a reading is white. That last rule is what makes the instruments read — a white card on
+  sage is a specimen on a bench, where a white card on white is just a border.
+*/
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 7rem;
-  background: var(--white);
+  background: var(--paper);
 }
 
 body {
-  background: var(--white);
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -117,16 +133,53 @@ body {
 
 /* --- type ----------------------------------------------------------------- */
 
+/*
+  Display and section headings share one face. Instrument Serif ships a single weight, which
+  is a constraint worth having: it forces hierarchy to come from size, measure and space
+  rather than from dialling a variable axis, and it stops every heading shouting.
+
+  Negative tracking that a grotesque at 800 needs would close this face's apertures and
+  muddy the thin strokes, so both classes sit near zero and let the serif breathe.
+*/
 .display {
-  font-weight: 800;
-  letter-spacing: -0.038em;
-  line-height: 1.02;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.03;
 }
 
 .h2 {
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.008em;
+  line-height: 1.07;
+}
+
+/* The one place the display face is allowed to lean. Used on a single phrase per page —
+   the turn in the argument — never as decoration. */
+.lean {
+  font-style: italic;
+}
+
+/*
+  A figure set as the subject rather than as a label. The product is numbers, so on this
+  page they get display treatment: the serif, tabular, tight, and big enough to be read
+  across a room.
+*/
+.figure {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+
+/* Hairline rule used as structure: section openings, column gutters, table seams. Kept as
+   a class so the weight is decided once and never drifts to 1px in one place and 2 in
+   another. */
+.rule {
+  height: 1px;
+  background: var(--line-2);
 }
 
 /* Emphasis inside a headline — the one place color enters the type. */
@@ -191,27 +244,40 @@ body {
 /* --- the prism ------------------------------------------------------------ */
 
 /*
-  Hero refraction — a beam entering from the upper left and fanning out. Built from
-  skewed conic/linear layers so it reads as light through glass rather than a gradient
-  wash, and it costs nothing to render.
+  Oxidation bloom.
+
+  Replaces the prism's fanned rainbow, which belonged to the old concept and read as a
+  generic gradient wash the moment the identity stopped being about light. This is the
+  stain instead: soft verdigris and rust blooms spreading through paper the way a patina
+  actually spreads — uneven, overlapping, concentrated where the metal was wet longest.
+
+  Built from three offset radial gradients rather than one, because a single radial reads
+  as a spotlight; overlapping fields at different radii and opacities read as chemistry.
+  Costs nothing to render and never animates.
 */
 .refraction {
   background:
-    /* Fade the beam out before it reaches the product panel. */
-    radial-gradient(110% 78% at 50% 0%, rgba(255, 255, 255, 0) 34%, var(--white) 72%),
-    /* A narrow ray entering top-left, fanning into ordered bands. Tight and low-opacity
-       so it reads as light through glass rather than a rainbow wash. */
-    conic-gradient(
-      from 208deg at 74% -14%,
-      transparent 0deg,
-      color-mix(in srgb, var(--s1) 15%, transparent) 9deg,
-      color-mix(in srgb, var(--s2) 14%, transparent) 14deg,
-      color-mix(in srgb, var(--s3) 13%, transparent) 19deg,
-      color-mix(in srgb, var(--s4) 12%, transparent) 24deg,
-      color-mix(in srgb, var(--s5) 10%, transparent) 29deg,
-      transparent 37deg
+    /* verdigris, upper left, the larger and more diffuse of the two */
+    radial-gradient(
+      62% 74% at 18% 6%,
+      color-mix(in srgb, var(--s3) 26%, transparent) 0%,
+      transparent 62%
     ),
-    var(--white);
+    /* rust, upper right, tighter and warmer */
+    radial-gradient(
+      48% 58% at 86% 2%,
+      color-mix(in srgb, var(--s5) 18%, transparent) 0%,
+      transparent 64%
+    ),
+    /* brass wash bridging the two so they read as one reaction, not two spots */
+    radial-gradient(
+      80% 46% at 52% 0%,
+      color-mix(in srgb, var(--s4) 12%, transparent) 0%,
+      transparent 70%
+    ),
+    /* settle everything back to paper before the content below it */
+    linear-gradient(180deg, transparent 52%, var(--paper) 96%),
+    var(--paper);
 }
 
 .grain::after {
@@ -231,11 +297,13 @@ body {
     0 8px 24px -10px rgba(14, 17, 22, 0.1);
 }
 
+/* The far shadow is tinted petrol rather than neutral: on a sage ground a grey shadow goes
+   muddy, while a shadow carrying a little of the darkest band reads as depth. */
 .lift-lg {
   box-shadow:
-    0 2px 6px rgba(14, 17, 22, 0.05),
-    0 28px 64px -20px rgba(14, 17, 22, 0.22),
-    0 60px 120px -50px rgba(79, 70, 229, 0.2);
+    0 2px 6px rgba(18, 23, 26, 0.05),
+    0 28px 64px -20px rgba(18, 23, 26, 0.2),
+    0 60px 120px -50px rgba(31, 95, 107, 0.28);
 }
 
 /* --- scroll reveal -------------------------------------------------------- */

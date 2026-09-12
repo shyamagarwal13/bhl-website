@@ -1,5 +1,6 @@
 import { PapersRail } from "./papers-rail";
 import { Reveal } from "./reveal";
+import { SectionHead } from "./section-head";
 
 /*
  * The two things you actually buy, and the evidence for the second one.
@@ -95,19 +96,14 @@ const PAPERS = [
 /** Follows the product showcase. */
 export function NumberIsNotAnAnswer() {
   return (
-    <div className="border-y border-line bg-paper/60">
+    <div className="border-y border-line bg-paper-2/60">
       <section id="approach" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-        <Reveal>
-          <div className="max-w-2xl">
-            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              You don&apos;t just get a dashboard. You get experts.
-            </h2>
-            <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              The measurement is automated. What to do about it is not.
-            </p>
-          </div>
-        </Reveal>
+        <SectionHead
+          label="What you buy"
+          width="wide"
+          title={<>You don&apos;t just get a dashboard. You get experts.</>}
+          lead={<>The measurement is automated. What to do about it is not.</>}
+        />
 
         {/* the two halves of what you buy, stated separately so neither absorbs the other */}
         <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">

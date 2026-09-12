@@ -48,7 +48,7 @@ export default function Page() {
             <Card title="Slop Index" meta="Q3 · all teams">
               <div className="flex items-end justify-between gap-4">
                 <div className="flex items-baseline gap-2">
-                  <span className="tabular text-[2.6rem] font-extrabold leading-none tracking-tight text-ink">
+                  <span className="figure text-[3.2rem] text-ink">
                     61
                   </span>
                   <span className="font-mono text-[11px] text-ink-4">/ 100</span>
@@ -90,7 +90,7 @@ export default function Page() {
             <Card title="Judgment Rate" meta="by team · rolling 90d">
               <div className="flex items-end justify-between gap-4">
                 <div className="flex items-baseline gap-2">
-                  <span className="tabular text-[2.6rem] font-extrabold leading-none tracking-tight text-ink">
+                  <span className="figure text-[3.2rem] text-ink">
                     22
                   </span>
                   <span className="font-mono text-[11px] text-ink-4">%</span>

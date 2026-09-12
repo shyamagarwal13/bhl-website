@@ -151,7 +151,7 @@ export function Band({
     </section>
   );
   return tone === "paper" ? (
-    <div className="border-y border-line bg-paper">{inner}</div>
+    <div className="border-y border-line bg-paper-2">{inner}</div>
   ) : (
     inner
   );

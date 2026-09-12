@@ -17,6 +17,7 @@
  */
 
 import { Reveal } from "./reveal";
+import { SectionHead } from "./section-head";
 
 /* --- Slop Index: a segmented meter ---------------------------------------- */
 
@@ -35,7 +36,7 @@ function SlopMeter() {
       <div className="flex items-end justify-between gap-4">
         <div>
           <div className="flex items-baseline gap-2">
-            <span className="tabular text-[3.2rem] font-extrabold leading-none tracking-tight text-ink">
+            <span className="figure text-[4.25rem] text-ink">
               61
             </span>
             <span className="font-mono text-[12px] text-ink-4">/ 100</span>
@@ -48,7 +49,7 @@ function SlopMeter() {
           <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
             Priced
           </p>
-          <p className="tabular mt-1 text-[1.5rem] font-extrabold tracking-tight text-ink">
+          <p className="figure mt-1 text-[1.7rem] text-ink">
             $412k
           </p>
           <p className="text-[11.5px] text-ink-4">per quarter</p>
@@ -94,7 +95,7 @@ function JudgmentBars() {
       <div className="flex items-end justify-between gap-4">
         <div>
           <div className="flex items-baseline gap-2">
-            <span className="tabular text-[3.2rem] font-extrabold leading-none tracking-tight text-ink">
+            <span className="figure text-[4.25rem] text-ink">
               22
             </span>
             <span className="font-mono text-[12px] text-ink-4">%</span>
@@ -107,7 +108,7 @@ function JudgmentBars() {
           <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
             Avoided
           </p>
-          <p className="tabular mt-1 text-[1.5rem] font-extrabold tracking-tight text-ink">
+          <p className="figure mt-1 text-[1.7rem] text-ink">
             $780k
           </p>
           <p className="text-[11.5px] text-ink-4">per quarter</p>
@@ -161,20 +162,14 @@ const CARDS = [
 
 export function Instruments() {
   return (
-    <div className="border-y border-line bg-paper">
+    <div className="border-y border-line bg-paper-2">
       <section id="instruments" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-      <Reveal>
-        <div className="max-w-3xl">
-          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-          <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-            Two numbers nobody else computes.
-          </h2>
-          <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-            Everything in the next section, every vendor in this category has. These two are
-            ours, and they are the reason the rest of it is worth reading.
-          </p>
-        </div>
-      </Reveal>
+      <SectionHead
+          label="Our instruments"
+          width="wide"
+          title={<>Two numbers nobody else computes.</>}
+          lead={<>Everything in the next section, every vendor in this category has. These two are ours, and they are the reason the rest of it is worth reading.</>}
+        />
 
       <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">
         {CARDS.map((c, i) => (

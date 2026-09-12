@@ -98,7 +98,7 @@ const CASES: Case[] = [
 ];
 export function UseCases() {
   return (
-    <div className="border-y border-line bg-paper/60">
+    <div className="border-y border-line bg-paper-2/60">
       <section id="use-cases" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
         <Reveal>
           <div className="max-w-2xl">

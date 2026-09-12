@@ -1,12 +1,29 @@
 import type { Metadata } from "next";
-import { Caveat, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Archivo, Caveat, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import { ContactProvider } from "@/components/contact";
 import "./globals.css";
 
-// One family doing display and text. Jakarta has enough character at 800 to carry a
-// headline and stays quiet at 400, which keeps the page from feeling assembled.
-const sans = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+/*
+ * Three voices, and they are meant to disagree.
+ *
+ * One family doing everything is what made the old page read as competent and anonymous:
+ * a single grotesque at 800 says "software company" and nothing else. The argument here is
+ * that measurement is an instrument rather than a dashboard, so the display face is an
+ * engraved high-contrast serif — the lettering of a plate, a scale, a scientific
+ * instrument — set against a plain working grotesque that carries the reading.
+ */
+const display = Instrument_Serif({
+  variable: "--font-display-face",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+// The working voice. Archivo is a grotesque with square-ish counters that holds its shape
+// at 13px in a dense table, which is most of what this site is.
+const sans = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
 });
@@ -61,7 +78,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} ${hand.variable}`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${display.variable} ${mono.variable} ${hand.variable}`}
+    >
       <body className="min-h-screen">
         {/* holds the single contact dialog, so the nav can open it without a pill */}
         <ContactProvider>{children}</ContactProvider>

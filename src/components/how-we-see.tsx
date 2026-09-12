@@ -16,6 +16,7 @@
  */
 
 import { Reveal } from "./reveal";
+import { SectionHead } from "./section-head";
 
 const LENSES = [
   {
@@ -44,14 +45,11 @@ const LENSES = [
 export function HowWeSee() {
   return (
     <section id="how-we-see" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-      <Reveal>
-        <div className="max-w-3xl">
-          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-          <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-            Two instruments exist. Neither can see this.
-          </h2>
-        </div>
-      </Reveal>
+      <SectionHead
+          label="Why a third instrument"
+          width="wide"
+          title={<>Two instruments exist. Neither can see this.</>}
+        />
 
       {/* the history, as a quotation rather than a second headline */}
       <Reveal delay={60}>

@@ -21,6 +21,7 @@
  */
 
 import { Reveal } from "./reveal";
+import { SectionHead } from "./section-head";
 
 type Row = { label: string; value: string; note: string };
 
@@ -61,7 +62,7 @@ function Panel({
       <div className="flex items-center gap-2.5">
         <span
           className="h-2 w-2 shrink-0 rounded-full"
-          style={{ background: good ? "var(--pos)" : "var(--s4)" }}
+          style={{ background: good ? "var(--pos)" : "var(--s5)" }}
         />
         <span
           className={`font-mono text-[10.5px] uppercase tracking-[0.16em] ${
@@ -93,7 +94,7 @@ function Panel({
             </div>
             <span
               className="tabular shrink-0 text-[1.35rem] font-extrabold tracking-tight"
-              style={{ color: good ? "var(--pos)" : "var(--s4)" }}
+              style={{ color: good ? "var(--pos)" : "var(--s5)" }}
             >
               {r.value}
             </span>
@@ -114,20 +115,14 @@ function Panel({
 
 export function TwoDashboards() {
   return (
-    <div className="border-y border-line bg-paper">
+    <div className="border-y border-line bg-paper-2">
       <section id="slop" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-        <Reveal>
-          <div className="max-w-3xl">
-            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              Same team. Same quarter. Two dashboards.
-            </h2>
-            <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              Both of these are accurate. One of them is what your tooling reports and what gets
-              taken to the board. The other is what the quarter actually cost you.
-            </p>
-          </div>
-        </Reveal>
+        <SectionHead
+          label="The contradiction"
+          width="wide"
+          title="Same team. Same quarter. Two dashboards."
+          lead="Both of these are accurate. One of them is what your tooling reports and what gets taken to the board. The other is what the quarter actually cost you."
+        />
 
         <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">
           <Reveal>

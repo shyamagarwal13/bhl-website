@@ -14,6 +14,7 @@
 
 import Link from "next/link";
 import { Reveal } from "./reveal";
+import { SectionHead } from "./section-head";
 
 type Product = {
   name: string;
@@ -77,18 +78,12 @@ const PRODUCTS: Product[] = [
 export function Platform() {
   return (
     <section id="platform" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-      <Reveal>
-        <div className="max-w-3xl">
-          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-          <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-            Three products. Everything the category does.
-          </h2>
-          <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-            You should not have to give up routing, review or spend attribution to get a
-            measurement you can trust. You don&apos;t.
-          </p>
-        </div>
-      </Reveal>
+      <SectionHead
+          label="The platform"
+          width="wide"
+          title={<>Three products. Everything the category does.</>}
+          lead={<>You should not have to give up routing, review or spend attribution to get a measurement you can trust. You don&apos;t.</>}
+        />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-3">
         {PRODUCTS.map((p, i) => (
