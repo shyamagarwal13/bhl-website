@@ -6,10 +6,12 @@ import { useContact } from "./contact";
 
 // Anchors track the sections that exist; a nav link to a removed section is a dead
 // scroll that looks like a broken page.
+// Root-relative rather than bare fragments: these same links render on the product pages,
+// where a bare "#platform" is a link to a section that is not on the document.
 const LINKS = [
-  { label: "Platform", href: "#platform" },
-  { label: "Use cases", href: "#use-cases" },
-  { label: "Research", href: "#approach" },
+  { label: "Platform", href: "/#platform" },
+  { label: "Use cases", href: "/#use-cases" },
+  { label: "Research", href: "/#approach" },
 ];
 
 /*
@@ -25,35 +27,61 @@ const LINKS = [
  * exists on this page — there are no product pages behind these yet, and a menu of dead
  * links would cost more credibility than the menu buys.
  */
-const MENU: { group: string; band: string; items: { t: string; d: string; href: string }[] }[] = [
+const MENU: {
+  group: string;
+  band: string;
+  items: { t: string; d: string; href: string; tag?: string }[];
+}[] = [
+  {
+    group: "Products",
+    band: "var(--s1)",
+    items: [
+      {
+        t: "Engineering intelligence",
+        d: "Whether the work was any good, not just whether it shipped",
+        href: "/products/engineering-intelligence",
+      },
+      {
+        t: "Token intelligence",
+        d: "Every AI dollar, and what it actually bought",
+        href: "/products/token-intelligence",
+      },
+      {
+        t: "Router",
+        d: "The cheapest model that still clears your bar",
+        href: "/products/router",
+        tag: "New",
+      },
+    ],
+  },
   {
     group: "The human layer",
     band: "var(--s5)",
     items: [
-      { t: "Slop Index", d: "What plausible output costs after it merges", href: "#instruments" },
-      { t: "Judgment Rate", d: "Where a person changed the direction", href: "#instruments" },
-      { t: "Taste capture", d: "Your standards, in the agent's context", href: "#platform" },
-      { t: "Human leverage", d: "Where attention is worth paying for", href: "#platform" },
+      {
+        t: "Slop Index",
+        d: "What plausible output costs after it merges",
+        href: "/products/engineering-intelligence",
+      },
+      {
+        t: "Judgment Rate",
+        d: "Where a person changed the direction",
+        href: "/products/engineering-intelligence",
+      },
+      {
+        t: "Taste capture",
+        d: "Your standards, in the agent's context",
+        href: "/products/engineering-intelligence",
+      },
     ],
   },
   {
-    group: "Measure",
-    band: "var(--s1)",
-    items: [
-      { t: "Engineering intelligence", d: "Delivery, review, quality, DORA", href: "#platform" },
-      { t: "Token intelligence", d: "Usage, ROI, attribution, spend", href: "#platform" },
-      { t: "Agent observability", d: "Every agent run, and what survived", href: "#platform" },
-      { t: "Code intelligence", d: "Complexity, health and drift", href: "#platform" },
-    ],
-  },
-  {
-    group: "Act",
+    group: "Foundations",
     band: "var(--t3)",
     items: [
-      { t: "Model routing", d: "The cheapest model that still clears the bar", href: "#platform" },
-      { t: "Review", d: "Automated review on every pull request", href: "#platform" },
-      { t: "Ask", d: "Question your engineering data in plain language", href: "#platform" },
-      { t: "Benchmarks", d: "Where you stand, with the set named", href: "#platform" },
+      { t: "Research", d: "The published work behind the numbers", href: "/#approach" },
+      { t: "How we measure", d: "Telemetry, surveys, and the third instrument", href: "/#how-we-see" },
+      { t: "Use cases", d: "The decisions this is bought to make", href: "/#use-cases" },
     ],
   },
 ];
@@ -102,7 +130,7 @@ export function Nav() {
       <div className="relative z-50 bg-ink">
         <div className="px-4 py-2.5 text-center">
           <a
-            href="#approach"
+            href="/#approach"
             className="group inline-flex items-center gap-2.5 text-[12.5px] text-white/75 transition-colors hover:text-white"
           >
             <span className="rounded bg-s4 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-ink">
@@ -211,8 +239,13 @@ export function Nav() {
                             onClick={() => setMenu(false)}
                             className="-mx-2 block rounded-lg px-2 py-2 transition-colors hover:bg-paper"
                           >
-                            <span className="block text-[13.5px] font-semibold text-ink">
-                              {it.t}
+                            <span className="flex items-center gap-2">
+                              <span className="text-[13.5px] font-semibold text-ink">{it.t}</span>
+                              {it.tag && (
+                                <span className="rounded bg-s4 px-1.5 py-px text-[9px] font-extrabold uppercase tracking-wide text-ink">
+                                  {it.tag}
+                                </span>
+                              )}
                             </span>
                             <span className="mt-0.5 block text-[12px] leading-snug text-ink-4">
                               {it.d}

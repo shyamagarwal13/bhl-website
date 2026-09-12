@@ -1,133 +1,137 @@
 /*
- * The parity grid.
+ * The product surface, as three products rather than a list of twelve capabilities.
  *
- * Strategically this is the least original section on the page and the one that cannot be
- * skipped. Every serious competitor publishes a dense product surface — routing, review,
- * agent observability, spend attribution, a natural-language agent, benchmarks — and a
- * buyer comparing three tabs will discard the one that appears to do less, however much
- * better its argument is. So the table stakes are stated plainly, in the buyer's own
- * vocabulary, and the differentiated column is placed first rather than hidden among them.
+ * The twelve-item version was accurate and unbuyable: a reader cannot hold twelve things,
+ * and a flat list gives them no way to decide which one is for them. Both serious
+ * competitors publish three or four named products with a page each, and that is the right
+ * shape — the capabilities still exist, they just live inside something a person can point
+ * at and say "that one".
  *
- * Written as three groups rather than one flat list of twelve, because a flat twelve reads
- * as a feature dump and gives the reader no way to hold it. The order is the argument: what
- * only we do, what measures the work, what acts on it.
+ * Each card links to its own page. The human-layer capabilities are folded into engineering
+ * intelligence rather than sold separately, because they are not a bolt-on: the claim is
+ * that this is what engineering intelligence should have been measuring all along.
  */
 
+import Link from "next/link";
 import { Reveal } from "./reveal";
 
-type Item = { t: string; d: string };
-type Group = { eyebrow: string; band: string; note: string; items: Item[] };
+type Product = {
+  name: string;
+  tag?: string;
+  band: string;
+  lead: string;
+  body: string;
+  inside: string[];
+  href: string;
+};
 
-const GROUPS: Group[] = [
+const PRODUCTS: Product[] = [
   {
-    eyebrow: "The human layer",
-    band: "var(--s5)",
-    note: "Only here.",
-    items: [
-      {
-        t: "Slop Index",
-        d: "What plausible-looking output costs after it merges, priced per team and per quarter.",
-      },
-      {
-        t: "Judgment Rate",
-        d: "Where a person changed the direction of the work rather than its syntax.",
-      },
-      {
-        t: "Taste capture",
-        d: "Your review standards turned into context the agents actually receive, so the same correction is not made twice.",
-      },
-      {
-        t: "Human leverage map",
-        d: "Which work is worth a person's attention, which is not, and what that reallocation is worth.",
-      },
-    ],
-  },
-  {
-    eyebrow: "Measure",
+    name: "Engineering intelligence",
     band: "var(--s1)",
-    note: "Table stakes, done properly.",
-    items: [
-      {
-        t: "Engineering intelligence",
-        d: "Delivery, review, quality and DORA, attributed to teams and initiatives.",
-      },
-      {
-        t: "Token intelligence",
-        d: "Every dollar of AI spend traced by model, tool, repository and engineer.",
-      },
-      {
-        t: "Agent observability",
-        d: "Every agent run: what it touched, what it cost, what survived review.",
-      },
-      {
-        t: "Code intelligence",
-        d: "Complexity, health and drift, read from the source rather than inferred from metadata.",
-      },
+    lead: "Whether the work was any good.",
+    body: "Delivery, review, quality and DORA — plus the two readings that separate work someone thought about from work that merely merged.",
+    inside: [
+      "Slop Index",
+      "Judgment Rate",
+      "Taste capture",
+      "DORA and delivery",
+      "Code intelligence",
+      "Benchmarks",
     ],
+    href: "/products/engineering-intelligence",
   },
   {
-    eyebrow: "Act",
-    band: "var(--t3)",
-    note: "Measurement that does something.",
-    items: [
-      {
-        t: "Model routing",
-        d: "Route each request to the cheapest model that still clears your quality bar.",
-      },
-      {
-        t: "Review",
-        d: "Automated review on every pull request, tuned to the standards your reviewers actually enforce.",
-      },
-      {
-        t: "Ask",
-        d: "Put a question to your engineering data in plain language and get the query behind the answer.",
-      },
-      {
-        t: "Benchmarks",
-        d: "Where you stand against comparable organisations, with the comparison set named.",
-      },
+    name: "Token intelligence",
+    band: "var(--s3)",
+    lead: "Every AI dollar, and what it bought.",
+    body: "Spend traced from the provider invoice to the change it produced, then to what that change cost you to keep. The second half is the part no invoice contains.",
+    inside: [
+      "Three-method attribution",
+      "Agent observability",
+      "Cost per surviving change",
+      "Per-team and per-initiative",
+      "Net return",
+      "Finance export",
     ],
+    href: "/products/token-intelligence",
+  },
+  {
+    name: "Router",
+    tag: "New",
+    band: "var(--s5)",
+    lead: "One beam in. A spectrum out.",
+    body: "Each request goes to the cheapest model that still clears your quality bar, with the bar measured on your repositories rather than a public leaderboard.",
+    inside: [
+      "Per-request difficulty",
+      "Switch-cost pricing",
+      "Quota-aware routing",
+      "Quality proof on your work",
+      "Self-hosted option",
+      "Policy rollback",
+    ],
+    href: "/products/router",
   },
 ];
 
 export function Platform() {
   return (
     <section id="platform" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-        <Reveal>
-          <div className="max-w-3xl">
-            <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
-            <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
-              Everything the category does. Plus the part it doesn&apos;t.
-            </h2>
-            <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
-              You should not have to give up routing, review or spend attribution to get a
-              measurement you can trust. You don&apos;t.
-            </p>
-          </div>
-        </Reveal>
+      <Reveal>
+        <div className="max-w-3xl">
+          <div className="mb-7 h-[3px] w-12 rounded-full bg-ink" />
+          <h2 className="h2 text-balance text-[2.25rem] sm:text-[2.9rem]">
+            Three products. Everything the category does.
+          </h2>
+          <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink-3">
+            You should not have to give up routing, review or spend attribution to get a
+            measurement you can trust. You don&apos;t.
+          </p>
+        </div>
+      </Reveal>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {GROUPS.map((g, gi) => (
-            <Reveal key={g.eyebrow} delay={gi * 90}>
-              <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-7 sm:p-8">
-                <div className="flex items-center gap-2.5">
-                  <span className="h-2 w-2 rounded-full" style={{ background: g.band }} />
-                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-                    {g.eyebrow}
+      <div className="mt-12 grid gap-5 lg:grid-cols-3">
+        {PRODUCTS.map((p, i) => (
+          <Reveal key={p.name} delay={i * 90}>
+            <Link
+              href={p.href}
+              className="group flex h-full flex-col rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift sm:p-8"
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="h-2 w-2 rounded-full" style={{ background: p.band }} />
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+                  {p.name}
+                </span>
+                {p.tag && (
+                  <span className="rounded bg-s4 px-1.5 py-px text-[9px] font-extrabold uppercase tracking-wide text-ink">
+                    {p.tag}
                   </span>
-                  <span className="ml-auto font-mono text-[10px] text-ink-4">{g.note}</span>
-                </div>
+                )}
+              </div>
 
-                <ul className="mt-6 flex flex-col divide-y divide-line">
-                  {g.items.map((it) => (
-                    <li key={it.t} className="py-4 first:pt-0 last:pb-0">
-                      <p className="text-[14.5px] font-bold text-ink">{it.t}</p>
-                      <p className="mt-1.5 text-[13px] leading-relaxed text-ink-3">{it.d}</p>
+              <h3 className="mt-5 text-balance text-[1.25rem] font-bold leading-snug text-ink">
+                {p.lead}
+              </h3>
+              <p className="mt-3.5 text-[13.5px] leading-relaxed text-ink-3">{p.body}</p>
+
+              <div className="mt-auto pt-7">
+                <ul className="flex flex-wrap gap-1.5 border-t border-line pt-6">
+                  {p.inside.map((x) => (
+                    <li
+                      key={x}
+                      className="rounded-full bg-paper px-2.5 py-1 text-[11.5px] text-ink-2"
+                    >
+                      {x}
                     </li>
                   ))}
                 </ul>
+                <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-bold text-ink">
+                  Explore
+                  <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
               </div>
-            </Reveal>
+            </Link>
+          </Reveal>
         ))}
       </div>
     </section>
