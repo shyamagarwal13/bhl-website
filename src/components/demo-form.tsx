@@ -80,10 +80,10 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
         noValidate
         // the focus ring goes on the pill, not the bare input, so it follows the shape the
         // user sees; the input's own ring is suppressed in the same breath
-        className={`flex w-full flex-col gap-1.5 rounded-3xl border p-1.5 outline-offset-2 has-[input:focus-visible]:outline-2 sm:flex-row sm:items-center sm:rounded-full ${
+        className={`flex w-full flex-col gap-3 border-b-2 pb-2 outline-offset-4 has-[input:focus-visible]:outline-2 sm:flex-row sm:items-end sm:gap-4 ${
           onDark
             ? "border-white/20 bg-white/10 backdrop-blur-md has-[input:focus-visible]:outline-white"
-            : "border-line-2 bg-white lift has-[input:focus-visible]:outline-ink"
+            : "border-line-2 bg-white has-[input:focus-visible]:outline-ink"
         }`}
       >
         <input
@@ -102,7 +102,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
         <button
           type="submit"
           disabled={busy}
-          className={`h-10 w-full shrink-0 rounded-full px-5 text-[13.5px] font-bold transition-transform hover:scale-[1.03] disabled:opacity-60 disabled:hover:scale-100 sm:w-auto ${
+          className={`h-10 w-full shrink-0 px-5 text-[13.5px] font-bold transition-opacity hover:opacity-80 disabled:opacity-60 sm:w-auto ${
             onDark ? "bg-white text-ink" : "bg-ink text-white"
           }`}
         >
