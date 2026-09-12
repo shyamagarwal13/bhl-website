@@ -1,56 +1,76 @@
 /*
- * The three products, as ruled entries rather than cards.
+ * The product surface, as three products rather than a list of twelve capabilities.
  *
- * This was three white rounded cards carrying nine grey pill tags between them and an
- * "Explore →" affordance — indistinguishable from any Tailwind template, and it was the
- * point where the page abandoned its own ruled editorial grid and never came back.
+ * The twelve-item version was accurate and unbuyable: a reader cannot hold twelve things,
+ * and a flat list gives them no way to decide which one is for them. Both serious
+ * competitors publish three or four named products with a page each, and that is the right
+ * shape — the capabilities still exist, they just live inside something a person can point
+ * at and say "that one".
  *
- * Rebuilt on the same hairlines as the ledger above it: an index numeral, the name, the
- * claim, and one mono index line naming what is inside. Three items per product, not six —
- * a feature dump does not become a feature list by being set in pills.
+ * Each card links to its own page. The human-layer capabilities are folded into engineering
+ * intelligence rather than sold separately, because they are not a bolt-on: the claim is
+ * that this is what engineering intelligence should have been measuring all along.
  */
 
 import Link from "next/link";
 import { Reveal } from "./reveal";
+import { SectionHead } from "./section-head";
 
 type Product = {
-  n: string;
   name: string;
   tag?: string;
-  tone: string;
+  band: string;
   lead: string;
   body: string;
-  inside: string;
+  inside: string[];
   href: string;
 };
 
 const PRODUCTS: Product[] = [
   {
-    n: "01",
     name: "Engineering intelligence",
-    tone: "var(--s1)",
+    band: "var(--s1)",
     lead: "Whether the work was any good.",
-    body: "Delivery, review, quality and DORA, plus the two readings that separate work someone thought about from work that merely merged.",
-    inside: "Slop Index · Judgment Rate · Taste capture · DORA · Benchmarks",
+    body: "Delivery, review, quality and DORA — plus the two readings that separate work someone thought about from work that merely merged.",
+    inside: [
+      "Slop Index",
+      "Judgment Rate",
+      "Taste capture",
+      "DORA and delivery",
+      "Code intelligence",
+      "Benchmarks",
+    ],
     href: "/products/engineering-intelligence",
   },
   {
-    n: "02",
     name: "Token intelligence",
-    tone: "var(--s3)",
+    band: "var(--s3)",
     lead: "Every AI dollar, and what it bought.",
     body: "Spend traced from the provider invoice to the change it produced, then to what that change cost you to keep. The second half is the part no invoice contains.",
-    inside: "Attribution · Agent observability · Cost per surviving change · Net return",
+    inside: [
+      "Three-method attribution",
+      "Agent observability",
+      "Cost per surviving change",
+      "Per-team and per-initiative",
+      "Net return",
+      "Finance export",
+    ],
     href: "/products/token-intelligence",
   },
   {
-    n: "03",
     name: "Router",
     tag: "New",
-    tone: "var(--s5)",
+    band: "var(--s5)",
     lead: "One beam in. A spectrum out.",
     body: "Each request goes to the cheapest model that still clears your quality bar, with the bar measured on your repositories rather than a public leaderboard.",
-    inside: "Per-request difficulty · Switch-cost pricing · Quality proof · Self-hosted",
+    inside: [
+      "Per-request difficulty",
+      "Switch-cost pricing",
+      "Quota-aware routing",
+      "Quality proof on your work",
+      "Self-hosted option",
+      "Policy rollback",
+    ],
     href: "/products/router",
   },
 ];
@@ -58,53 +78,49 @@ const PRODUCTS: Product[] = [
 export function Platform() {
   return (
     <section id="platform" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-      {/* a folio opener rather than the ruled eyebrow: the same device stamped on every
-          section is what made the page metronomic, and a count suits a list of three */}
-      <Reveal>
-        <div>
-          <div>
-            <h2 className="h2 max-w-3xl text-[2.1rem] sm:text-[2.7rem]">
-              Three products. Everything the category does.
-            </h2>
-            <p className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-ink-3">
-              You should not have to give up routing, review or spend attribution to get a
-              measurement you can trust. You don&apos;t.
-            </p>
-          </div>
-        </div>
-      </Reveal>
+      <SectionHead
+          label="The platform"
+          width="wide"
+          title={<>Three products. Everything the category does.</>}
+          lead={<>You should not have to give up routing, review or spend attribution to get a measurement you can trust. You don&apos;t.</>}
+        />
 
-      <div className="mt-14">
+      <div className="mt-12 grid gap-5 lg:grid-cols-3">
         {PRODUCTS.map((p, i) => (
-          <Reveal key={p.name} delay={i * 70}>
+          <Reveal key={p.name} delay={i * 90}>
             <Link
               href={p.href}
-              className="group grid items-baseline gap-x-10 gap-y-4 border-t border-line py-9 transition-colors hover:bg-white/70 lg:grid-cols-[3rem_minmax(0,0.95fr)_minmax(0,1.05fr)]"
+              className="group flex h-full flex-col rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-line-2 hover:lift sm:p-8"
             >
-              <span className="figure text-[1.3rem]" style={{ color: p.tone }}>
-                {p.n}
-              </span>
-
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-3">
-                    {p.name}
+              <div className="flex items-center gap-2.5">
+                <span className="h-2 w-2 rounded-full" style={{ background: p.band }} />
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+                  {p.name}
+                </span>
+                {p.tag && (
+                  <span className="rounded bg-s4 px-1.5 py-px text-[9px] font-extrabold uppercase tracking-wide text-ink">
+                    {p.tag}
                   </span>
-                  {p.tag && (
-                    <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-s5">
-                      {p.tag}
-                    </span>
-                  )}
-                </div>
-                <h3 className="h2 mt-3 text-[1.5rem] text-ink sm:text-[1.75rem]">{p.lead}</h3>
+                )}
               </div>
 
-              <div className="min-w-0">
-                <p className="text-[14.5px] leading-relaxed text-ink-3">{p.body}</p>
-                <p className="mt-4 text-[13px] leading-relaxed text-ink-3">
-                  {p.inside}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-ink-2">
+              <h3 className="mt-5 text-balance text-[1.25rem] font-bold leading-snug text-ink">
+                {p.lead}
+              </h3>
+              <p className="mt-3.5 text-[13.5px] leading-relaxed text-ink-3">{p.body}</p>
+
+              <div className="mt-auto pt-7">
+                <ul className="flex flex-wrap gap-1.5 border-t border-line pt-6">
+                  {p.inside.map((x) => (
+                    <li
+                      key={x}
+                      className="rounded-full bg-paper px-2.5 py-1 text-[11.5px] text-ink-2"
+                    >
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+                <span className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-bold text-ink">
                   Explore
                   <span className="transition-transform group-hover:translate-x-0.5">→</span>
                 </span>
@@ -112,7 +128,6 @@ export function Platform() {
             </Link>
           </Reveal>
         ))}
-        <div className="border-t border-line" />
       </div>
     </section>
   );

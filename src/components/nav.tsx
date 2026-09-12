@@ -133,17 +133,21 @@ export function Nav() {
             href="/#approach"
             className="group inline-flex items-center gap-2.5 text-[12.5px] text-white/75 transition-colors hover:text-white"
           >
-            <span className="font-mono text-[9.5px] uppercase tracking-[0.2em] text-white/40">New</span>
+            <span className="rounded bg-s4 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-ink">
+              New
+            </span>
             Research: the same pull request data supports opposite conclusions
             <span className="transition-transform group-hover:translate-x-0.5">→</span>
           </a>
         </div>
       </div>
 
-      <header className="sticky top-0 z-40" onMouseLeave={() => setMenu(false)}>
+      <header className="sticky top-0 z-40 px-4 pt-4" onMouseLeave={() => setMenu(false)}>
         <nav
-          className={`flex h-[62px] items-center gap-7 border-b px-6 transition-colors duration-300 ${
-            past ? "border-line bg-paper/92 backdrop-blur-xl" : "border-line/60 bg-paper/70 backdrop-blur-md"
+          className={`mx-auto flex h-[60px] max-w-[var(--maxw)] items-center gap-7 rounded-full border pl-5 pr-3 transition-all duration-300 ${
+            past
+              ? "border-line bg-white/85 backdrop-blur-xl lift"
+              : "border-line/70 bg-white/55 backdrop-blur-md"
           }`}
         >
           <Wordmark />
@@ -191,7 +195,7 @@ export function Nav() {
             <button
               type="button"
               onClick={() => openContact()}
-              className="bg-ink px-4 py-2 text-[13.5px] font-bold text-white transition-opacity hover:opacity-85"
+              className="rounded-full bg-ink px-4 py-2 text-[13.5px] font-bold text-white transition-transform hover:scale-[1.03]"
             >
               Get in touch
             </button>
@@ -202,7 +206,7 @@ export function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="ml-auto flex h-9 w-9 items-center justify-center border border-line text-ink md:hidden"
+            className="ml-auto flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink md:hidden"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8">
               {open ? <path d="M3 3l10 10M13 3L3 13" /> : <path d="M2 4.5h12M2 11.5h12" />}
@@ -213,9 +217,9 @@ export function Nav() {
         {/* the products panel, anchored under the pill. `hidden md:block` rather than a
             separate mobile branch: the drawer below already lists everything. */}
         {menu && (
-          <div className="absolute inset-x-0 top-full hidden md:block">
-            <div className="overflow-hidden border-b border-line bg-paper/97 backdrop-blur-xl">
-              <div className="mx-auto grid max-w-[var(--maxw)] gap-x-8 gap-y-7 px-6 py-9 lg:grid-cols-3">
+          <div className="absolute inset-x-0 top-full hidden px-4 md:block">
+            <div className="mx-auto mt-2 max-w-[var(--maxw)] overflow-hidden rounded-2xl border border-line bg-white/95 backdrop-blur-xl lift-lg">
+              <div className="grid gap-x-8 gap-y-7 p-7 lg:grid-cols-3">
                 {MENU.map((g) => (
                   <div key={g.group}>
                     <div className="mb-4 flex items-center gap-2">
@@ -256,14 +260,14 @@ export function Nav() {
 
               {/* the footer of the menu carries the position, so the surface never reads as
                   a list of parity features with no point of view */}
-              <div className="border-t border-line"><div className="mx-auto flex max-w-[var(--maxw)] flex-wrap items-center gap-x-3 gap-y-1 px-6 py-4">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line bg-paper/70 px-7 py-4">
                 <span className="text-[12.5px] font-semibold text-ink">
                   Creativity is the new productivity.
                 </span>
                 <span className="text-[12.5px] text-ink-3">
                   Everything above is table stakes. The first column is why you&apos;d switch.
                 </span>
-              </div></div>
+              </div>
             </div>
           </div>
         )}
@@ -315,7 +319,7 @@ export function Nav() {
                 setOpen(false);
                 openContact();
               }}
-              className="mt-3 block w-full bg-ink px-4 py-3 text-center text-sm font-bold text-white"
+              className="mt-3 block w-full rounded-full bg-ink px-4 py-3 text-center text-sm font-bold text-white"
             >
               Get in touch
             </button>

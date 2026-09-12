@@ -1,250 +1,205 @@
 /*
- * The two readings that are ours, drawn as accounts.
+ * The two instruments that carry the wedge.
  *
- * The previous version put the Slop Index on a speedometer, which was a self-own: the page
- * spends its length arguing that dashboards measure the wrong thing, and then presented its
- * flagship number on the most clichéd dashboard widget in existence. A gauge also says the
- * wrong thing about the metric — it implies a dial reading off a live system, when this is a
- * quarter's account of what work cost after it landed.
+ * "Creativity", "taste" and "the human layer" are the position, but a position stated in
+ * adjectives loses a bake-off to a competitor holding a number. Weave sells "one
+ * standardised unit of work"; P10Y sells "output units". So the claim has to arrive as an
+ * instrument with a reading, a unit and a dollar value, or the page reads as a manifesto.
  *
- * So the Slop Index is a ledger: four charges, ruled, summing to a total, with the index
- * itself as the balance. That is both the honest shape of the number and the page's own
- * visual language rather than a borrowed one.
+ * Two, not one, and deliberately a pair: a cost and a return. The Slop Index is what the
+ * other dashboards score as productivity. The Judgment Rate is the thing they cannot see at
+ * all, because it lives in what got rejected, redirected and thrown away rather than in
+ * what got merged.
  *
- * The Judgment Rate is the counter-account, and deliberately does not share the form. It is
- * a count of discrete moments — review that changed direction — so it is tallied in marks,
- * not summed in money. One account of cost, one of attention.
- *
- * Figures are illustrative.
+ * Both are drawn in HTML and SVG against the brand tokens rather than captured, for the
+ * same reason as the rest of the product shots: sharp anywhere, weighs nothing, cannot go
+ * stale. All figures illustrative.
  */
 
-import { Scale } from "./scale";
 import { Reveal } from "./reveal";
+import { SectionHead } from "./section-head";
 
-/* --- 01 · the account of cost --------------------------------------------- */
+/* --- Slop Index: a segmented meter ---------------------------------------- */
 
-const CHARGES = [
-  { label: "Rework", share: 38, amount: "156,600" },
-  { label: "Review drag", share: 27, amount: "111,200" },
-  { label: "Complexity added", share: 21, amount: "86,500" },
-  { label: "Unaccounted change", share: 14, amount: "57,700" },
+// what the index decomposes into, in the order it is computed
+const SLOP_PARTS = [
+  { label: "Rework", pct: 38, band: "var(--s5)" },
+  { label: "Review burden", pct: 27, band: "var(--s4)" },
+  { label: "Complexity added", pct: 21, band: "var(--s1)" },
+  { label: "Unexplained change", pct: 14, band: "var(--s2)" },
 ];
 
-function SlopAccount() {
+function SlopMeter() {
   return (
-    <div className="w-full max-w-[460px]">
-      <div className="flex items-baseline justify-between gap-4 border-b border-ink pb-3">
-        <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">
-          Worked example · charges
-        </span>
-        <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">USD</span>
-      </div>
-
-      <dl>
-        {CHARGES.map((c) => (
-          <div
-            key={c.label}
-            className="flex items-baseline gap-5 border-b border-line py-4"
-          >
-            <dt className="w-[150px] shrink-0 text-[14px] text-ink-2">{c.label}</dt>
-            <span className="min-w-0 flex-1">
-              <Scale value={c.share} tone="var(--s5)" />
+    <div>
+      {/* the reading */}
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <div className="flex items-baseline gap-2">
+            <span className="figure text-[4.25rem] text-ink">
+              61
             </span>
-            <dd className="figure w-[132px] shrink-0 text-right text-[1.45rem] text-ink" style={{ fontVariantNumeric: "tabular-nums" }}>
-              {c.amount}
-            </dd>
+            <span className="font-mono text-[12px] text-ink-4">/ 100</span>
           </div>
-        ))}
-
-        {/* the balance, ruled the way a total is ruled */}
-        <div className="flex items-baseline gap-5 border-b-[3px] border-double border-ink pb-5 pt-5">
-          <dt className="min-w-0 flex-1">
-            <span className="text-[14px] font-semibold text-ink">Slop Index</span>
-            <span className="ml-2 font-mono text-[11px] text-ink-4">61 / 100</span>
-          </dt>
-          <dd
-            className="figure w-[132px] shrink-0 text-right text-[1.9rem]"
-            style={{ color: "var(--s5)", fontVariantNumeric: "tabular-nums" }}
-          >
-            412,000
-          </dd>
+          <p className="mt-2 text-[13px] text-ink-3">
+            Up from 24 before assisted authoring
+          </p>
         </div>
-      </dl>
+        <div className="text-right">
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
+            Priced
+          </p>
+          <p className="figure mt-1 text-[1.7rem] text-ink">
+            $412k
+          </p>
+          <p className="text-[11.5px] text-ink-4">per quarter</p>
+        </div>
+      </div>
 
-      <p className="mt-5 text-[12.5px] leading-relaxed text-ink-4">
-        Held against your codebase the way an inspector holds a grade card against steel. Every
-        line above is work that merged and passed review.
-      </p>
+      {/* the decomposition — a single bar, because the parts sum to the reading */}
+      <div className="mt-7 flex h-3 w-full overflow-hidden rounded-full">
+        {SLOP_PARTS.map((p) => (
+          <span key={p.label} style={{ width: `${p.pct}%`, background: p.band }} />
+        ))}
+      </div>
+      <ul className="mt-5 grid grid-cols-2 gap-x-5 gap-y-2.5">
+        {SLOP_PARTS.map((p) => (
+          <li key={p.label} className="flex items-center gap-2 text-[12.5px] text-ink-2">
+            <span
+              className="h-2 w-2 shrink-0 rounded-full"
+              style={{ background: p.band }}
+            />
+            <span className="min-w-0 flex-1 truncate">{p.label}</span>
+            <span className="tabular shrink-0 font-mono text-[11px] text-ink-4">{p.pct}%</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-/* --- 02 · the account of attention ---------------------------------------- */
+/* --- Judgment Rate: where humans changed the direction -------------------- */
 
+// each bar is a team; the filled portion is the share of human interventions that changed
+// what was being built rather than how it was written
 const TEAMS = [
-  { team: "Payments", of: 34 },
-  { team: "Identity", of: 28 },
-  { team: "Ledger", of: 19 },
-  { team: "Growth", of: 8 },
+  { team: "Payments", pct: 34 },
+  { team: "Identity", pct: 28 },
+  { team: "Ledger", pct: 19 },
+  { team: "Growth", pct: 8 },
 ];
 
-function JudgmentTally() {
+function JudgmentBars() {
   return (
-    <div className="w-full max-w-[460px]">
-      <div className="flex items-baseline justify-between gap-4 border-b border-ink pb-3">
-        <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">
-          Worked example · review that changed direction
-        </span>
-        <span className="font-mono text-[9.5px] uppercase tracking-[0.18em] text-ink-3">
-          0–100
-        </span>
+    <div>
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <div className="flex items-baseline gap-2">
+            <span className="figure text-[4.25rem] text-ink">
+              22
+            </span>
+            <span className="font-mono text-[12px] text-ink-4">%</span>
+          </div>
+          <p className="mt-2 text-[13px] text-ink-3">
+            Of human review changed direction, not syntax
+          </p>
+        </div>
+        <div className="text-right">
+          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-4">
+            Avoided
+          </p>
+          <p className="figure mt-1 text-[1.7rem] text-ink">
+            $780k
+          </p>
+          <p className="text-[11.5px] text-ink-4">per quarter</p>
+        </div>
       </div>
 
-      {TEAMS.map((t) => (
-          <div key={t.team} className="flex items-center gap-5 border-b border-line py-4">
-            <span className="w-[70px] shrink-0 text-[13.5px] text-ink-2">{t.team}</span>
-            <span className="min-w-0 flex-1">
-              <Scale value={t.of} tone="var(--s3)" />
+      <ul className="mt-7 flex flex-col gap-3.5">
+        {TEAMS.map((t) => (
+          <li key={t.team} className="flex items-center gap-3">
+            <span className="w-[70px] shrink-0 text-[12.5px] font-medium text-ink-2">
+              {t.team}
             </span>
-            <span className="figure tabular w-[52px] shrink-0 text-right text-[1.4rem] text-ink">
-              {t.of}%
+            <span className="h-2.5 min-w-0 flex-1 overflow-hidden rounded-full bg-paper-2">
+              <span
+                className="block h-full rounded-full"
+                style={{ width: `${(t.pct / 34) * 100}%`, background: "var(--t3)" }}
+              />
             </span>
-          </div>
-      ))}
-
+            <span className="tabular w-9 shrink-0 text-right font-mono text-[11px] text-ink-4">
+              {t.pct}%
+            </span>
+          </li>
+        ))}
+      </ul>
       <p className="mt-5 text-[12.5px] leading-relaxed text-ink-4">
-        Growth ships fastest and thinks least. No throughput chart contains that sentence.
+        Growth ships fastest and thinks least. That is the finding, and no throughput chart
+        contains it.
       </p>
     </div>
   );
 }
 
-/* --- one instrument -------------------------------------------------------- */
+/* --- section -------------------------------------------------------------- */
 
-function Instrument({
-  index,
-  name,
-  claim,
-  claimBreaks,
-  body,
-  reading,
-  priced,
-  pricedLabel,
-  art,
-  flip = false,
-  tone,
-}: {
-  index: string;
-  name: string;
-  claim: string;
-  /** hand-set line breaks; display type is never left to rag on its own */
-  claimBreaks?: string[];
-  body: string;
-  reading: string;
-  priced: string;
-  pricedLabel: string;
-  art: React.ReactNode;
-  flip?: boolean;
-  tone: string;
-}) {
-  return (
-    <div className="border-t border-line">
-      <div className="mx-auto grid max-w-[var(--maxw)] items-start gap-14 px-6 py-20 lg:grid-cols-2 lg:gap-20 lg:py-24">
-        <Reveal className={`min-w-0 ${flip ? "lg:order-last" : ""}`}>
-          <div>
-            <div className="flex items-baseline gap-4">
-              <span className="figure text-[1.4rem]" style={{ color: tone }}>
-                {index}
-              </span>
-              <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-ink-3">
-                {name}
-              </span>
-              <span className="rule mb-1 flex-1" />
-            </div>
-
-            {/* the reading, set as the subject rather than as a stat under the copy */}
-            <p className="figure mt-10 text-[5rem] leading-[0.82] text-ink sm:text-[6.5rem]">
-              {reading}
-            </p>
-
-            <h3 className="h2 mt-9 max-w-[19ch] text-[1.75rem] sm:text-[2.1rem]">{claim}</h3>
-            <p className="mt-5 max-w-md text-[15.5px] leading-relaxed text-ink-3">{body}</p>
-
-            <div className="mt-8 flex items-baseline gap-4 border-t border-line pt-5">
-              <span className="font-mono text-[9.5px] uppercase tracking-[0.16em] text-ink-4">
-                {pricedLabel}
-              </span>
-              <span className="figure text-[1.6rem]" style={{ color: tone }}>
-                {priced}
-              </span>
-            </div>
-          </div>
-        </Reveal>
-
-        <Reveal delay={120} className="min-w-0">
-          <div className={`flex ${flip ? "lg:justify-start" : "lg:justify-end"}`}>{art}</div>
-        </Reveal>
-      </div>
-    </div>
-  );
-}
+const CARDS = [
+  {
+    name: "Slop Index",
+    band: "var(--s5)",
+    lead: "What plausible-looking work costs you after it merges.",
+    body: "Computed from what gets rewritten, what drags review, what compounds as complexity, and what nobody can account for three weeks later. Priced, so it can be argued about in a budget meeting rather than a retro.",
+    chart: <SlopMeter />,
+  },
+  {
+    name: "Judgment Rate",
+    band: "var(--t3)",
+    lead: "Where a person changed the direction rather than the syntax.",
+    body: "Read from the work itself: the rejections, the redirections, the designs that were thrown away before they cost anything. It is the only one of our numbers that goes up when people think harder, and it cannot be gamed by producing more.",
+    chart: <JudgmentBars />,
+  },
+];
 
 export function Instruments() {
   return (
-    <section id="instruments" className="bg-white">
-      <div className="mx-auto max-w-[var(--maxw)] px-6 pt-24">
-        <Reveal>
-          <div>
-            <div className="flex items-baseline gap-5">
-              <span className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-3">
-                Our instruments
-              </span>
-              <span className="rule mb-1 flex-1" />
+    <div className="border-y border-line bg-paper-2">
+      <section id="instruments" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
+      <SectionHead
+          label="Our instruments"
+          width="wide"
+          title={<>Two questions we think are the right ones.</>}
+          lead={<>Most of what this category measures, everyone measures. These two are the ones we keep coming back to in the research, and they are what we would want to work out with you first.</>}
+        />
+
+      <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">
+        {CARDS.map((c, i) => (
+          <Reveal key={c.name} delay={i * 110}>
+            <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-7 lift sm:p-9">
+              <div className="flex items-center gap-2.5">
+                <span className="h-2 w-2 rounded-full" style={{ background: c.band }} />
+                <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
+                  {c.name}
+                </span>
+              </div>
+              {/* Fixed-height copy block rather than `mt-auto` on the chart. Bottom-aligning
+                  two charts of different heights leaves their headline figures on different
+                  baselines, and two big numbers that nearly line up read as a mistake. */}
+              <div className="lg:min-h-[196px]">
+                <h3 className="mt-5 text-balance text-[1.2rem] font-bold leading-snug text-ink sm:text-[1.35rem]">
+                  {c.lead}
+                </h3>
+                <p className="mt-3.5 text-[14px] leading-relaxed text-ink-3">{c.body}</p>
+              </div>
+              <div className="pt-2">{c.chart}</div>
             </div>
-            <h2 className="h2 mt-8 max-w-3xl text-[2.1rem] sm:text-[2.7rem]">
-              Two questions we think are the right ones.
-            </h2>
-            <p className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-ink-3">
-              Most of what this category measures, everyone measures. These two are the ones we
-              keep coming back to in the research, and they are what we would want to work out
-              with you first.
-            </p>
-          </div>
-        </Reveal>
+          </Reveal>
+        ))}
       </div>
 
-      <div className="mt-16">
-        <Instrument
-          index="01"
-          name="What it cost to keep"
-          tone="var(--s5)"
-          reading="61"
-          claim="What plausible work costs after it merges."
-          body="What gets rewritten, what drags review, what compounds as complexity, and what nobody can account for three weeks later. Put a price on it and the conversation moves from a retro to a budget meeting, which is where it belongs."
-          priced="$412k"
-          pricedLabel="In this example"
-          art={<SlopAccount />}
-        />
-        <Instrument
-          flip
-          index="02"
-          name="Where judgment showed up"
-          tone="var(--t3)"
-          reading="22%"
-          claim="Where a person changed the direction, not the syntax."
-          claimBreaks={["Where a person changed", "the direction, not the syntax."]}
-          body="The rejections, the redirections, the designs thrown away before they cost anything. It is the one thing we look at that rises when people think harder, and the one thing that cannot be gamed by producing more of anything."
-          priced="$780k"
-          pricedLabel="In this example"
-          art={<JudgmentTally />}
-        />
-      </div>
-
-      <div className="mx-auto max-w-[var(--maxw)] border-t border-line px-6 py-4">
-        <p className="text-right font-mono text-[9px] uppercase tracking-[0.16em] text-ink-4">
-          Illustrative
+        <p className="mt-8 font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-4">
+          Illustrative figures — worked from a composite, not a customer
         </p>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

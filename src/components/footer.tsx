@@ -1,5 +1,4 @@
 import { Wordmark } from "./brand";
-import { Seal } from "./engraving";
 
 const COLUMNS = [
   {
@@ -15,7 +14,7 @@ const COLUMNS = [
     links: [
       { l: "Two readings of a quarter", href: "/#slop" },
       { l: "Why a third instrument", href: "/#how-we-see" },
-      { l: "What we look at", href: "/#instruments" },
+      { l: "Use cases", href: "/#use-cases" },
     ],
   },
   {
@@ -62,13 +61,7 @@ export function Footer() {
           ))}
         </div>
 
-        {/* The seal, pressed onto the foot of the document rather than floating in a band of
-            its own between two dark sections. Inverted to sit on ink. */}
-        <div className="mt-16 flex justify-end opacity-30 invert">
-          <Seal size={108} />
-        </div>
-
-        <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
+        <div className="mt-14 flex flex-col gap-4 border-t border-white/10 pt-7 sm:flex-row sm:items-center">
           <p className="text-xs text-white/40">
             © {new Date().getFullYear()} Behold Labs. All rights reserved.
           </p>

@@ -29,7 +29,7 @@
   /* Ground — cold sage paper, chosen not inherited */
   --white: #ffffff;
   --paper: #eceee8;
-  --paper-2: #d8dcd2;
+  --paper-2: #dfe2da;
   --line: #d5d9cf;
   --line-2: #bcc2b4;
 
@@ -40,26 +40,22 @@
   --ink-4: #879599;
 
   /* The oxidation series — five bands, always in this order */
-  --s1: #2a4f55; /* petrol    */
-  --s2: #4a6b72; /* steel     */
-  --s3: #52796b; /* verdigris */
-  --s4: #8d7444; /* brass     */
-  --s5: #9c5442; /* oxide     */
+  --s1: #1f5f6b; /* petrol    */
+  --s2: #4a7c8c; /* steel     */
+  --s3: #3e9e86; /* verdigris */
+  --s4: #a8843c; /* brass     */
+  --s5: #b4452c; /* rust      */
 
   /* Text-safe series. The display bands are tuned for fills and sit too light for type on
      paper; these darkened stops keep the same hue order above the 3:1 large-text floor. */
-  --t1: #22434a;
-  --t2: #3a5861;
-  --t3: #3d6154;
-  --t4: #6b5731;
-  --t5: #7d4133;
+  --t1: #17484f;
+  --t2: #35606d;
+  --t3: #2b7a66;
+  --t4: #7e6129;
+  --t5: #8e3421;
 
-  /* Two accents only, and they are ink-adjacent rather than semaphore. Green-good /
-     red-bad borrowed straight from a dashboard is the thing this page argues against, and
-     at full saturation it also fights the sage ground. Desaturated toward the paper they
-     read as two inks on one sheet. */
-  --pos: #3d6154;
-  --neg: #9c5442;
+  --pos: #2b7a66;
+  --neg: #b4452c;
 
   --maxw: 1200px;
 }
@@ -99,15 +95,6 @@
   border-color: var(--line);
 }
 
-/* Micro-interactions at the tempo the good sites in this category actually run: ~160ms on a
-   snappy ease-out. The framework default felt soft by comparison on every row and link. */
-a,
-button,
-[role="button"] {
-  transition-duration: 160ms;
-  transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
 /*
   Paper is the ground, not white. Three steps only, and they never swap roles: the page is
   sage paper, a band that wants separation steps down to --paper-2, and anything that holds
@@ -122,17 +109,6 @@ html {
 
 body {
   background: var(--paper);
-  /*
-    Paper tooth, as procedural noise rather than a photographic tile.
-
-    A cropped photo of real stock is not seamless, and at any tile size the seams walked
-    visible vertical bands down the whole page — far worse than the flatness it was meant to
-    fix. feTurbulence tiles perfectly by construction, costs one inline data URI, and at this
-    opacity is visible at 1:1 and gone at arm's length, which is the whole brief.
-  */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  background-blend-mode: multiply;
   color: var(--ink);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -204,19 +180,6 @@ body {
 .rule {
   height: 1px;
   background: var(--line-2);
-}
-
-/*
-  Intaglio edge. A hair of turbulence on the display face only, so headline edges carry the
-  faint irregularity of ink meeting paper rather than the perfect vector edge of a webfont.
-  Scale is deliberately under one pixel: at 1.0 it reads as a distress effect, which is the
-  opposite of the intent.
-*/
-@supports (filter: url("#x")) {
-  .display,
-  .h2 {
-    filter: url("#ink-bleed");
-  }
 }
 
 /* Emphasis inside a headline — the one place color enters the type. */
@@ -352,10 +315,10 @@ body {
 */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(22px);
   transition:
-    opacity 0.44s cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 0.44s cubic-bezier(0.22, 0.61, 0.36, 1);
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--d, 0ms);
 }
 
@@ -417,54 +380,6 @@ body {
 
 .showcase-in {
   animation: showcase-in 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* --- signature motion -------------------------------------------------------
-
-   Measured against the two competitors before writing any of this: both run micro-
-   interactions at 150–160ms and entrances around 400ms on an ease-out cubic, and both carry
-   a handful of *named* keyframes for their signature objects rather than relying on generic
-   fades. Ours were 700ms across the board, which is why the page felt inert next to theirs.
-
-   Three bespoke moments, no more: the instrument draws itself, the impression lands, the
-   figures settle. Everything is transform/opacity/stroke-dashoffset, and the reduced-motion
-   block at the foot of this file switches all of it off. */
-
-/* The reconciliation arcs draw, the way a lathe cuts them. The dash length is set inline
-   per arc, so the keyframe only has to run the offset to zero. */
-@keyframes draw {
-  from {
-    stroke-dashoffset: var(--len);
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-[data-reveal="in"] .draw {
-  animation: draw 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  animation-delay: var(--d, 0ms);
-}
-
-/* The impression lands: a stamp is pressed, so it arrives slightly large and settles, and
-   it does not fade in evenly — the ink makes contact all at once. */
-@keyframes press {
-  0% {
-    opacity: 0;
-    transform: rotate(var(--rot, -4.5deg)) scale(1.08);
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: rotate(var(--rot, -4.5deg)) scale(1);
-  }
-}
-
-[data-reveal="in"] .press {
-  animation: press 260ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  animation-delay: var(--d, 420ms);
 }
 
 /* --- product page motion ---------------------------------------------------
@@ -589,18 +504,5 @@ body {
 
   .packet {
     opacity: 0.9;
-  }
-
-  .draw,
-  [data-reveal="in"] .draw {
-    stroke-dashoffset: 0;
-    animation: none;
-  }
-
-  .press,
-  [data-reveal="in"] .press {
-    opacity: 1;
-    transform: rotate(var(--rot, -4.5deg));
-    animation: none;
   }
 }

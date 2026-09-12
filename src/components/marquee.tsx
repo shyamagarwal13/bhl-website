@@ -24,7 +24,7 @@ export function Marquee({ items }: { items: string[] }) {
             aria-hidden={copy === 1}
           >
             {items.map((n) => (
-              <li key={n} className="whitespace-nowrap font-mono text-[12px] uppercase tracking-[0.14em] text-ink-3">
+              <li key={n} className="whitespace-nowrap text-[15px] font-bold text-ink-4">
                 {n}
               </li>
             ))}

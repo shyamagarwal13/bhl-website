@@ -1,16 +1,18 @@
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { DemoForm } from "@/components/demo-form";
-import { ReconciliationPlate } from "@/components/engraving";
+import { ProductShot } from "@/components/product-shot";
 import { Reveal } from "@/components/reveal";
+import { Marquee } from "@/components/marquee";
+import { Showcase } from "@/components/showcase";
+import { UseCases } from "@/components/use-cases";
+import { Statement } from "@/components/statement";
 import { NumberIsNotAnAnswer } from "@/components/philosophy";
 import { SectionHead } from "@/components/section-head";
+import { TwoDashboards } from "@/components/two-dashboards";
 import { Instruments } from "@/components/instruments";
 import { Platform } from "@/components/platform";
 import { HowWeSee } from "@/components/how-we-see";
-import { Ledger } from "@/components/ledger";
-import { Showcase } from "@/components/showcase";
-import { StatementArtifact } from "@/components/statement-artifact";
 
 function Section({
   id,
@@ -30,64 +32,167 @@ function Section({
 
 /* --- hero ----------------------------------------------------------------- */
 
-/*
- * Bare type on a flat field.
- *
- * What was here before was a checklist of the things a generated AI landing page does: a
- * pill badge quoting the tagline, two highlighter marks in one paragraph, a handwritten
- * squiggle-arrow pointing at the button, an aurora gradient wash, and a browser-chrome
- * product shot underneath. Individually each is defensible. Stacked, they are a genre, and
- * the genre is the opposite of the claim this company is making.
- *
- * The sentence is good enough to carry the screen alone, so it does. Everything else is
- * removed, the field is flat, and the first thing under the fold is the argument rather
- * than a screenshot of a dashboard.
- */
 function Hero() {
   return (
-    <div className="bg-paper">
-      <Section className="relative grid items-center gap-16 pb-20 pt-24 sm:pt-28 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.82fr)] lg:gap-20">
-        <div className="max-w-4xl">
+    <div className="refraction grain relative overflow-hidden">
+      <Section className="relative pt-20 sm:pt-24">
+        <div className="mx-auto max-w-5xl text-center">
           <Reveal>
-            <p className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-ink-3">
-              Creativity is the new productivity
-            </p>
+            {/* The category term as a chip rather than a stretched mono eyebrow — the
+                phrase is too long to survive 0.16em tracking at 11px, which is what made
+                it look cramped. A pill gives it a shape and lets it sit in sentence case. */}
+            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 py-1.5 pl-2 pr-3.5 backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-ink" />
+              <span className="text-[12.5px] font-semibold tracking-tight text-ink-2">
+                Creativity is the new productivity
+              </span>
+            </span>
           </Reveal>
 
           <Reveal delay={80}>
-            <h1 className="display mt-10 text-[2.5rem] sm:text-[3.6rem] lg:text-[4.4rem]">
+            {/* Sized to hold each sentence on a single line from lg up; it still wraps
+                on narrow screens, where two balanced lines read better than 20px type. */}
+            <h1 className="display mx-auto mt-6 max-w-[19ch] text-[2.05rem] sm:max-w-none sm:text-[2.6rem] lg:text-[2.85rem]">
               <span className="block text-balance">Every dashboard says you shipped more.</span>
-              <span className="lean block text-balance text-ink-3">
+              <span className="refract block text-balance">
                 We tell you if it was worth shipping.
               </span>
             </h1>
           </Reveal>
 
           <Reveal delay={160}>
-            <p className="mt-10 max-w-xl text-[1.15rem] leading-[1.72] text-ink-2">
-              When writing is free, volume stops being an achievement. Behold measures the
-              judgment behind the work: what it costs you to keep the slop, and where a person
-              is still the most valuable thing in the room. All of it priced.
+            {/*
+                Two marks, not four: the action and the unit. Marking the middle clauses
+                too made the paragraph read as a page of someone else's revision notes —
+                when everything is emphasized, nothing is.
+
+                Both in the same amber. A real highlighter is one color; two different
+                ones in a single paragraph reads as a color-coding system the reader is
+                expected to decode, and there's nothing to decode here.
+            */}
+            <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[1.95] text-ink-3">
+              When writing is free, volume stops being an achievement. Behold measures the{" "}
+              <span
+                className="mark whitespace-nowrap font-semibold text-ink"
+                style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
+              >
+                judgment
+              </span>{" "}
+              behind the work: what it costs you to keep the slop, and where a person is still
+              the most valuable thing in the room. All of it in{" "}
+              <span
+                className="mark whitespace-nowrap font-extrabold text-ink"
+                style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
+              >
+                $$$
+              </span>
+              .
             </p>
           </Reveal>
 
           <Reveal delay={240}>
-            <a
-              href="#demo"
-              className="mt-12 inline-flex items-baseline gap-3 border-b border-ink pb-2 text-[1.25rem] text-ink transition-opacity hover:opacity-70"
-            >
-              <span className="h2">Request a reading</span>
-              <span aria-hidden="true">→</span>
-            </a>
+            <div className="mt-9 flex justify-center">
+              {/* The relative box wraps only the form. Put it on the flex row instead and
+                  `left-full` resolves against the full container width, which pushes the
+                  note off the right edge where the section's overflow-hidden silently
+                  eats it — no layout overflow to warn you, just missing content.
+
+                  It needs its own width: as a bare flex item it shrank to fit its contents,
+                  so the form's `max-w-[440px]` never resolved and the pill sat at 375px.
+                  That left the placeholder 20px of slack, which any font fallback ate. */}
+              <div className="relative w-full max-w-[440px]">
+                <DemoForm />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-full top-1/2 ml-4 hidden -translate-y-1/2 items-center gap-2 lg:flex"
+                >
+                  {/*
+                    Hand-drawn arrow pointing back at the button. The head is built from
+                    two barbs rotated ±30° off the *reverse* of the curve's end tangent —
+                    the previous one had a barb on the wrong side, which is why it read
+                    as a tick rather than an arrowhead.
+                  */}
+                  <svg width="50" height="30" viewBox="0 0 50 30" fill="none">
+                    <path
+                      d="M48 23.5C37.5 26.5 15.5 23 4.5 10.5"
+                      stroke="var(--ink-4)"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M4.5 10.5 7 18.6M4.5 10.5 12.6 13"
+                      stroke="var(--ink-4)"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <span className="hand whitespace-nowrap text-[1.15rem] text-ink-3">
+                    we reply within a day
+                  </span>
+                </span>
+              </div>
+            </div>
           </Reveal>
         </div>
 
-        {/* the signature object, occupying the half that was empty paper */}
-        <Reveal delay={320} className="min-w-0">
-          <ReconciliationPlate />
+        <Reveal delay={300}>
+          <div className="mt-16">
+            <ProductShot />
+          </div>
         </Reveal>
       </Section>
     </div>
+  );
+}
+
+/* --- marquee -------------------------------------------------------------- */
+
+function ReadsFrom() {
+  return (
+    <Section className="py-14">
+      <p className="mb-7 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-ink-4">
+        Reads from the systems you already run
+      </p>
+      <Marquee
+        items={[
+          "GitHub",
+          "GitLab",
+          "Claude Code",
+          "GitHub Copilot",
+          "Cursor",
+          "Anthropic",
+          "OpenAI",
+          "AWS Bedrock",
+          "Google Vertex",
+          "LiteLLM",
+          "Jira",
+          "Linear",
+          "Slack",
+        ]}
+      />
+    </Section>
+  );
+}
+
+/* --- what we do ----------------------------------------------------------- */
+
+/* The visual proof of the parity claim: the grid above says what we do, this shows it.
+   Kept on the same white ground as `Platform` so the two read as one stretch of product
+   rather than two competing sections. */
+function Product() {
+  return (
+    <Section id="model" className="pb-24">
+      <SectionHead
+        label="In the product"
+        width="wide"
+        title={<>One instrument, pointed at the whole lifecycle.</>}
+      />
+
+      <div className="mt-12">
+        <Showcase />
+      </div>
+    </Section>
   );
 }
 
@@ -95,59 +200,35 @@ function Hero() {
 
 function Cta() {
   return (
-    <div>
+    <Section className="py-24">
       <Reveal>
-        {/*
-          No aurora. A rainbow glow bleeding from the corner of a dark closing panel is the
-          single most reused move in AI-era SaaS, and it was the one place this page reverted
-          to the genre it spends the rest of its length arguing against.
-
-          The close instead repeats the page's own grammar: the ink column from the ledger,
-          the hairline rules, and a rust figure — so the last thing a reader sees is the same
-          instrument they were shown at the top.
-        */}
-        <div className="relative overflow-hidden bg-ink px-6 py-20 sm:px-14 sm:py-24">
-          <div className="mx-auto grid max-w-[var(--maxw)] gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-end lg:gap-20">
-            <div>
-              <div className="flex items-baseline gap-5">
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-white/45">
-                  The next conversation
-                </span>
-                <span className="h-px flex-1 bg-white/15" />
-              </div>
-              <h2 className="h2 mt-8 max-w-[16ch] text-[2.3rem] text-white sm:text-[3rem]">
-                Bring evidence to the next budget conversation.
-              </h2>
-              <p className="mt-6 max-w-lg text-[1.0625rem] leading-relaxed text-white/60">
-                We are a small team of researchers, early in this, and working with a few
-                engineering organisations to get it right. If the argument above sounds like
-                your quarter, we would like to hear about it.
-              </p>
-            </div>
-
-            <div>
-              <dl className="border-t border-white/12">
-                {[
-                  ["Organisations we work with at a time", "A handful"],
-                  ["What the first conversation costs", "Nothing"],
-                ].map(([k, v]) => (
-                  <div
-                    key={k}
-                    className="flex items-baseline justify-between gap-6 border-b border-white/12 py-5"
-                  >
-                    <dt className="text-[13px] text-white/70">{k}</dt>
-                    <dd className="figure text-[2rem] text-white">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div id="demo" className="mt-9 scroll-mt-32">
-                <DemoForm tone="dark" />
-              </div>
+        {/* px-8 on a 320px screen leaves the panel 208px of usable width, which is 2px more
+            than the email placeholder needs; drop to px-6 there for real headroom */}
+        <div className="relative overflow-hidden rounded-3xl bg-ink px-6 py-20 text-center sm:px-8">
+          {/* The prism again, this time as light inside the dark. */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{
+              background:
+                "conic-gradient(from 200deg at 50% -10%, transparent 0deg, color-mix(in srgb, var(--s1) 55%, transparent) 14deg, color-mix(in srgb, var(--s2) 48%, transparent) 22deg, color-mix(in srgb, var(--s3) 42%, transparent) 29deg, color-mix(in srgb, var(--s4) 40%, transparent) 36deg, color-mix(in srgb, var(--s5) 34%, transparent) 43deg, transparent 54deg)",
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto max-w-2xl">
+            <h2 className="display text-balance text-[2.4rem] text-white sm:text-[3rem]">
+              Bring evidence to the next budget conversation.
+            </h2>
+            <p className="mx-auto mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-white/70">
+              We&apos;re working with a small number of engineering organizations to get this
+              right. Connect a repository and see your own numbers.
+            </p>
+            <div id="demo" className="mt-9 flex scroll-mt-32 justify-center">
+              <DemoForm tone="dark" />
             </div>
           </div>
         </div>
       </Reveal>
-    </div>
+    </Section>
   );
 }
 
@@ -158,47 +239,25 @@ export default function Home() {
     <>
       <Nav />
       {/*
-        Seven sections, not eleven.
+        Section order is the argument, and the background bands alternate across it so no
+        two adjacent sections share a ground:
 
-        The previous order ran eight consecutive blocks of eyebrow → heading → card grid,
-        which flattened the hierarchy: the two proprietary metrics landed with exactly the
-        same visual weight as a throwaway use-case grid. Sections that repeated an argument
-        already made (the product showcase, the standalone statement card) are gone rather
-        than restyled, and what remains alternates in *kind* — a split ledger, a ticker, a
-        three-lens comparison, two full-bleed instruments, a product grid, a reading list —
-        so no two adjacent sections are the same shape.
+          problem → why nothing existing sees it → our two numbers → the full surface,
+          stated then shown → who uses it → who we are → the evidence → ask.
       */}
       <main>
         <Hero />
-        <Ledger />
+        <ReadsFrom />
+        <TwoDashboards />
         <HowWeSee />
         <Instruments />
-        <StatementArtifact />
         <Platform />
-
-        {/* What we are building, shown rather than described. Kept after the product list and
-            explicitly labelled in progress: a consultancy this early should show the shape of
-            the tools without implying they are sitting there switched on. */}
-        <Section className="pb-24">
-          <SectionHead
-            label="What we are building"
-            width="wide"
-            title={<>The instruments, as they are taking shape.</>}
-            lead={
-              <>
-                In development with our design partners. We would rather show you the honest
-                state of it than a rendering of something finished.
-              </>
-            }
-          />
-          <div className="mt-12">
-            <Showcase />
-          </div>
-        </Section>
+        <Product />
+        <UseCases />
+        <Statement />
         <NumberIsNotAnAnswer />
         <Cta />
       </main>
-
       <Footer />
     </>
   );

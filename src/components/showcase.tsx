@@ -61,7 +61,7 @@ const PANES: Pane[] = [
       >
         <Body
           left={
-            <Panel title="Idea → production" meta="median" value="9.4 days" sub="−31%">
+            <Panel title="Idea → production" meta="median" value="9.4 days" sub="illustrative">
               <div className="mt-3">
                 <Line pts={[21, 19, 17.5, 14, 12, 9.4]} band="var(--t2)" threshold={12} labels={M6} />
               </div>
@@ -204,7 +204,7 @@ const PANES: Pane[] = [
       >
         <Body
           left={
-            <Panel title="Spend per task" meta="indexed" value="−31%" sub="−$14.9k">
+            <Panel title="Spend per task" meta="indexed" value="lower" sub="illustrative">
               <div className="mt-3">
                 <Bars
                   data={[100, 92, 81, 74, 69, 69]}
@@ -217,7 +217,7 @@ const PANES: Pane[] = [
           }
           right={
             <>
-              <Panel title="Pass rate" meta="held flat" value="96.4%" sub="−0.1pt">
+              <Panel title="Pass rate" meta="held flat" value="held" sub="illustrative">
                 <div className="mt-3">
                   <Line pts={[96.5, 96.6, 96.3, 96.5, 96.4, 96.4]} band="var(--t3)" labels={M6} />
                 </div>

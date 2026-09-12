@@ -84,14 +84,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-screen">
         {/* holds the single contact dialog, so the nav can open it without a pill */}
-        {/* Filter primitives referenced by globals.css. Zero-size and hidden so they cost
-            no layout; they must live in the document for url(#id) to resolve. */}
-        <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: "absolute" }}>
-          <filter id="ink-bleed" x="-2%" y="-2%" width="104%" height="104%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n" />
-            <feDisplacementMap in="SourceGraphic" in2="n" scale="0.55" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </svg>
         <ContactProvider>{children}</ContactProvider>
       </body>
     </html>
