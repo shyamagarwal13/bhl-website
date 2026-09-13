@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { RouterArt } from "@/components/product/art";
+import { RouterFlow } from "@/components/router-flow";
 import {
   AlsoSee,
   Band,
@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = {
   title: "Router",
   description:
-    "One beam in, split by difficulty. Behold's router sends each request to the cheapest model that still clears your quality bar, and proves the bar was cleared.",
+    "Every request carries the quality it has to clear. Behold's router sends it to the cheapest model that clears it, and proves the bar was met.",
 };
 
 export default function Page() {
@@ -21,9 +21,9 @@ export default function Page() {
     <>
       <ProductHero
         eyebrow="Router"
-        title="One beam in. A spectrum out."
+        title="Not every request needs the expensive model."
         lead="Most requests do not need the expensive model. The hard part is not saving money, it is proving that quality held while you did — which requires measuring the work, not just the latency."
-        art={<RouterArt />}
+        art={<RouterFlow />}
       />
 
       <Band>

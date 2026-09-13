@@ -278,7 +278,7 @@ export function AlsoSee({ current }: { current: "eng" | "token" | "router" }) {
     {
       k: "router",
       t: "Router",
-      d: "One beam in, split by difficulty. The cheapest model that still clears your bar.",
+      d: "The cheapest model that still clears the bar the request carries.",
       href: "/products/router",
     },
   ].filter((p) => p.k !== current);

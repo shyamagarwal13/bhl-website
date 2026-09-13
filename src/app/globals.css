@@ -508,6 +508,26 @@ body {
   animation-delay: var(--d, 0ms);
 }
 
+/* The router hub: a ring expanding out of the mark as each request passes through it. Keyed
+   off the step so it restarts on every route rather than looping independently. */
+@keyframes hub-ring {
+  0% {
+    transform: scale(0.72);
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.55;
+  }
+  60% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
