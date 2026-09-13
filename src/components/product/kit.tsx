@@ -23,6 +23,9 @@ export function ProductHero({
   lead,
   stats,
   art,
+  /** Give the art the full measure, with the headline and lead stacked above it. Some
+      instruments are a journey across the page and cannot be told inside a side column. */
+  wideArt = false,
 }: {
   eyebrow: string;
   title: string;
@@ -31,7 +34,32 @@ export function ProductHero({
       was left read as a placeholder rather than as a specification. */
   stats?: { k: string; v: string }[];
   art: React.ReactNode;
+  wideArt?: boolean;
 }) {
+  if (wideArt) {
+    return (
+      <div className="refraction grain relative overflow-hidden border-b border-line">
+        <section className="mx-auto max-w-[var(--maxw)] px-6 pb-24 pt-16 sm:pt-20">
+          <div className="grid items-end gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
+            <Reveal>
+              <div>
+                <p className="eyebrow">{eyebrow}</p>
+                <h1 className="display mt-5 text-balance text-[2.3rem] sm:text-[2.9rem] lg:text-[3.1rem]">
+                  {title}
+                </h1>
+              </div>
+            </Reveal>
+            <Reveal delay={90}>
+              <p className="text-[1.0625rem] leading-relaxed text-ink-2">{lead}</p>
+            </Reveal>
+          </div>
+
+          <div className="mt-16">{art}</div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="refraction grain relative overflow-hidden border-b border-line">
       <section className="mx-auto max-w-[var(--maxw)] px-6 pb-20 pt-16 sm:pt-20">

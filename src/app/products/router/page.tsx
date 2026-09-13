@@ -23,6 +23,7 @@ export default function Page() {
         eyebrow="Router"
         title="Not every request needs the expensive model."
         lead="Most requests do not need the expensive model. The hard part is not saving money, it is proving that quality held while you did — which requires measuring the work, not just the latency."
+        wideArt
         art={<RouterFlow />}
       />
 
