@@ -6,27 +6,24 @@ import { Logomark } from "./brand";
 /*
  * The router, shown working.
  *
- * Four attempts to get here. A prism, two scrolling lists, one large terminal window, and a
- * stack of six flat rows. The large window was the shape the reference used and was also the
- * wrong picture, because a router does not sit behind one session. The flat rows fixed that
- * but stopped looking like sessions at all: strip the chrome off a terminal and what is left
- * is a list item.
+ * The panes are small terminal windows, and the column is a reel rather than a list. Each
+ * cycle it spins several sessions past, decelerates onto one, and then the route is drawn:
+ * a line out of the settled pane to the throat in front of the mark, and a second line out
+ * the other side to whichever model the task's quality bar picked. A packet runs the length
+ * of it, so the claim arrives as something moving rather than as two lit wires.
  *
- * So the panes are real windows again, just small: a title bar with its own traffic lights and
- * working directory, a body with a prompt line and one line of output. And rather than six of
- * them sitting still, the column is a queue that advances. Work arrives from the bottom, takes
- * its turn at the middle, and leaves through the top, which is what a request queue actually
- * does and what six static cards could never say.
+ * The spin is the point. A queue that advances one step at a time says "there is a next
+ * item"; a reel that riffles through several and stops says "there are many of these and the
+ * router is choosing", which is the actual claim.
  *
- * The geometry that makes this cheap: the panes move but the fan does not. A pane always comes
- * to rest on one of five fixed positions, so the five lines converging on the mark are static
- * and the live one is always the flat middle one. Only the outgoing line moves, and it moves
- * because the model changed.
+ * Nothing touches the mark. Every line stops at a throat eleven pixels short of the ring
+ * around it, so the convergence reads as a point in space that the work passes through. A
+ * line that runs into the logo makes the logo look like a node in a diagram.
  *
- * The queue advances on a timer and the track is transitioned per step rather than run as a
- * CSS animation, so the highlight can never drift out of phase with the pane under it. The
- * list is rendered twice and the track snaps back at the wrap, where the two copies are
- * identical and the jump is invisible.
+ * The geometry that keeps this cheap: the panes move but the fan does not. A pane always
+ * comes to rest on one of five fixed positions, so the incoming lines are static and the live
+ * one is always the flat middle. Only the outgoing line moves, and only because the model
+ * changed.
  *
  * All figures illustrative.
  */
@@ -67,6 +64,8 @@ const routeFor = (need: number) => {
   return i === -1 ? MODELS.length - 1 : i;
 };
 
+/* --- geometry -------------------------------------------------------------- */
+
 const M_CARD = 60;
 const M_GAP = 10;
 const BOARD = MODELS.length * M_CARD + (MODELS.length - 1) * M_GAP; // 422
@@ -78,15 +77,14 @@ const MID = BOARD / 2; // 211
 /* what the track is offset by so that pane `step` lands on the middle line */
 const REST = MID - PANE / 2;
 
-const FAN_W = 168;
-const HUB = 26;
-const CYCLE = 3200;
-const SLIDE = 820;
-/* Start two in, so the queue opens with work already above the middle. Starting at zero leaves
-   the top half of the column empty, which reads as a bug rather than as the head of a queue. */
-const FIRST = 2;
-const WRAP = SESSIONS.length + FIRST;
-const EASE = "cubic-bezier(0.22, 0.61, 0.36, 1)";
+const FAN_W = 280;
+const CX = FAN_W / 2;
+const HUB = 26; // the disc carrying the mark
+const RING = 35; // the faint ring around it
+const THROAT = 46; // where every line stops, eleven clear of the ring
+const X1 = CX - THROAT;
+const X2 = CX + THROAT;
+const SPAN = FAN_W - X2;
 
 /* the five rest positions a pane can occupy, which is why the incoming fan never has to move */
 const STOPS = [-2, -1, 0, 1, 2]
@@ -95,12 +93,39 @@ const STOPS = [-2, -1, 0, 1, 2]
 
 const modelY = (i: number) => i * (M_CARD + M_GAP) + M_CARD / 2;
 
-const wireIn = (y: number) =>
-  `M 0 ${y} C ${FAN_W * 0.45} ${y}, ${FAN_W * 0.3} ${MID}, ${FAN_W / 2 - HUB} ${MID}`;
+const wireIn = (y: number) => `M 0 ${y} C ${X1 * 0.55} ${y}, ${X1 * 0.82} ${MID}, ${X1} ${MID}`;
 const wireOut = (y: number) =>
-  `M ${FAN_W / 2 + HUB} ${MID} C ${FAN_W * 0.7} ${MID}, ${FAN_W * 0.55} ${y}, ${FAN_W} ${y}`;
+  `M ${X2} ${MID} C ${X2 + SPAN * 0.18} ${MID}, ${X2 + SPAN * 0.45} ${y}, ${FAN_W} ${y}`;
 
-/* --- one session window --------------------------------------------------- */
+/* --- timing ---------------------------------------------------------------- */
+
+const SPIN = 5; // panes riffled past per cycle
+const SPIN_MS = 1150;
+const SNAP_AT = SPIN_MS + 40; // track reset, while nothing is lit
+const LAND_AT = SPIN_MS + 160; // the settled pane comes up
+const IN_AT = SPIN_MS + 370;
+const IN_MS = 460;
+const RING_AT = SPIN_MS + 750;
+const OUT_AT = SPIN_MS + 830;
+const OUT_MS = 540;
+const ROUTE_AT = SPIN_MS + 1230; // the model card takes the highlight
+const FLOW_AT = SPIN_MS + 1450;
+const FLOW_MS = 1250;
+/* the packet's length as a fraction of its path, shared with the keyframes that park it */
+const DASH = "0.38";
+const CYCLE = 5200;
+
+const EASE = "cubic-bezier(0.22, 0.61, 0.36, 1)";
+/* a reel: fast away, long settle */
+const REEL = "cubic-bezier(0.16, 0.92, 0.24, 1)";
+
+/* Start two in, so the reel opens with work already above the middle. Starting at zero leaves
+   the top half of the column empty, which reads as a bug rather than as the head of a queue. */
+const FIRST = 2;
+const WRAP = SESSIONS.length + FIRST;
+const TRACK = [...SESSIONS, ...SESSIONS, ...SESSIONS];
+
+/* --- one session window ---------------------------------------------------- */
 
 function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
   return (
@@ -110,10 +135,9 @@ function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
         height: PANE,
         borderColor: on ? "var(--s5)" : "var(--line)",
         boxShadow: on ? "0 16px 34px -20px rgba(18,23,26,0.34)" : "none",
-        transition: `border-color 520ms ${EASE}, box-shadow 520ms ${EASE}`,
+        transition: `border-color 420ms ${EASE}, box-shadow 420ms ${EASE}`,
       }}
     >
-      {/* title bar */}
       <div
         className="flex h-[23px] items-center gap-2.5 border-b px-3"
         style={{
@@ -121,7 +145,7 @@ function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
           background: on
             ? "color-mix(in srgb, var(--s5) 5%, #fff)"
             : "color-mix(in srgb, var(--paper) 62%, #fff)",
-          transition: `background 520ms ${EASE}, border-color 520ms ${EASE}`,
+          transition: `background 420ms ${EASE}, border-color 420ms ${EASE}`,
         }}
       >
         {/* Traffic lights in the patina palette rather than the usual red, amber, green. Three
@@ -135,7 +159,7 @@ function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
             <span
               key={i}
               className="h-[5px] w-[5px] rounded-full"
-              style={{ background: c, transition: `background 520ms ${EASE}` }}
+              style={{ background: c, transition: `background 420ms ${EASE}` }}
             />
           ))}
         </span>
@@ -146,14 +170,13 @@ function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
           bar{" "}
           <span
             className="tabular font-medium"
-            style={{ color: on ? "var(--s5)" : "var(--ink-3)", transition: `color 520ms ${EASE}` }}
+            style={{ color: on ? "var(--s5)" : "var(--ink-3)", transition: `color 420ms ${EASE}` }}
           >
             {s.need}
           </span>
         </span>
       </div>
 
-      {/* body */}
       <div className="flex h-[52px] flex-col justify-center gap-1 px-3">
         <p className="truncate font-mono text-[11.5px]">
           <span style={{ color: on ? "var(--s5)" : "var(--ink-4)" }}>&#10095;</span>{" "}
@@ -172,13 +195,18 @@ function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
   );
 }
 
-/* --- the instrument ------------------------------------------------------- */
+/* --- the instrument -------------------------------------------------------- */
 
 export function RouterFlow() {
   const [step, setStep] = useState(FIRST);
+  /* bumped once per cycle, and the key the wire animations restart from. Separate from `step`
+     so that resetting the track at the wrap cannot replay them. */
+  const [tick, setTick] = useState(0);
+  /* 0 spinning, 1 settled on a pane, 2 routed */
+  const [phase, setPhase] = useState(0);
   const [live, setLive] = useState(false);
   const [open, setOpen] = useState(false);
-  /* set for one frame at the wrap, to move the track back without animating it */
+  /* true for one frame at the wrap, to move the track back without animating it */
   const [snap, setSnap] = useState(false);
   const raf = useRef(0);
 
@@ -187,51 +215,76 @@ export function RouterFlow() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setOpen(true);
+      setPhase(2);
       return;
     }
     setLive(true);
     const t = window.setTimeout(() => setOpen(true), 200);
-    const id = window.setInterval(() => setStep((s) => s + 1), CYCLE);
+    const id = window.setInterval(() => {
+      setStep((s) => s + SPIN);
+      setTick((n) => n + 1);
+    }, CYCLE);
     return () => {
       clearTimeout(t);
       clearInterval(id);
     };
   }, []);
 
+  /* the phases of one cycle, restarted whenever the reel is kicked */
+  useEffect(() => {
+    if (!live) return;
+    setPhase(0);
+    const a = window.setTimeout(() => setPhase(1), LAND_AT);
+    const b = window.setTimeout(() => setPhase(2), ROUTE_AT);
+    return () => {
+      clearTimeout(a);
+      clearTimeout(b);
+    };
+  }, [tick, live]);
+
   /*
-   * The wrap. At `WRAP` the centred pane is the second copy of the one that was centred at the
-   * start, and so are its neighbours above and below, so once the slide has finished the track
-   * can be put back with transitions off and nothing visible happens.
+   * The wrap, taken while the reel is still dark. Subtracting one full list leaves the centred
+   * pane and both its neighbours showing the same sessions, so with transitions off nothing
+   * visible happens. Doing it before the pane lights matters: moving the highlight to a
+   * different element while it is mid-transition shows as a flicker at the middle.
    *
    * The frame that clears `snap` is held in a ref rather than cancelled by this effect's
    * cleanup. Setting the step re-runs the effect, and a cleanup that cancelled the frame would
    * cancel the one it had just scheduled, leaving the track stuck with transitions off.
    */
   useEffect(() => {
-    if (step !== WRAP) return;
+    if (!live || step < WRAP) return;
     const t = window.setTimeout(() => {
       setSnap(true);
-      setStep(FIRST);
+      setStep((s) => s - SESSIONS.length);
       raf.current = window.requestAnimationFrame(() =>
         window.requestAnimationFrame(() => setSnap(false)),
       );
-    }, SLIDE + 60);
+    }, SNAP_AT);
     return () => clearTimeout(t);
-  }, [step]);
+  }, [step, live]);
 
   const active = step % SESSIONS.length;
-  const session = SESSIONS[active];
-  const routed = routeFor(session.need);
+  const routed = routeFor(SESSIONS[active].need);
   const e = open ? 1 : 0;
 
-  const track = [...SESSIONS, ...SESSIONS];
+  /* A drawn line, or a plain one where motion is unwelcome. Under reduced motion the global
+     stylesheet flattens the duration but leaves the delay, so an animated wire would sit
+     invisible for a second and a half before appearing; simpler to not animate it at all. */
+  const drawn = (delay: number, ms: number) =>
+    live
+      ? {
+          strokeDasharray: 1,
+          animation: `wire-draw ${ms}ms ${EASE} ${delay}ms both`,
+        }
+      : undefined;
 
   return (
     /* Capped and centred rather than run to the full measure. The session lines are short, and
        across a 950px column the panes read as empty bars with a word in them. */
-    <div className="mx-auto max-w-[980px] select-none">
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_168px_286px] lg:gap-0">
-        {/* --- the queue ---------------------------------------------------------------- */}
+    <div className="mx-auto max-w-[1080px] select-none">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px_286px] lg:gap-0">
+        {/* --- the reel ----------------------------------------------------------------- */}
         <div
           className="relative overflow-hidden"
           style={{
@@ -254,11 +307,16 @@ export function RouterFlow() {
               gap: PANE_GAP,
               paddingTop: REST,
               transform: `translateY(${-step * PITCH}px)`,
-              transition: live && !snap ? `transform ${SLIDE}ms ${EASE}` : "none",
+              transition: live && !snap ? `transform ${SPIN_MS}ms ${REEL}, filter 320ms ${EASE}` : "none",
+              /* A touch of speed blur while the reel is running, gone by the time it settles.
+                 Not on the first cycle: the reel has not moved yet on load, and a blur with no
+                 motion under it reads as a rendering fault rather than as speed. */
+              filter: live && tick > 0 && phase === 0 ? "blur(0.9px)" : "blur(0)",
+              willChange: "transform",
             }}
           >
-            {track.map((s, i) => {
-              const on = i === step;
+            {TRACK.map((s, i) => {
+              const on = phase > 0 && i === step;
               return (
                 <div
                   key={i}
@@ -266,7 +324,7 @@ export function RouterFlow() {
                     /* everything that is not taking its turn steps back */
                     opacity: on ? 1 : 0.4,
                     transform: `scale(${on ? 1 : 0.975})`,
-                    transition: live ? `opacity 520ms ${EASE}, transform 520ms ${EASE}` : "none",
+                    transition: live ? `opacity 420ms ${EASE}, transform 420ms ${EASE}` : "none",
                   }}
                 >
                   <Pane s={s} on={on} />
@@ -276,7 +334,7 @@ export function RouterFlow() {
           </div>
         </div>
 
-        {/* --- the fan, and the mark at its throat -------------------------------------- */}
+        {/* --- the fan, and the mark behind its throat ---------------------------------- */}
         <div className="relative hidden lg:block" style={{ height: BOARD }}>
           <svg
             width={FAN_W}
@@ -307,22 +365,82 @@ export function RouterFlow() {
               />
             ))}
 
-            {/* The live path. The incoming half never moves, because the pane always comes to
-                the middle; the outgoing half moves whenever the bar picks a different model. */}
-            <path d={wireIn(MID)} fill="none" stroke="var(--s5)" strokeWidth="1.7" />
-            <path
-              d={wireOut(modelY(routed))}
+            {/* the ring the lines stop short of */}
+            <circle
+              cx={CX}
+              cy={MID}
+              r={RING}
               fill="none"
-              stroke="var(--s5)"
-              strokeWidth="1.7"
-              style={{ transition: live ? `d 640ms ${EASE} 140ms` : "none" }}
+              stroke="var(--line-2)"
+              strokeWidth="1"
+              opacity="0.55"
             />
+
+            {/*
+              The route, keyed on the cycle so it clears when the reel is kicked and redraws
+              when it settles. Incoming first, then outgoing, then one packet down the length
+              of both: the line arrives before the model is picked, which is the order the
+              decision actually happens in.
+            */}
+            <g key={tick}>
+              {/* The route, held back so the packet running over it is the bright thing. A route
+                  line at full strength and a packet at full strength are the same colour, and
+                  the flow stops reading as movement. */}
+              <path
+                d={wireIn(MID)}
+                fill="none"
+                stroke="var(--s5)"
+                strokeWidth="1.6"
+                opacity="0.4"
+                pathLength={1}
+                style={drawn(IN_AT, IN_MS)}
+              />
+              <path
+                d={wireOut(modelY(routed))}
+                fill="none"
+                stroke="var(--s5)"
+                strokeWidth="1.6"
+                opacity="0.4"
+                pathLength={1}
+                style={drawn(OUT_AT, OUT_MS)}
+              />
+              {live && (
+                <>
+                  <path
+                    d={wireIn(MID)}
+                    fill="none"
+                    stroke="var(--s5)"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    pathLength={1}
+                    style={{
+                      ["--dash" as string]: DASH,
+                      strokeDasharray: "var(--dash) 3",
+                      animation: `wire-flow-in ${FLOW_MS}ms linear ${FLOW_AT}ms infinite both`,
+                    }}
+                  />
+                  <path
+                    d={wireOut(modelY(routed))}
+                    fill="none"
+                    stroke="var(--s5)"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    pathLength={1}
+                    style={{
+                      ["--dash" as string]: DASH,
+                      strokeDasharray: "var(--dash) 3",
+                      animation: `wire-flow-out ${FLOW_MS}ms linear ${FLOW_AT}ms infinite both`,
+                    }}
+                  />
+                </>
+              )}
+            </g>
           </svg>
 
           <div
             className="absolute z-10"
             style={{
-              left: FAN_W / 2 - HUB,
+              left: CX - HUB,
               top: MID - HUB,
               width: HUB * 2,
               height: HUB * 2,
@@ -331,14 +449,13 @@ export function RouterFlow() {
               transition: `opacity 560ms ${EASE} 260ms, transform 680ms ${EASE} 260ms`,
             }}
           >
-            {/* Keyed on the session rather than the step, so the ring does not fire a second
-                time when the track snaps back onto the same pane at the wrap. */}
+            {/* fires as the incoming line lands, not on a loop of its own */}
             <span
-              key={active}
+              key={tick}
               className="absolute inset-0 rounded-full border"
               style={{
                 borderColor: "var(--s5)",
-                animation: live ? "hub-ring 3.2s ease-out" : "none",
+                animation: live ? `hub-ring 1.5s ease-out ${RING_AT}ms both` : "none",
               }}
             />
             <span className="relative flex h-full w-full items-center justify-center rounded-full border border-line bg-white lift">
@@ -358,7 +475,7 @@ export function RouterFlow() {
           }}
         >
           {MODELS.map((m, i) => {
-            const on = i === routed;
+            const on = phase > 1 && i === routed;
             return (
               <div
                 key={m.name}
@@ -368,7 +485,7 @@ export function RouterFlow() {
                   borderColor: on ? "var(--s5)" : "var(--line)",
                   background: on ? "color-mix(in srgb, var(--s5) 7%, #fff)" : "var(--white)",
                   transition: live
-                    ? `border-color 560ms ${EASE}, background 560ms ${EASE}`
+                    ? `border-color 460ms ${EASE}, background 460ms ${EASE}`
                     : "none",
                 }}
               >
@@ -404,7 +521,7 @@ export function RouterFlow() {
                   style={{
                     color: "var(--s5)",
                     opacity: on ? 1 : 0,
-                    transition: `opacity 460ms ${EASE}`,
+                    transition: `opacity 420ms ${EASE}`,
                   }}
                 >
                   routed

@@ -528,6 +528,59 @@ body {
   }
 }
 
+/*
+  The router wires. Every path carries `pathLength="1"`, so one set of keyframes works for a
+  flat 74px line and a steep 200px curve without measuring either: the dash pattern is stated
+  as a fraction of whatever the path turns out to be.
+
+  Note the sign. `stroke-dashoffset` advances the pattern, which shifts the dash *backwards*
+  along the path, so a packet travelling start to end is an offset counting down through zero
+  into the negatives, and a line drawing itself on is an offset falling from 1 to 0.
+*/
+@keyframes wire-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/*
+  Parked, across, then parked off the far end while the outgoing half takes its turn.
+
+  The parked offset is `--dash`, the packet's own length, and it has to be exactly that: at any
+  smaller offset part of the packet is still on the path, which shows as a bright stub sitting
+  at the throat for half of every cycle. The component sets `--dash` and builds its dash array
+  from the same property, so the two cannot drift apart.
+*/
+@keyframes wire-flow-in {
+  0% {
+    stroke-dashoffset: var(--dash);
+  }
+  40% {
+    stroke-dashoffset: -1;
+  }
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+/* Held off the start until the incoming half has arrived, so one packet reads as passing
+   through the mark rather than two reading as traffic in both directions at once. */
+@keyframes wire-flow-out {
+  0%,
+  44% {
+    stroke-dashoffset: var(--dash);
+  }
+  84% {
+    stroke-dashoffset: -1;
+  }
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
 /* The cursor in the live session pane. Steps rather than fades, because a terminal caret is
    a block that is either on or off and a cross-fade reads as a glow. */
 @keyframes caret-blink {
