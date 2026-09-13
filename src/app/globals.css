@@ -528,6 +528,19 @@ body {
   }
 }
 
+/* The cursor in the live session pane. Steps rather than fades, because a terminal caret is
+   a block that is either on or off and a cross-fade reads as a glow. */
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
