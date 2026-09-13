@@ -581,6 +581,19 @@ body {
   }
 }
 
+/* A model's score being re-read for the task that just landed. Dropping in from above rather
+   than fading says the number was replaced, where a fade says it was always going to be that. */
+@keyframes score-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* The cursor in the live session pane. Steps rather than fades, because a terminal caret is
    a block that is either on or off and a cross-fade reads as a glow. */
 @keyframes caret-blink {

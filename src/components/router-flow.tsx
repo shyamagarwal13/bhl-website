@@ -28,39 +28,68 @@ import { Logomark } from "./brand";
  * All figures illustrative.
  */
 
+/* ordered by price, which is the only ordering the routing policy needs */
 const MODELS = [
-  { name: "Haiku", sub: "4.5", q: 71, cost: "$0.80" },
-  { name: "GLM-5.2", sub: "Z.ai", q: 76, cost: "$4.40" },
-  { name: "Gemini", sub: "3.1 Pro", q: 83, cost: "$12" },
-  { name: "Sonnet", sub: "4.6", q: 89, cost: "$15" },
-  { name: "GPT-5.5", sub: "Codex", q: 92, cost: "$30" },
-  { name: "Opus", sub: "4.8", q: 96, cost: "$75" },
+  { name: "Haiku", sub: "4.5", cost: "$0.80" },
+  { name: "GLM-5.2", sub: "Z.ai", cost: "$4.40" },
+  { name: "Gemini", sub: "3.1 Pro", cost: "$12" },
+  { name: "Sonnet", sub: "4.6", cost: "$15" },
+  { name: "GPT-5.5", sub: "Codex", cost: "$30" },
+  { name: "Opus", sub: "4.8", cost: "$75" },
 ];
 
 /*
- * `need` is the bar the *task* sets, not the model. An earlier version carried a hand-written
- * model index per session and promptly drew a request routed to a model scoring below the bar
- * printed beside it: the picture contradicted its own caption. Deriving the route means the
- * diagram cannot disagree with the numbers on it, whatever anyone edits later.
+ * A model does not have a score, it has a score *on a piece of work*. The first version of
+ * this board printed one fixed column, which quietly asserted the thing the product exists to
+ * deny: that there is a single capability ranking and the job is to buy as far up it as you
+ * can afford. So every session carries its own reading of all six, and the board re-scores
+ * when the reel lands.
  *
- * Spread deliberately across the board. The cheap end does most of the work and the expensive
- * end earns its place occasionally, which is the entire argument.
+ * Two of them are deliberately out of price order. On the migration Gemini beats Sonnet, and
+ * on the Terraform bump GLM beats Gemini, because that does happen and a board that is always
+ * monotone in price is a price list with extra steps.
+ *
+ * `bar` is what the task demands, and it is the task's property rather than any model's. An
+ * early version carried a hand-written model index per session and promptly drew a request
+ * routed to a model scoring below the bar printed beside it: the picture contradicted its own
+ * caption. Deriving the route means the diagram cannot disagree with the numbers on it.
+ *
+ * Routes land deliberately across the board. The cheap end does most of the work and the
+ * expensive end earns its place occasionally, which is the entire argument.
  */
-const SESSIONS = [
-  { cwd: "~/acme/web", cmd: "Rename the billing props", out: "4 files changed, 61 lines", need: 68 },
-  { cwd: "~/acme/ledger", cmd: "Why is the payments test flaky?", out: "bisected 9 runs, found it", need: 70 },
-  { cwd: "~/acme/platform", cmd: "Design the caching layer", out: "write-through, 90s TTL", need: 94 },
-  { cwd: "~/acme/web", cmd: "Add a /changelog page from MDX", out: "2 routes, RSS 2.0", need: 74 },
-  { cwd: "~/acme/api", cmd: "Write the migration for orders", out: "reversible, 1 new index", need: 81 },
-  { cwd: "~/acme/infra", cmd: "Bump the Terraform providers", out: "no plan diff", need: 66 },
-  { cwd: "~/acme/auth", cmd: "Refactor the session module", out: "11 call sites updated", need: 87 },
-  { cwd: "~/acme/web", cmd: "Add tests for the cart reducer", out: "18 cases, 3 edge", need: 72 },
-  { cwd: "~/acme/search", cmd: "Explain why recall dropped", out: "analyzer change, week 31", need: 90 },
+type Session = {
+  cwd: string;
+  cmd: string;
+  out: string;
+  bar: number;
+  scores: number[];
+};
+
+const SESSIONS: Session[] = [
+  { cwd: "~/acme/web", cmd: "Rename the billing props", out: "4 files changed, 61 lines",
+    bar: 80, scores: [88, 91, 93, 95, 96, 97] },
+  { cwd: "~/acme/ledger", cmd: "Why is the payments test flaky?", out: "bisected 9 runs, found it",
+    bar: 85, scores: [61, 72, 84, 88, 90, 93] },
+  { cwd: "~/acme/platform", cmd: "Design the caching layer", out: "write-through, 90s TTL",
+    bar: 88, scores: [42, 55, 71, 83, 87, 94] },
+  { cwd: "~/acme/web", cmd: "Add a /changelog page from MDX", out: "2 routes, RSS 2.0",
+    bar: 82, scores: [74, 86, 88, 90, 91, 94] },
+  { cwd: "~/acme/api", cmd: "Write the migration for orders", out: "reversible, 1 new index",
+    bar: 86, scores: [66, 79, 90, 88, 92, 95] },
+  { cwd: "~/acme/infra", cmd: "Bump the Terraform providers", out: "no plan diff",
+    bar: 78, scores: [91, 93, 92, 95, 95, 96] },
+  { cwd: "~/acme/auth", cmd: "Refactor the session module", out: "11 call sites updated",
+    bar: 87, scores: [58, 70, 82, 89, 91, 94] },
+  { cwd: "~/acme/web", cmd: "Add tests for the cart reducer", out: "18 cases, 3 edge",
+    bar: 84, scores: [77, 85, 88, 90, 92, 94] },
+  { cwd: "~/acme/search", cmd: "Explain why recall dropped", out: "analyzer change, week 31",
+    bar: 86, scores: [52, 64, 80, 85, 90, 93] },
 ];
 
-/* the cheapest model that clears the bar, which is the whole of the routing policy */
-const routeFor = (need: number) => {
-  const i = MODELS.findIndex((m) => m.q >= need);
+/* The cheapest model that clears the bar on this work, which is the whole of the routing
+   policy. The board is in price order, so the first index that clears is also the cheapest. */
+const routeFor = (s: Session) => {
+  const i = s.scores.findIndex((v) => v >= s.bar);
   return i === -1 ? MODELS.length - 1 : i;
 };
 
@@ -99,35 +128,47 @@ const wireOut = (y: number) =>
 
 /* --- timing ---------------------------------------------------------------- */
 
-const SPIN = 5; // panes riffled past per cycle
-const SPIN_MS = 1150;
-const SNAP_AT = SPIN_MS + 40; // track reset, while nothing is lit
-const LAND_AT = SPIN_MS + 160; // the settled pane comes up
-const IN_AT = SPIN_MS + 370;
+const SPIN = 4; // panes riffled past per cycle
+const SPIN_MS = 1500;
+const STOP_AT = SPIN_MS + 10; // motion over, blur starts clearing
+const SNAP_AT = SPIN_MS + 30; // track reset, while nothing is lit
+const LAND_AT = SPIN_MS + 130; // the settled pane comes up and the board re-scores
+const IN_AT = SPIN_MS + 340;
 const IN_MS = 460;
-const RING_AT = SPIN_MS + 750;
-const OUT_AT = SPIN_MS + 830;
+const RING_AT = SPIN_MS + 720;
+const OUT_AT = SPIN_MS + 800;
 const OUT_MS = 540;
-const ROUTE_AT = SPIN_MS + 1230; // the model card takes the highlight
-const FLOW_AT = SPIN_MS + 1450;
+const ROUTE_AT = SPIN_MS + 1200; // the model card takes the highlight
+const FLOW_AT = SPIN_MS + 1400;
 const FLOW_MS = 1250;
 /* the packet's length as a fraction of its path, shared with the keyframes that park it */
 const DASH = "0.38";
-const CYCLE = 5200;
+const CYCLE = 5600;
 
 const EASE = "cubic-bezier(0.22, 0.61, 0.36, 1)";
-/* a reel: fast away, long settle */
-const REEL = "cubic-bezier(0.16, 0.92, 0.24, 1)";
+/*
+ * The reel. Both ends of this curve have to be flat.
+ *
+ * The obvious choice for a thing that stops is a hard ease-out, and the first pass used one:
+ * cubic-bezier(0.16, 0.92, ...), whose slope at zero is nearly six. That means the first frame
+ * of the spin jumps most of a pane, which no amount of blur disguises and which is most of
+ * what makes motion read as cheap. Leading with y1 = 0 starts the reel from rest and lets it
+ * build, and x2 = 0.1 spends the back three quarters of the duration settling.
+ */
+const REEL = "cubic-bezier(0.34, 0, 0.1, 1)";
 
 /* Start two in, so the reel opens with work already above the middle. Starting at zero leaves
    the top half of the column empty, which reads as a bug rather than as the head of a queue. */
 const FIRST = 2;
 const WRAP = SESSIONS.length + FIRST;
-const TRACK = [...SESSIONS, ...SESSIONS, ...SESSIONS];
+/* Two copies is the minimum that covers a spin without running off the end: the step never
+   exceeds WRAP - 1 before the wrap resets it, and a spin from there needs SPIN + 2 panes
+   beyond it. Three would be dead weight under the blur, which repaints the whole track. */
+const TRACK = [...SESSIONS, ...SESSIONS];
 
 /* --- one session window ---------------------------------------------------- */
 
-function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
+function Pane({ s, on }: { s: Session; on: boolean }) {
   return (
     <div
       className="overflow-hidden rounded-lg border bg-white"
@@ -172,7 +213,7 @@ function Pane({ s, on }: { s: (typeof SESSIONS)[number]; on: boolean }) {
             className="tabular font-medium"
             style={{ color: on ? "var(--s5)" : "var(--ink-3)", transition: `color 420ms ${EASE}` }}
           >
-            {s.need}
+            {s.bar}
           </span>
         </span>
       </div>
@@ -204,11 +245,21 @@ export function RouterFlow() {
   const [tick, setTick] = useState(0);
   /* 0 spinning, 1 settled on a pane, 2 routed */
   const [phase, setPhase] = useState(0);
+  /* Which session the board is reporting. Distinct from the landed pane, because the scores
+     belong to the work and must not change until the reel has actually stopped on it. */
+  const [shown, setShown] = useState(FIRST);
+  /* strictly "the track is moving", which is not the same instant as "the pane lights up" */
+  const [spinning, setSpinning] = useState(false);
   const [live, setLive] = useState(false);
   const [open, setOpen] = useState(false);
   /* true for one frame at the wrap, to move the track back without animating it */
   const [snap, setSnap] = useState(false);
   const raf = useRef(0);
+  /* The phase timeline needs the current step at the moment the reel lands, but must not
+     depend on it: the wrap changes the step mid-cycle, and restarting the timeline there would
+     replay the whole sequence against a half-drawn route. */
+  const stepRef = useRef(FIRST);
+  stepRef.current = step;
 
   useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
@@ -230,15 +281,25 @@ export function RouterFlow() {
     };
   }, []);
 
-  /* the phases of one cycle, restarted whenever the reel is kicked */
+  /*
+   * The phases of one cycle, restarted whenever the reel is kicked. The board re-scores at the
+   * landing rather than at the kick: the numbers belong to a piece of work, and swapping them
+   * while the reel is still moving would show the reading for a session that has not arrived.
+   */
   useEffect(() => {
     if (!live) return;
     setPhase(0);
-    const a = window.setTimeout(() => setPhase(1), LAND_AT);
-    const b = window.setTimeout(() => setPhase(2), ROUTE_AT);
+    if (tick > 0) setSpinning(true);
+    const a = window.setTimeout(() => setSpinning(false), STOP_AT);
+    const b = window.setTimeout(() => {
+      setPhase(1);
+      setShown(stepRef.current % SESSIONS.length);
+    }, LAND_AT);
+    const c = window.setTimeout(() => setPhase(2), ROUTE_AT);
     return () => {
       clearTimeout(a);
       clearTimeout(b);
+      clearTimeout(c);
     };
   }, [tick, live]);
 
@@ -264,8 +325,8 @@ export function RouterFlow() {
     return () => clearTimeout(t);
   }, [step, live]);
 
-  const active = step % SESSIONS.length;
-  const routed = routeFor(SESSIONS[active].need);
+  const session = SESSIONS[shown];
+  const routed = routeFor(session);
   const e = open ? 1 : 0;
 
   /* A drawn line, or a plain one where motion is unwelcome. Under reduced motion the global
@@ -307,11 +368,13 @@ export function RouterFlow() {
               gap: PANE_GAP,
               paddingTop: REST,
               transform: `translateY(${-step * PITCH}px)`,
-              transition: live && !snap ? `transform ${SPIN_MS}ms ${REEL}, filter 320ms ${EASE}` : "none",
-              /* A touch of speed blur while the reel is running, gone by the time it settles.
-                 Not on the first cycle: the reel has not moved yet on load, and a blur with no
-                 motion under it reads as a rendering fault rather than as speed. */
-              filter: live && tick > 0 && phase === 0 ? "blur(0.9px)" : "blur(0)",
+              /* Blur in fast and out slow. The reel is at its quickest early and spends the
+                 back of the curve settling, so a symmetric fade would clear the blur while the
+                 panes are still visibly moving. */
+              transition: live && !snap
+                ? `transform ${SPIN_MS}ms ${REEL}, filter ${spinning ? 220 : 620}ms ease-out`
+                : "none",
+              filter: spinning ? "blur(1.1px)" : "blur(0)",
               willChange: "transform",
             }}
           >
@@ -498,16 +561,22 @@ export function RouterFlow() {
                   </p>
                   <p className="truncate font-mono text-[10px] text-ink-4">{m.sub}</p>
                 </div>
-                {/* the other half of the comparison the route is decided by */}
+                {/* The other half of the comparison the route is decided by, re-read for the
+                    work that just landed. Keyed on the session so it replays, staggered down
+                    the board so the column reads as being scored rather than swapped. */}
                 <span className="shrink-0 text-right">
                   <span className="block font-mono text-[8.5px] uppercase tracking-[0.14em] text-ink-4">
                     scores
                   </span>
                   <span
+                    key={shown}
                     className="tabular block font-mono text-[12px]"
-                    style={{ color: on ? "var(--t3)" : "var(--ink-4)" }}
+                    style={{
+                      color: on ? "var(--t3)" : "var(--ink-4)",
+                      animation: live ? `score-in 380ms ${EASE} ${i * 45}ms backwards` : "none",
+                    }}
                   >
-                    {m.q}
+                    {session.scores[i]}
                   </span>
                 </span>
                 <span
