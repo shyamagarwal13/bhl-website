@@ -67,13 +67,7 @@ export function NumberIsNotAnAnswer() {
       <section id="approach" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
         <SectionHead
           width="wide"
-          title={<>The work this is built on.</>}
-          lead={
-            <>
-              Published and open to argument. If you want to disagree with the method, the
-              method is in print.
-            </>
-          }
+          title={<>Our selected work.</>}
         />
 
         <Reveal delay={80}>

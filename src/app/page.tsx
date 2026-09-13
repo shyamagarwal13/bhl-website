@@ -31,9 +31,18 @@ function Section({
 
 /* --- hero ----------------------------------------------------------------- */
 
+/*
+ * The nav is sticky and transparent, so it occupies 76px of flow in which the flat body paper
+ * showed through — a visible band between the black announcement bar and the point where the
+ * hero's bloom began. Pull the hero up by exactly that height and pad the content back down,
+ * so the gradient starts under the black bar and nothing else moves.
+ *
+ * `z-0` matters here: the hero is positioned and comes after the header in the DOM, so
+ * without an explicit stacking order it would paint over the nav.
+ */
 function Hero() {
   return (
-    <div className="refraction grain relative overflow-hidden">
+    <div className="refraction grain relative z-0 -mt-[76px] overflow-hidden pt-[76px]">
       <Section className="relative pt-20 sm:pt-24">
         <div className="mx-auto max-w-5xl text-center">
           <Reveal>
