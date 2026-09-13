@@ -305,7 +305,7 @@ export function AlsoSee({ current }: { current: "eng" | "token" | "router" }) {
     },
     {
       k: "router",
-      t: "Router",
+      t: "Optimization",
       d: "The cheapest model that still clears the bar the request carries.",
       href: "/products/router",
     },

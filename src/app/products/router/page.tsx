@@ -11,7 +11,7 @@ import {
 } from "@/components/product/kit";
 
 export const metadata: Metadata = {
-  title: "Router",
+  title: "Optimization",
   description:
     "Every request carries the quality it has to clear. Behold's router sends it to the cheapest model that clears it, and proves the bar was met.",
 };
@@ -20,7 +20,7 @@ export default function Page() {
   return (
     <>
       <ProductHero
-        eyebrow="Router"
+        eyebrow="Optimization"
         title="Not every request needs the expensive model."
         lead="Most requests do not need the expensive model. The hard part is not saving money, it is proving that quality held while you did, which requires measuring the work rather than just the latency."
         wideArt

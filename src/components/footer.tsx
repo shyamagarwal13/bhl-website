@@ -6,7 +6,7 @@ const COLUMNS = [
     links: [
       { l: "Engineering intelligence", href: "/products/engineering-intelligence" },
       { l: "Token intelligence", href: "/products/token-intelligence" },
-      { l: "Router", href: "/products/router" },
+      { l: "Optimization", href: "/products/router" },
     ],
   },
   {

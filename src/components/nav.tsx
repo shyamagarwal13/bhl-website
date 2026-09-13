@@ -17,71 +17,36 @@ const LINKS = [
 /*
  * The products menu.
  *
- * Every competitor in this category runs one, and a buyer with three tabs open reads the
- * menu as the product surface before reading a word of the page. A site with three flat
- * anchors next to their twelve-item mega-menu looks like a smaller company, whatever the
- * argument underneath says.
+ * Three products, one per column, and nothing else.
  *
- * The human-layer column is first and carries the marker colour, so the differentiated work
- * is the first thing in the menu rather than the last. Every entry points at a section that
- * exists on this page — there are no product pages behind these yet, and a menu of dead
- * links would cost more credibility than the menu buys.
+ * It used to carry two more groups. "The human layer" listed the individual instruments, which
+ * are features of engineering intelligence rather than things anyone buys separately, and all
+ * three pointed at the same page. "Foundations" listed Research, How we measure and Use cases,
+ * which are sections of the home page and two of which are already top-level links in this
+ * same bar. Nine entries, three products. A menu that sets a section heading beside a product
+ * tells the reader we cannot tell the difference between them either.
+ *
+ * The band colours are the oxidation series in order, so the three read as one set rather than
+ * as three unrelated things that happen to be adjacent.
  */
-const MENU: {
-  group: string;
-  band: string;
-  items: { t: string; d: string; href: string; tag?: string }[];
-}[] = [
+const PRODUCTS = [
   {
-    group: "Products",
+    t: "Engineering intelligence",
+    d: "Whether the work was any good, not just whether it shipped",
+    href: "/products/engineering-intelligence",
     band: "var(--s1)",
-    items: [
-      {
-        t: "Engineering intelligence",
-        d: "Whether the work was any good, not just whether it shipped",
-        href: "/products/engineering-intelligence",
-      },
-      {
-        t: "Token intelligence",
-        d: "Every AI dollar, and what it actually bought",
-        href: "/products/token-intelligence",
-      },
-      {
-        t: "Router",
-        d: "The cheapest model that still clears your bar",
-        href: "/products/router",
-      },
-    ],
   },
   {
-    group: "The human layer",
+    t: "Token intelligence",
+    d: "Every AI dollar, and what it actually bought",
+    href: "/products/token-intelligence",
+    band: "var(--s3)",
+  },
+  {
+    t: "Optimization",
+    d: "The cheapest model that still clears your bar",
+    href: "/products/router",
     band: "var(--s5)",
-    items: [
-      {
-        t: "Slop Index",
-        d: "What plausible output costs after it merges",
-        href: "/products/engineering-intelligence",
-      },
-      {
-        t: "Judgment Rate",
-        d: "Where a person changed the direction",
-        href: "/products/engineering-intelligence",
-      },
-      {
-        t: "Taste capture",
-        d: "Your standards, in the agent's context",
-        href: "/products/engineering-intelligence",
-      },
-    ],
-  },
-  {
-    group: "Foundations",
-    band: "var(--t3)",
-    items: [
-      { t: "Research", d: "The published work behind the numbers", href: "/#approach" },
-      { t: "How we measure", d: "What we read, and what it leaves out", href: "/#how-we-see" },
-      { t: "Use cases", d: "The decisions this is bought to make", href: "/#use-cases" },
-    ],
   },
 ];
 
@@ -218,42 +183,31 @@ export function Nav() {
         {menu && (
           <div className="absolute inset-x-0 top-full hidden px-4 md:block">
             <div className="mx-auto mt-2 max-w-[var(--maxw)] overflow-hidden rounded-2xl border border-line bg-white/95 backdrop-blur-xl lift-lg">
-              <div className="grid gap-x-8 gap-y-7 p-7 lg:grid-cols-3">
-                {MENU.map((g) => (
-                  <div key={g.group}>
-                    <div className="mb-4 flex items-center gap-2">
-                      <span
-                        className="h-1.5 w-1.5 rounded-full"
-                        style={{ background: g.band }}
-                      />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-4">
-                        {g.group}
+              {/* Three across, with room to breathe. The old three-column grid held nine
+                  entries; the same grid holding three needs each one to carry more weight or
+                  the panel reads as two thirds empty. */}
+              <div className="grid gap-2 p-4 lg:grid-cols-3">
+                {PRODUCTS.map((p) => (
+                  <a
+                    key={p.t}
+                    href={p.href}
+                    onClick={() => setMenu(false)}
+                    className="group rounded-xl p-4 transition-colors hover:bg-paper"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: p.band }} />
+                      <span className="text-[14px] font-semibold text-ink">{p.t}</span>
+                      {/* Immediately after the label, not pushed to the column edge. `ml-auto`
+                          across a 400px column leaves the arrow stranded a paragraph away from
+                          the thing it belongs to. */}
+                      <span className="text-[13px] text-ink-4 transition-transform group-hover:translate-x-0.5">
+                        &#8594;
                       </span>
-                    </div>
-                    <ul className="flex flex-col gap-1">
-                      {g.items.map((it) => (
-                        <li key={it.t}>
-                          <a
-                            href={it.href}
-                            onClick={() => setMenu(false)}
-                            className="-mx-2 block rounded-lg px-2 py-2 transition-colors hover:bg-paper"
-                          >
-                            <span className="flex items-center gap-2">
-                              <span className="text-[13.5px] font-semibold text-ink">{it.t}</span>
-                              {it.tag && (
-                                <span className="rounded bg-s4 px-1.5 py-px text-[9px] font-extrabold uppercase tracking-wide text-ink">
-                                  {it.tag}
-                                </span>
-                              )}
-                            </span>
-                            <span className="mt-0.5 block text-[12px] leading-snug text-ink-4">
-                              {it.d}
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                    </span>
+                    <span className="mt-1.5 block text-[12.5px] leading-snug text-ink-4">
+                      {p.d}
+                    </span>
+                  </a>
                 ))}
               </div>
 
@@ -288,30 +242,26 @@ export function Nav() {
             </ul>
 
             {/* the product surface, flattened. Descriptions are dropped here: on a phone
-                they turn a twelve-item menu into a page of its own. */}
-            {MENU.map((g) => (
-              <div key={g.group} className="mt-4 border-t border-line pt-4">
-                <div className="mb-2 flex items-center gap-2 px-3">
-                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: g.band }} />
-                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-4">
-                    {g.group}
-                  </span>
-                </div>
-                <ul className="flex flex-col">
-                  {g.items.map((it) => (
-                    <li key={it.t}>
-                      <a
-                        href={it.href}
-                        onClick={() => setOpen(false)}
-                        className="block rounded-lg px-3 py-2 text-[13.5px] text-ink-2 hover:bg-paper"
-                      >
-                        {it.t}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+                they turn the menu into a page of its own. */}
+            <div className="mt-4 border-t border-line pt-4">
+              <span className="mb-2 block px-3 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-4">
+                Products
+              </span>
+              <ul className="flex flex-col">
+                {PRODUCTS.map((p) => (
+                  <li key={p.t}>
+                    <a
+                      href={p.href}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-[13.5px] text-ink-2 hover:bg-paper"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: p.band }} />
+                      {p.t}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <button
               type="button"
               onClick={() => {
