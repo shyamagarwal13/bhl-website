@@ -44,7 +44,7 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const title = "Behold — creativity is the new productivity";
+const title = "Behold: creativity is the new productivity";
 const description =
   "Every dashboard measures how much more you shipped. That's just more AI slop. Behold measures the judgment behind the work: what plausible-looking output costs after it merges, and where a person is still the most valuable thing in the room. Engineering and token intelligence, routing, review and agent observability included.";
 
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://beholdlabs.com"),
   title: {
     default: title,
-    template: "%s — Behold",
+    template: "%s · Behold",
   },
   description,
   keywords: [

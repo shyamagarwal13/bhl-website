@@ -22,7 +22,7 @@ export default function Page() {
       <ProductHero
         eyebrow="Router"
         title="Not every request needs the expensive model."
-        lead="Most requests do not need the expensive model. The hard part is not saving money, it is proving that quality held while you did — which requires measuring the work, not just the latency."
+        lead="Most requests do not need the expensive model. The hard part is not saving money, it is proving that quality held while you did, which requires measuring the work rather than just the latency."
         wideArt
         art={<RouterFlow />}
       />
@@ -73,8 +73,8 @@ export default function Page() {
           flip
           eyebrow="Proof"
           band="var(--t3)"
-          title="Cheaper is easy. Cheaper at the same bar is the product."
-          body="Any router can cut your bill by sending everything to a small model. The reason to trust this one is that the quality bar is measured on your work rather than on a public benchmark, using the same machinery that computes your Slop Index — so a saving that quietly raised your rework rate shows up as a loss, not a win."
+          title="Cheaper is easy. Cheaper at the same bar is what we do."
+          body="Any router can cut your bill by sending everything to a small model. The reason to trust this one is that the quality bar is measured on your work rather than on a public benchmark, using the same machinery that computes your Slop Index, so a saving that quietly raised your rework rate shows up as a loss rather than a win."
           points={[
             "Quality measured on your repositories, not a leaderboard",
             "Savings reported net of retries, rework and review drag",

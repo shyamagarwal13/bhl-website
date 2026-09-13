@@ -117,7 +117,7 @@ export function Wordmark({
     </span>
   );
   return href ? (
-    <Link href={href} className="inline-flex" aria-label="Behold Labs — home">
+    <Link href={href} className="inline-flex" aria-label="Behold Labs, home">
       {inner}
     </Link>
   ) : (

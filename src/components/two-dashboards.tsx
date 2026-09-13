@@ -171,8 +171,8 @@ export function TwoDashboards() {
               style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
             >
               judgment
-            </span>{" "}
-            — knowing what to build, what to keep, what to throw away, and where a person still
+            </span>
+            : knowing what to build, what to keep, what to throw away, and where a person still
             has to be the one deciding.
           </p>
         </Reveal>
