@@ -42,7 +42,7 @@ export const captureSchema = z.object({
 /*
  * Step two: the dialog.
  *
- * Only the email is required. The dialog is a favour the visitor is doing us, and a
+ * Only the email is required. The dialog is a favor the visitor is doing us, and a
  * required-field wall is how you turn a captured lead into an abandoned one; anything
  * they skip stays NULL and the lead is still there from step one.
  */

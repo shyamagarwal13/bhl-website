@@ -7,7 +7,7 @@
  * competitor. The three-card comparison went with it.
  *
  * What remains is the actual claim. There is a great deal to account for now, each instrument
- * reaches only part of it, and every organisation adopts AI differently enough that a reading
+ * reaches only part of it, and every organization adopts AI differently enough that a reading
  * from one does not transfer to another — which is where the last term comes in. That lands
  * as an equation because it is one, and it is the only place on this page where type moves.
  */
@@ -71,7 +71,7 @@ export function HowWeSee() {
           So there is a great deal to account for now, and no single instrument reaches all of
           it. We use telemetry to establish what happened, and we ask people directly where the
           answer only exists in their heads. Then the part that actually decides the outcome:
-          every organisation adopts this differently enough that a reading taken from one does
+          every organization adopts this differently enough that a reading taken from one does
           not transfer to another.
         </p>
       </Reveal>
@@ -83,7 +83,7 @@ export function HowWeSee() {
       <div className="mt-16 border-t border-line pt-14">
         <Reveal>
           <div>
-            <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
+            <div className="flex flex-wrap items-baseline justify-center gap-x-5 gap-y-2 text-center">
               {TERMS.map((term, i) => (
                 <span key={term} className="flex items-baseline gap-x-5">
                   {i > 0 && (

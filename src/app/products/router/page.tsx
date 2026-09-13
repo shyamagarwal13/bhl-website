@@ -102,7 +102,7 @@ export default function Page() {
           eyebrow="Setup"
           band="var(--s2)"
           title="Your tools stay exactly as they are."
-          body="The router is a base URL. Point your existing agents and IDEs at it, keep your own provider keys, and nothing else in your workflow changes. Self-hosting is available if your requests cannot leave your network, which for several of the organisations we work with is not negotiable."
+          body="The router is a base URL. Point your existing agents and IDEs at it, keep your own provider keys, and nothing else in your workflow changes. Self-hosting is available if your requests cannot leave your network, which for several of the organizations we work with is not negotiable."
           points={[
             "Drop-in base URL, OpenAI-compatible",
             "Bring your own keys, we never hold provider credentials",

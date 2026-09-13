@@ -6,14 +6,14 @@ import Link from "next/link";
  * Drawn as geometry rather than set in a typeface: a logo that depends on a webfont
  * flashes, falls back, and can't be trusted at favicon size.
  *
- * Monochrome by intent. A mark that needs colour to be recognisable isn't a mark — it
+ * Monochrome by intent. A mark that needs colour to be recognizable isn't a mark — it
  * has to survive one ink, an embroidered shirt, a fax of a contract. Colour stays where
  * it carries meaning (equation terms, chart series, severity), not on the identity.
  *
  * Proportions: cap 42, stem 7.5 (~18%). Corners are square rather than rounded — the
  * precision reads as instrument, and rounding at this weight reads as a toy. The waist
- * of the B and the crossbar of the H sit slightly above true centre, which is the
- * standard optical correction; sitting them at exact centre makes a letter look
+ * of the B and the crossbar of the H sit slightly above true center, which is the
+ * standard optical correction; sitting them at exact center makes a letter look
  * bottom-heavy.
  */
 

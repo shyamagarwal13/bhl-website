@@ -118,7 +118,7 @@ export default function Page() {
         <Signal
           eyebrow="Delivery and review"
           title="The standard reporting, done properly."
-          body="Delivery, review health, quality and DORA, attributed to teams and initiatives rather than to individuals, and benchmarked against organisations we will name rather than an industry average nobody can audit."
+          body="Delivery, review health, quality and DORA, attributed to teams and initiatives rather than to individuals, and benchmarked against organizations we will name rather than an industry average nobody can audit."
           points={[
             "DORA, with the distribution shown and not just the median",
             "Review as a gate or a bottleneck, per team and per repository",

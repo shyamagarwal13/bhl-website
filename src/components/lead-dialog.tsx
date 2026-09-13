@@ -162,7 +162,7 @@ export function LeadDialog({ open, email, locked, onClose }: Props) {
        *
        * `text-left` because the dialog stays a child of whichever section holds its pill,
        * and both of those are `text-center`; the top layer changes paint order, not
-       * inheritance, so every label was centred over its input.
+       * inheritance, so every label was centerd over its input.
        */
       className="m-auto max-h-[calc(100dvh-2rem)] w-[min(100vw-2rem,640px)] rounded-3xl border border-line bg-white p-0 text-left text-ink shadow-[0_40px_100px_-30px_rgba(11,12,16,0.45)] backdrop:bg-ink/50 backdrop:backdrop-blur-sm"
     >

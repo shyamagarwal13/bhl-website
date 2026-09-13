@@ -493,7 +493,13 @@ body {
   }
 }
 
-.term-in {
+/*
+  Scoped to `[data-reveal]`, which only exists once the Reveal component has mounted. A bare
+  `.term-in { opacity: 0 }` hides these words permanently if JS never runs — no script, a
+  thrown error, a crawler — and the equation is the one line in this section that has to
+  survive that. Same fail-open contract the reveal system itself is built on.
+*/
+[data-reveal] .term-in {
   opacity: 0;
 }
 

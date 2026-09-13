@@ -7,7 +7,7 @@
  * pairing a claim with a real panel, a spec block, and one CTA.
  *
  * The hero is a three-column composition — headline, instrument, claim with figures —
- * rather than the centred hero the home page uses. A product page is read by someone
+ * rather than the centerd hero the home page uses. A product page is read by someone
  * comparing tabs, and the left-to-right arrangement lets the eye take the claim and the
  * numbers without scrolling.
  */

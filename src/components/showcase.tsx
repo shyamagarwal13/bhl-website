@@ -191,8 +191,8 @@ const PANES: Pane[] = [
   },
   {
     key: "routing",
-    tab: "Routing optimisation",
-    title: "Routing optimisation",
+    tab: "Routing optimization",
+    title: "Routing optimization",
     blurb:
       "The cheapest model that still clears your bar for the task, chosen per request. Spend falls and the pass rate does not, which is the only version of this worth shipping.",
     window: (
