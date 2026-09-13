@@ -20,10 +20,14 @@
  * All figures are illustrative sample data, labelled as such.
  */
 
+import { Odometer } from "./odometer";
 import { Reveal } from "./reveal";
 import { SectionHead } from "./section-head";
 
-type Row = { label: string; value: string; note: string };
+/* `from` is the flattering reading the figure lands on before it corrects. Only set where
+   the copy already supports a before-and-after, so the correction states something true
+   rather than performing a trick. */
+type Row = { label: string; value: string; note: string; from?: string };
 
 const SEEN: Row[] = [
   { label: "Pull requests merged", value: "2.1×", note: "vs. same quarter last year" },
@@ -33,10 +37,10 @@ const SEEN: Row[] = [
 ];
 
 const HAPPENED: Row[] = [
-  { label: "Merged work rewritten within 90 days", value: "31%", note: "up from 9%" },
-  { label: "Review time per reviewer", value: "2.4×", note: "the cost moved, it did not vanish" },
+  { label: "Merged work rewritten within 90 days", value: "31%", note: "up from 9%", from: "9%" },
+  { label: "Review time per reviewer", value: "2.4×", note: "the cost moved, it did not vanish", from: "1.0×" },
   { label: "Changes no author could explain", value: "1 in 6", note: "sampled at review" },
-  { label: "Cognitive complexity", value: "+27%", note: "compounding, not transient" },
+  { label: "Cognitive complexity", value: "+27%", note: "compounding, not transient", from: "+4%" },
 ];
 
 function Panel({
@@ -96,7 +100,7 @@ function Panel({
               className="tabular shrink-0 text-[1.35rem] font-extrabold tracking-tight"
               style={{ color: good ? "var(--pos)" : "var(--s5)" }}
             >
-              {r.value}
+              {r.from ? <Odometer from={r.from} to={r.value} /> : r.value}
             </span>
           </li>
         ))}

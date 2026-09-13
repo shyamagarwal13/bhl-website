@@ -16,6 +16,7 @@
  * stale. All figures illustrative.
  */
 
+import { Odometer } from "./odometer";
 import { Reveal } from "./reveal";
 import { SectionHead } from "./section-head";
 
@@ -37,7 +38,7 @@ function SlopMeter() {
         <div>
           <div className="flex items-baseline gap-2">
             <span className="figure text-[4.25rem] text-ink">
-              61
+              <Odometer from="24" to="61" />
             </span>
             <span className="font-mono text-[12px] text-ink-4">/ 100</span>
           </div>
