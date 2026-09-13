@@ -108,19 +108,17 @@ export function HowWeSee() {
                 </span>
               ))}
 
+              {/* Not the maths glyph. ">>>" is how this comparison is actually written now,
+                  and it finishes the sentence on its own — spelling out "any one of them"
+                  after it was explaining a joke. Screen readers get the words instead. */}
               <span
-                className="term-in figure text-[2.4rem] sm:text-[3.2rem]"
+                className="term-in figure text-[2.4rem] tracking-[-0.04em] sm:text-[3.4rem]"
                 style={{ ["--d" as string]: "650ms", color: "var(--s5)" }}
                 aria-hidden="true"
               >
-                &#8811;
+                {">>>>>>"}
               </span>
-              <span
-                className="term-in h2 text-[2.4rem] text-ink-3 sm:text-[3.4rem]"
-                style={{ ["--d" as string]: "730ms" }}
-              >
-                any one of them
-              </span>
+              <span className="sr-only">is far better than any one of them alone</span>
             </div>
 
             {/* what each term is for, set under the term it belongs to */}

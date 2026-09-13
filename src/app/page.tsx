@@ -61,11 +61,13 @@ function Hero() {
             {/* Sized to hold each sentence on a single line from lg up; it still wraps
                 on narrow screens, where two balanced lines read better than 20px type. */}
             <h1 className="display mx-auto mt-6 max-w-[19ch] text-[2.05rem] sm:max-w-none sm:text-[2.6rem] lg:text-[2.85rem]">
-              <span className="block text-balance">Every dashboard says you shipped more;</span>
-              {/* one sentence across two lines, so the second opens lower-case and the
-                  semicolon is left hanging at the break where it belongs */}
+              <span className="block text-balance">
+                Every dashboard measures how much more you shipped.
+              </span>
+              {/* two sentences now, so the second opens capitalised. The refraction lands on
+                  "AI slop", which is the phrase the rest of the page is built around. */}
               <span className="refract block text-balance">
-                that&apos;s just more AI slop!
+                That&apos;s just more AI slop!
               </span>
             </h1>
           </Reveal>
