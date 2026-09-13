@@ -27,7 +27,9 @@ export function ProductHero({
   eyebrow: string;
   title: string;
   lead: string;
-  stats: { k: string; v: string }[];
+  /** Optional. Dropped from every page once the invented performance figures came out: what
+      was left read as a placeholder rather than as a specification. */
+  stats?: { k: string; v: string }[];
   art: React.ReactNode;
 }) {
   return (
@@ -56,16 +58,18 @@ export function ProductHero({
           <Reveal delay={80}>
             <div>
               <p className="text-[1.0625rem] font-semibold leading-relaxed text-ink-2">{lead}</p>
-              <dl className="mt-6 flex flex-col divide-y divide-line border-t border-line">
-                {stats.map((s) => (
-                  <div key={s.k} className="flex items-baseline justify-between gap-4 py-3">
-                    <dt className="text-[13px] text-ink-3">{s.k}</dt>
-                    <dd className="tabular text-[1.05rem] font-extrabold tracking-tight text-ink">
-                      {s.v}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+              {stats && stats.length > 0 && (
+                <dl className="mt-6 flex flex-col divide-y divide-line border-t border-line">
+                  {stats.map((s) => (
+                    <div key={s.k} className="flex items-baseline justify-between gap-4 py-3">
+                      <dt className="text-[13px] text-ink-3">{s.k}</dt>
+                      <dd className="tabular text-[1.05rem] font-extrabold tracking-tight text-ink">
+                        {s.v}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
           </Reveal>
         </div>

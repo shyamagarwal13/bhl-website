@@ -24,11 +24,6 @@ export default function Page() {
         eyebrow="Engineering intelligence"
         title="Know whether the work was any good."
         lead="Throughput tells you a team was busy. It cannot tell you whether anyone exercised judgment, and when producing is free that is the only question left worth asking."
-        stats={[
-          { k: "Status", v: "In development" },
-          { k: "Design partners", v: "A handful" },
-          { k: "Grounded in", v: "Published work" },
-        ]}
         art={<EngArt />}
       />
 

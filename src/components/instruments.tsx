@@ -167,7 +167,7 @@ export function Instruments() {
       <SectionHead
           width="wide"
           title={<>We answer the right questions.</>}
-          lead={<>Scientifically curated from our published work, and built to measure what actually determines the outcome rather than what happens to be easy to count.</>}
+          lead={<>Scientifically curated, and built to measure what actually determines the outcome rather than what happens to be easy to count.</>}
         />
 
       <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">
@@ -194,10 +194,6 @@ export function Instruments() {
           </Reveal>
         ))}
       </div>
-
-        <p className="mt-8 font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-4">
-          Illustrative figures — worked from a composite, not a customer
-        </p>
       </section>
     </div>
   );

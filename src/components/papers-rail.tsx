@@ -31,7 +31,12 @@ type Paper = {
 export function PapersRail({ papers }: { papers: Paper[] }) {
   return (
     <div>
-      <div className="mb-6 h-px w-full bg-line" />
+      {/* Set in the text face rather than as a mono caption: this names the thing directly
+          underneath it, which the section captions removed earlier never did. */}
+      <div className="mb-7 flex items-baseline gap-5">
+        <p className="shrink-0 text-[15px] text-ink-2">Some of our selected work</p>
+        <span className="rule mb-1 flex-1" />
+      </div>
 
       {/*
         Full-bleed on the left and right of the section so cards drift in and out of the

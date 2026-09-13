@@ -3,54 +3,21 @@ import { Reveal } from "./reveal";
 import { SectionHead } from "./section-head";
 
 /*
- * The two things you actually buy, and the evidence for the second one.
+ * The evidence.
  *
- * Two panels: the platform that produces the measurement, and the researchers who decide
- * what to do about it. Then the papers. The paper images are real first pages rendered from
- * the PDFs, because a screenshot of the actual paper is harder to fake than a citation.
+ * This used to carry two panels — the platform, and the people — under the heading "You
+ * don't just get a dashboard, you get experts." All three said the same thing, and the
+ * equation a section earlier now says it better and in four words, so the panels went.
  *
- * The consulting half is not a garnish on the product, it is the answer to the obvious
- * objection to this whole position. Once you claim to measure judgment rather than output,
- * a reader is entitled to ask who decides what good judgment looks like — so the names and
- * the institutions have to be on the page, and the published work has to be one click away.
+ * What is left is the part that was always doing the work: the papers themselves. The images
+ * are real first pages rendered from the PDFs, because a screenshot of the actual paper is
+ * harder to fake than a citation.
  *
- * Note that academic credibility is contested ground in this category rather than a
- * differentiator on its own: at least one competitor leads with a Stanford affiliation. The
- * defensible version is not "we are researchers" but "here is the work, read it".
+ * Worth keeping in mind if this section is ever expanded: academic credibility is contested
+ * ground here rather than a differentiator on its own, and at least one competitor leads with
+ * a Stanford affiliation. The defensible claim is never "we are researchers" — it is "here is
+ * the work, read it", which is why the section is now a reading list and nothing else.
  */
-
-// The two things a customer actually receives. Kept as separate panels rather than one
-// paragraph because the whole claim is that they are different purchases — a competitor
-// sells the left one alone, and blurring them would give that away for free.
-const HALVES = [
-  {
-    eyebrow: "The platform",
-    band: "var(--t1)",
-    lead: "Our dashboards and tools get you the measurement.",
-    body: "Agents read your repositories, provider billing and tool data directly, so every number you see is computed from your systems and recomputed as the work changes. Nothing waits for a quarterly spreadsheet.",
-    points: [
-      "AI and engineering cost attributed to teams and initiatives",
-      // the one negation kept in this section: every assistant dashboard on the market
-      // reports acceptance rates, so the reader would assume it of us too
-      "Delivery, review and quality effects, not acceptance rates",
-      // we do ask people things; the use-cases section says so, and claiming a fully
-      // passive pipeline on the page arguing for measurement rigour would be the worst
-      // possible place to overstate
-      "Where a signal only exists in people's heads, we ask briefly and rarely",
-    ],
-  },
-  {
-    eyebrow: "The people",
-    band: "var(--t3)",
-    lead: "Our experts design the strategy around your constraints.",
-    body: "Researchers from Carnegie Mellon, Microsoft and Google who published the work below read your numbers themselves, with the caveats stated. A regulated bank and a consumer startup do not share a cost function, and no dashboard can tell you which number is the one to move this quarter.",
-    points: [
-      "A cost model calibrated to your codebase and review culture",
-      "Interventions ranked by what they are worth to you",
-      "Findings you can take to a board, with the limits named",
-    ],
-  },
-];
 
 const PAPERS = [
   {
@@ -100,47 +67,17 @@ export function NumberIsNotAnAnswer() {
       <section id="approach" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
         <SectionHead
           width="wide"
-          title={<>You don&apos;t just get a dashboard. You get experts.</>}
-          lead={<>The measurement is automated. What to do about it is not.</>}
+          title={<>The work this is built on.</>}
+          lead={
+            <>
+              Published and open to argument. If you want to disagree with the method, the
+              method is in print.
+            </>
+          }
         />
 
-        {/* the two halves of what you buy, stated separately so neither absorbs the other */}
-        <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">
-          {HALVES.map((h, i) => (
-            <Reveal key={h.eyebrow} delay={i * 90}>
-              <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-8 sm:p-9">
-                <div className="flex items-center gap-2.5">
-                  <span className="h-2 w-2 rounded-full" style={{ background: h.band }} />
-                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-ink-4">
-                    {h.eyebrow}
-                  </span>
-                </div>
-                <h3 className="mt-5 text-balance text-[1.2rem] font-bold leading-snug text-ink sm:text-[1.35rem]">
-                  {h.lead}
-                </h3>
-                <p className="mt-3.5 text-[14px] leading-relaxed text-ink-3">{h.body}</p>
-                {/* mt-auto on the wrapper, so the rule lands at the same height in both
-                    cards even when one body runs a line longer */}
-                <div className="mt-auto pt-7">
-                  <ul className="flex flex-col gap-2.5 border-t border-line pt-6">
-                    {h.points.map((x) => (
-                      <li key={x} className="flex gap-2.5 text-[13.5px] leading-relaxed text-ink-2">
-                        <span
-                          className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
-                          style={{ background: h.band }}
-                        />
-                        {x}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-
         <Reveal delay={80}>
-          <div className="mt-16">
+          <div className="mt-14">
             <PapersRail papers={PAPERS} />
           </div>
         </Reveal>

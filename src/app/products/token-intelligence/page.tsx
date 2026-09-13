@@ -24,11 +24,6 @@ export default function Page() {
         eyebrow="Token intelligence"
         title="Every AI dollar, and what it actually bought."
         lead="Your provider can tell you what you spent. Nobody but you can tell you what it was worth, because the return shows up somewhere the invoice never looks: in what the work cost to keep."
-        stats={[
-          { k: "Status", v: "In development" },
-          { k: "Design partners", v: "A handful" },
-          { k: "Attribution methods", v: "Three" },
-        ]}
         art={<TokenArt />}
       />
 
