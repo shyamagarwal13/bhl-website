@@ -1,3 +1,4 @@
+import { Affiliations } from "./affiliations";
 import { PapersRail } from "./papers-rail";
 import { Reveal } from "./reveal";
 import { SectionHead } from "./section-head";
@@ -65,10 +66,11 @@ export function NumberIsNotAnAnswer() {
   return (
     <div className="border-y border-line bg-paper-2/60">
       <section id="approach" className="mx-auto max-w-[var(--maxw)] px-6 py-24">
-        <SectionHead
-          width="wide"
-          title={<>Our selected work.</>}
-        />
+        <Affiliations />
+
+        <div className="mt-16">
+          <SectionHead width="wide" title={<>Our selected work.</>} />
+        </div>
 
         <Reveal delay={80}>
           <div className="mt-14">

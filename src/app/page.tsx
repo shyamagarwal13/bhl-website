@@ -12,7 +12,6 @@ import { SectionHead } from "@/components/section-head";
 import { TwoDashboards } from "@/components/two-dashboards";
 import { Instruments } from "@/components/instruments";
 import { HowWeSee } from "@/components/how-we-see";
-import { Affiliations } from "@/components/affiliations";
 
 function Section({
   id,
@@ -259,7 +258,6 @@ export default function Home() {
       */}
       <main>
         <Hero />
-        <Affiliations />
         <ReadsFrom />
         <TwoDashboards />
         <HowWeSee />
