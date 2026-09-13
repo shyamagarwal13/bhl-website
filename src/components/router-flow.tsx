@@ -1,77 +1,103 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Logomark } from "./brand";
 
 /*
  * The router, shown working.
  *
- * The first attempt was crammed into a hero side-column about 480px wide, inside a bordered
- * card, with 12px grey type and a 90px wire. It read as a cramped widget because it was one.
- * Both of the sites worth measuring against give this moment the full width of the page and a
- * great deal of air, and that is not decoration: a routing diagram is a journey, and a journey
- * needs distance before it is legible.
+ * Two earlier attempts failed the same way: they showed routing as an abstraction — a prism,
+ * then two scrolling lists — when the thing a reader actually recognises is their own
+ * terminal. An agent session is concrete. A list of task names is a diagram of one.
  *
- * So — no card, no border, full bleed. The lists sit near the thirds, the mark sits in the
- * middle with real space around it, and the wire sweeps the gap rather than poking through it.
+ * So the left is a deck of real sessions with the front one live, and the right is the model
+ * board. Faint lines run from the session to every model on the board at all times, because
+ * every one of them was a candidate; the live line is the route this particular piece of work
+ * actually took. The deck cycles — the front session recedes, the next comes forward, and the
+ * live line redraws to a different model.
  *
- * The geometry is the part worth explaining. The mark sits deliberately *above* the live row,
- * so each wire rises from the request into the hub and falls from the hub onto the model. Two
- * arcs meeting at a peak read as a route being taken; a straight horizontal line between two
- * rows at the same height reads as a rule.
+ * The middle column exists only to hold the wire, at a fixed width. That is what keeps the
+ * curve honest: an SVG stretched across a fluid column distorts its own control points.
  *
  * All figures illustrative.
  */
 
-/*
- * The bar belongs to the request, not the router. A rename does not need a frontier model and
- * a caching layer does, so each task carries the quality it has to clear — the thing that makes
- * this routing rather than a spend cap.
- */
-const TASKS: { t: string; need: number }[] = [
-  { t: "rename a variable", need: 64 },
-  { t: "summarise this pull request", need: 68 },
-  { t: "add a regression test", need: 74 },
-  { t: "explain this stack trace", need: 80 },
-  { t: "write the migration", need: 83 },
-  { t: "refactor the auth module", need: 87 },
-  { t: "debug a flaky integration test", need: 90 },
-  { t: "design the caching layer", need: 93 },
-];
-
-const MODELS = [
-  { name: "Haiku 4.5", q: 71, cost: "$0.80" },
-  { name: "GLM-5.2", q: 76, cost: "$4.40" },
-  { name: "Gemini 3.1", q: 83, cost: "$12" },
-  { name: "Sonnet 4.6", q: 89, cost: "$15" },
-  { name: "GPT-5.5", q: 92, cost: "$30" },
-  { name: "Opus 4.8", q: 96, cost: "$75" },
-];
-
-/* MODELS run cheapest-first, so the cheapest model clearing a bar is simply the first that
-   reaches it. Derived rather than authored: a hardcoded version routed a request to a model
-   scoring 83 against a bar of 84, which is the one mistake this diagram cannot afford. */
-const routeFor = (need: number) => {
-  const i = MODELS.findIndex((m) => m.q >= need);
-  return i === -1 ? MODELS.length - 1 : i;
+type Step = { label: string; model: string; detail: string };
+type Session = {
+  cwd: string;
+  prompt: string;
+  steps: Step[];
+  /** index into MODELS — the route this session took */
+  routed: number;
 };
 
-const ROW = 46;
-const CYCLE = 3600;
+const MODELS = [
+  { name: "Haiku", sub: "4.5", q: 71, cost: "$0.80" },
+  { name: "GLM-5.2", sub: "Z.ai", q: 76, cost: "$4.40" },
+  { name: "Gemini", sub: "3.1 Pro", q: 83, cost: "$12" },
+  { name: "Sonnet", sub: "4.6", q: 89, cost: "$15" },
+  { name: "GPT-5.5", sub: "Codex", q: 92, cost: "$30" },
+  { name: "Opus", sub: "4.8", q: 96, cost: "$75" },
+];
+
+const SESSIONS: Session[] = [
+  {
+    cwd: "~/acme/web",
+    prompt: "Add a /changelog page that renders MDX from /content, newest first.",
+    steps: [
+      {
+        label: "Add the route and MDX loader",
+        model: "glm-5.2",
+        detail: "app/changelog/page.tsx · 64 lines",
+      },
+      { label: "Generate the RSS feed", model: "glm-5.2", detail: "app/feed.xml/route.ts · RSS 2.0" },
+    ],
+    routed: 1,
+  },
+  {
+    cwd: "~/acme/ledger",
+    prompt: "Work out why the payments reconciliation test is flaky.",
+    steps: [
+      { label: "Read the failing test and its fixtures", model: "haiku", detail: "3 files · 210 lines" },
+      { label: "Bisect the last nine runs", model: "haiku", detail: "found: clock skew in setup" },
+    ],
+    routed: 0,
+  },
+  {
+    cwd: "~/acme/platform",
+    prompt: "Design the caching layer for the ledger service.",
+    steps: [
+      { label: "Map read paths and invalidation", model: "opus-4.8", detail: "14 call sites" },
+      { label: "Draft the eviction policy", model: "opus-4.8", detail: "write-through, 90s TTL" },
+    ],
+    routed: 5,
+  },
+];
+
+const CARD = 62;
+const GAP = 10;
+const PITCH = CARD + GAP;
+const BOARD = MODELS.length * CARD + (MODELS.length - 1) * GAP;
+const WIRE_W = 112;
+const CYCLE = 4200;
 const EASE = "cubic-bezier(0.22, 0.61, 0.36, 1)";
+const WIN_H = 344;
+/** the deck is centred against the board, so the wire leaves at the board's midline */
+const WIN_TOP = (BOARD - WIN_H) / 2;
+const OUT_Y = BOARD / 2;
+/*
+ * Each card back in the deck is both offset down and scaled. Scaling from the top edge pulls
+ * the bottom up by (1 - scale) * height, which for the first version cancelled the offset
+ * almost exactly and left the deck looking like a single window. The offset has to clear that
+ * shrink before any of the stack is visible.
+ */
+const SHRINK = 0.03;
+const DECK_STEP = Math.round(SHRINK * WIN_H) + 11;
 
-const IN_PATH = "M 300 168 C 424 168, 432 106, 506 106";
-const OUT_PATH = "M 594 106 C 668 106, 676 168, 800 168";
-
-/* Rows fade towards the top and bottom with a mask rather than stacked gradient overlays,
-   which is what made the earlier version look muddy at its edges. */
-const FADE = {
-  WebkitMaskImage: "linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent)",
-  maskImage: "linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent)",
-} as const;
+const wire = (y: number) =>
+  `M 0 ${OUT_Y} C ${WIRE_W * 0.55} ${OUT_Y}, ${WIRE_W * 0.45} ${y}, ${WIRE_W} ${y}`;
 
 export function RouterFlow() {
-  const [step, setStep] = useState(3);
+  const [active, setActive] = useState(0);
   const [live, setLive] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -81,219 +107,197 @@ export function RouterFlow() {
       return;
     }
     setLive(true);
-    const t = window.setTimeout(() => setOpen(true), 220);
-    const id = window.setInterval(() => setStep((s) => (s + 1) % TASKS.length), CYCLE);
+    const t = window.setTimeout(() => setOpen(true), 200);
+    const id = window.setInterval(() => setActive((a) => (a + 1) % SESSIONS.length), CYCLE);
     return () => {
       clearTimeout(t);
       clearInterval(id);
     };
   }, []);
 
-  const task = TASKS[step];
-  const model = routeFor(task.need);
+  const session = SESSIONS[active];
   const e = open ? 1 : 0;
+  const cardY = session.routed * PITCH + CARD / 2;
 
   return (
-    <div className="relative select-none">
-      {/* Three columns need width. At 390px the task names were truncating to a single
-          letter, so below sm the composition stacks instead: the live request, the mark, the
-          model it landed on. Same idea, one column, nothing clipped. */}
-      <div className="mx-auto hidden max-w-[1100px] grid-cols-[minmax(0,1fr)_190px_minmax(0,1fr)] items-center sm:grid sm:grid-cols-[minmax(0,1fr)_290px_minmax(0,1fr)]">
-        {/* --- requests coming in ------------------------------------------------------ */}
-        <div
-          className="relative h-[322px] overflow-hidden"
-          style={{
-            ...FADE,
-            opacity: e,
-            transform: `translateX(${(1 - e) * 46}px)`,
-            transition: `opacity 760ms ${EASE} 120ms, transform 860ms ${EASE} 120ms`,
-          }}
-        >
-          <div
-            className="absolute inset-x-0 flex flex-col"
-            style={{
-              top: `calc(50% - ${ROW / 2}px)`,
-              transform: `translateY(${-step * ROW}px)`,
-              transition: live ? `transform 820ms ${EASE}` : "none",
-            }}
-          >
-            {TASKS.map((x, i) => {
-              const on = i === step;
-              return (
-                <div
-                  key={x.t}
-                  className="flex items-center justify-end gap-4 pr-7"
-                  style={{ height: ROW }}
-                >
-                  <span
-                    className="truncate text-[15px] transition-all duration-500"
-                    style={{ color: on ? "var(--ink)" : "var(--ink-3)", opacity: on ? 1 : 0.28 }}
-                  >
-                    {x.t}
+    <div className="select-none">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_112px_300px] lg:gap-0">
+        {/* --- the deck of sessions --------------------------------------------------- */}
+        <div className="relative" style={{ height: BOARD }}>
+          {SESSIONS.map((s, i) => {
+            // how far back in the deck this session currently sits
+            const depth = (i - active + SESSIONS.length) % SESSIONS.length;
+            const front = depth === 0;
+            return (
+              <div
+                key={s.cwd}
+                className="absolute inset-x-0 overflow-hidden rounded-xl border border-line bg-white"
+                style={{
+                  top: WIN_TOP,
+                  height: WIN_H,
+                  zIndex: SESSIONS.length - depth,
+                  transform: `translateY(${depth * DECK_STEP + (1 - e) * 22}px) scale(${1 - depth * SHRINK})`,
+                  transformOrigin: "top center",
+                  opacity: front ? e : e * 0.45,
+                  boxShadow: front
+                    ? "0 2px 6px rgba(18,23,26,0.05), 0 26px 60px -22px rgba(18,23,26,0.26)"
+                    : "0 1px 3px rgba(18,23,26,0.04)",
+                  transition: live
+                    ? `transform 760ms ${EASE}, opacity 760ms ${EASE}, box-shadow 760ms ${EASE}`
+                    : "none",
+                }}
+              >
+                <div className="flex items-center gap-2 border-b border-line bg-paper px-3.5 py-2.5">
+                  <span className="flex gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-line-2" />
+                    <span className="h-2 w-2 rounded-full bg-line-2" />
+                    <span className="h-2 w-2 rounded-full bg-line-2" />
                   </span>
-                  <span
-                    className="tabular shrink-0 font-mono text-[11px] transition-opacity duration-500"
-                    style={{ color: on ? "var(--s5)" : "var(--ink-4)", opacity: on ? 1 : 0.22 }}
-                  >
-                    {x.need}
+                  <span className="ml-2 truncate font-mono text-[10.5px] text-ink-4">
+                    agent — behold — zsh
                   </span>
+                  {front && (
+                    <span className="ml-auto flex shrink-0 items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--t3)" }} />
+                      <span className="font-mono text-[10px] text-ink-3">running</span>
+                    </span>
+                  )}
                 </div>
-              );
-            })}
-          </div>
+
+                <div className="px-4 py-4 sm:px-5">
+                  <p className="font-mono text-[10.5px] text-ink-4">{s.cwd}</p>
+                  <p className="mt-1.5 font-mono text-[12.5px] leading-relaxed text-ink">
+                    <span className="text-ink-4">&#10095; </span>
+                    {s.prompt}
+                  </p>
+
+                  <p className="mt-4 font-mono text-[11.5px] text-ink-3">
+                    planning… split into{" "}
+                    <span className="font-semibold text-ink">{s.steps.length + 1} steps</span>
+                  </p>
+
+                  {s.steps.map((st) => (
+                    <div key={st.label} className="mt-3">
+                      <div className="flex items-baseline gap-3">
+                        <span className="font-mono text-[11.5px]" style={{ color: "var(--t3)" }}>
+                          ✓
+                        </span>
+                        <span className="min-w-0 flex-1 truncate font-mono text-[11.5px] text-ink-2">
+                          {st.label}
+                        </span>
+                        <span className="shrink-0 font-mono text-[11px]" style={{ color: "var(--s5)" }}>
+                          → {st.model}
+                        </span>
+                      </div>
+                      <p className="mt-1 truncate pl-6 font-mono text-[11px] text-ink-4">
+                        {st.detail}
+                      </p>
+                    </div>
+                  ))}
+
+                  <div className="mt-3 flex items-baseline gap-3">
+                    <span className="font-mono text-[11.5px] text-ink-4">◦</span>
+                    <span className="font-mono text-[11.5px] text-ink-4">Build and verify</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* --- the mark, sitting above the live row so the wires arc into it ------------ */}
-        <div className="relative h-[322px]">
-          <div
-            className="absolute left-1/2 h-[78px] w-[78px]"
-            style={{
-              top: 67,
-              transform: `translateX(-50%) scale(${1 + (1 - e) * 0.7})`,
-              transition: `transform 920ms ${EASE}`,
-            }}
+        {/* --- the wire, in a fixed-width column so the curve is never stretched -------- */}
+        <div className="relative hidden lg:block" style={{ height: BOARD }}>
+          <svg
+            width={WIRE_W}
+            height={BOARD}
+            viewBox={`0 0 ${WIRE_W} ${BOARD}`}
+            className="absolute inset-0 overflow-visible"
+            aria-hidden="true"
+            style={{ opacity: e, transition: `opacity 600ms ${EASE} 420ms` }}
           >
-            <span
-              key={step}
-              className="absolute inset-0 rounded-full border"
-              style={{
-                borderColor: "var(--s5)",
-                animation: live ? "hub-ring 3.6s ease-out" : "none",
-              }}
+            {/* every model was a candidate, so every route is drawn — held back */}
+            {MODELS.map((m, i) => (
+              <path
+                key={m.name}
+                d={wire(i * PITCH + CARD / 2)}
+                fill="none"
+                stroke="var(--line-2)"
+                strokeWidth="1"
+                opacity="0.6"
+              />
+            ))}
+            {/* and the one this session took */}
+            <path
+              d={wire(cardY)}
+              fill="none"
+              stroke="var(--s5)"
+              strokeWidth="1.7"
+              style={{ transition: live ? `d 720ms ${EASE}` : "none" }}
             />
-            <span className="relative flex h-full w-full items-center justify-center rounded-full border border-line bg-white lift">
-              <Logomark size={19} />
-            </span>
-          </div>
+          </svg>
         </div>
 
-        {/* --- the models -------------------------------------------------------------- */}
+        {/* --- the model board --------------------------------------------------------- */}
         <div
-          className="relative h-[322px] overflow-hidden"
+          className="flex flex-col"
           style={{
-            ...FADE,
+            gap: GAP,
             opacity: e,
-            transform: `translateX(${(1 - e) * -46}px)`,
-            transition: `opacity 760ms ${EASE} 200ms, transform 860ms ${EASE} 200ms`,
+            transform: `translateX(${(1 - e) * 32}px)`,
+            transition: `opacity 720ms ${EASE} 200ms, transform 820ms ${EASE} 200ms`,
           }}
         >
-          <div
-            className="absolute inset-x-0 flex flex-col"
-            style={{
-              top: `calc(50% - ${ROW / 2}px)`,
-              transform: `translateY(${-model * ROW}px)`,
-              transition: live ? `transform 820ms ${EASE} 260ms` : "none",
-            }}
-          >
-            {MODELS.map((m, i) => {
-              const on = i === model;
-              const clears = m.q >= task.need;
-              return (
-                <div key={m.name} className="flex items-center gap-4 pl-7" style={{ height: ROW }}>
-                  <span
-                    className="w-[92px] shrink-0 truncate text-[15px] transition-all duration-500"
-                    style={{ color: on ? "var(--ink)" : "var(--ink-3)", opacity: on ? 1 : 0.28 }}
+          {MODELS.map((m, i) => {
+            const on = i === session.routed;
+            return (
+              <div
+                key={m.name}
+                className="flex items-center gap-3 rounded-lg border px-3.5"
+                style={{
+                  height: CARD,
+                  borderColor: on ? "var(--s5)" : "var(--line)",
+                  background: on ? "color-mix(in srgb, var(--s5) 7%, #fff)" : "var(--white)",
+                  transition: live
+                    ? `border-color 620ms ${EASE}, background 620ms ${EASE}`
+                    : "none",
+                }}
+              >
+                <div className="min-w-0 flex-1">
+                  <p
+                    className="truncate text-[13.5px] font-semibold"
+                    style={{ color: on ? "var(--ink)" : "var(--ink-3)" }}
                   >
                     {m.name}
-                  </span>
-                  <span
-                    className="tabular w-7 shrink-0 text-right font-mono text-[12px] transition-all duration-500"
-                    style={{
-                      color: clears ? "var(--t3)" : "var(--ink-4)",
-                      opacity: on ? 1 : clears ? 0.32 : 0.2,
-                    }}
-                  >
-                    {m.q}
-                  </span>
-                  <span
-                    className="tabular w-11 shrink-0 text-right font-mono text-[12px] transition-opacity duration-500"
-                    style={{ color: "var(--ink-3)", opacity: on ? 0.85 : 0.22 }}
-                  >
-                    {m.cost}
-                  </span>
-                  <span
-                    className="shrink-0 font-mono text-[9px] uppercase tracking-[0.18em] transition-opacity duration-500"
-                    style={{ color: "var(--s5)", opacity: on ? 1 : 0 }}
-                  >
-                    routed
-                  </span>
+                  </p>
+                  <p className="truncate font-mono text-[10px] text-ink-4">{m.sub}</p>
                 </div>
-              );
-            })}
-          </div>
+                <span
+                  className="tabular shrink-0 font-mono text-[12px]"
+                  style={{ color: on ? "var(--t3)" : "var(--ink-4)" }}
+                >
+                  {m.q}
+                </span>
+                <span
+                  className="tabular w-14 shrink-0 text-right font-mono text-[11.5px]"
+                  style={{ color: on ? "var(--ink-2)" : "var(--ink-4)" }}
+                >
+                  {m.cost}
+                </span>
+                <span
+                  className="w-[46px] shrink-0 pl-1 text-right font-mono text-[8.5px] uppercase tracking-[0.14em]"
+                  style={{
+                    color: "var(--s5)",
+                    opacity: on ? 1 : 0,
+                    transition: `opacity 500ms ${EASE}`,
+                  }}
+                >
+                  routed
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
-
-      {/* --- the same routing, stacked, for narrow screens --------------------------- */}
-      <div className="sm:hidden" style={{ opacity: e, transition: `opacity 700ms ${EASE} 120ms` }}>
-        <div className="flex items-baseline justify-between gap-4 border-b border-line pb-4">
-          <span className="min-w-0 flex-1 truncate text-[15px] text-ink">{task.t}</span>
-          <span className="tabular shrink-0 font-mono text-[11px]" style={{ color: "var(--s5)" }}>
-            needs {task.need}
-          </span>
-        </div>
-
-        <div className="flex justify-center py-6">
-          <span className="relative flex h-[62px] w-[62px] items-center justify-center rounded-full border border-line bg-white lift">
-            <span
-              key={step}
-              className="absolute inset-0 rounded-full border"
-              style={{
-                borderColor: "var(--s5)",
-                animation: live ? "hub-ring 3.6s ease-out" : "none",
-              }}
-            />
-            <Logomark size={15} />
-          </span>
-        </div>
-
-        <div className="flex items-baseline gap-3 border-t border-line pt-4">
-          <span className="min-w-0 flex-1 truncate text-[15px] text-ink">
-            {MODELS[model].name}
-          </span>
-          <span className="tabular shrink-0 font-mono text-[12px]" style={{ color: "var(--t3)" }}>
-            {MODELS[model].q}
-          </span>
-          <span className="tabular shrink-0 font-mono text-[12px] text-ink-3">
-            {MODELS[model].cost}
-          </span>
-          <span
-            className="shrink-0 font-mono text-[9px] uppercase tracking-[0.18em]"
-            style={{ color: "var(--s5)" }}
-          >
-            routed
-          </span>
-        </div>
-      </div>
-
-      {/* --- the wire, drawn over the whole composition so it can sweep ---------------- */}
-      <svg
-        className="pointer-events-none absolute inset-0 hidden h-full w-full sm:block"
-        viewBox="0 0 1100 322"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-        style={{ opacity: e, transition: `opacity 620ms ${EASE} 540ms` }}
-      >
-        <path d={IN_PATH} fill="none" stroke="var(--s5)" strokeWidth="1.3" opacity="0.6" />
-        <path d={OUT_PATH} fill="none" stroke="var(--s5)" strokeWidth="1.3" opacity="0.6" />
-        {live && (
-          <>
-            <circle r="3.4" fill="var(--s5)" opacity="0">
-              <animateMotion dur="0.85s" begin="0s;go.end+2.75s" id="go" path={IN_PATH} />
-              <animate attributeName="opacity" values="0;1;1;0" dur="0.85s" begin="0s;go.end+2.75s" />
-            </circle>
-            <circle r="3.4" fill="var(--s5)" opacity="0">
-              <animateMotion dur="0.85s" begin="go.end;go.end+3.6s" path={OUT_PATH} />
-              <animate
-                attributeName="opacity"
-                values="0;1;1;0"
-                dur="0.85s"
-                begin="go.end;go.end+3.6s"
-              />
-            </circle>
-          </>
-        )}
-      </svg>
     </div>
   );
 }
