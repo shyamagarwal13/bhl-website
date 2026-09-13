@@ -14,13 +14,9 @@
 
 import { Reveal } from "./reveal";
 
-/* The terms, in the order you would say them. Each carries what it is actually good for, so
-   the equation teaches instead of merely asserting. */
-const TERMS = [
-  { t: "Telemetry", d: "What happened. Commits, pull requests, tokens, agent runs." },
-  { t: "Surveys", d: "How it felt to the people doing it, which telemetry never shows." },
-  { t: "Experts", d: "What it means here, because no two organisations use this the same way." },
-];
+/* The terms, in the order you would say them. What each is for is already said in the
+   paragraph above, so the equation does not repeat it. */
+const TERMS = ["Telemetry", "Surveys", "Experts"];
 
 export function HowWeSee() {
   return (
@@ -88,8 +84,8 @@ export function HowWeSee() {
         <Reveal>
           <div>
             <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
-              {TERMS.map((x, i) => (
-                <span key={x.t} className="flex items-baseline gap-x-5">
+              {TERMS.map((term, i) => (
+                <span key={term} className="flex items-baseline gap-x-5">
                   {i > 0 && (
                     <span
                       className="term-in figure text-[2rem] text-ink-4 sm:text-[2.6rem]"
@@ -103,7 +99,7 @@ export function HowWeSee() {
                     className="term-in h2 text-[2.4rem] text-ink sm:text-[3.4rem]"
                     style={{ ["--d" as string]: `${i * 190}ms` }}
                   >
-                    {x.t}
+                    {term}
                   </span>
                 </span>
               ))}
@@ -121,21 +117,6 @@ export function HowWeSee() {
               <span className="sr-only">is far better than any one of them alone</span>
             </div>
 
-            {/* what each term is for, set under the term it belongs to */}
-            <dl className="mt-10 grid gap-x-10 gap-y-6 border-t border-line pt-8 sm:grid-cols-3">
-              {TERMS.map((x, i) => (
-                <div
-                  key={x.t}
-                  className="term-in"
-                  style={{ ["--d" as string]: `${860 + i * 90}ms` }}
-                >
-                  <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-4">
-                    {x.t}
-                  </dt>
-                  <dd className="mt-2.5 text-[14px] leading-relaxed text-ink-3">{x.d}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
         </Reveal>
       </div>
