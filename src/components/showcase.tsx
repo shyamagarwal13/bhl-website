@@ -7,6 +7,11 @@ import { Bars, Line, Rows } from "./chart-kit";
 /*
  * What we sell, as a product tour.
  *
+ * On a wide screen it is driven by the scroll rather than by a clock: the section pins and
+ * each pane gets a band of the run, so moving through the product surface is the same gesture
+ * as reading the page. The timer only survives as the fallback, where there is no pin to hang
+ * a scroll position off: narrow screens and anyone who asked for less motion.
+ *
  * Replaces the equation and its scroll-driven rail. The rail made the reader do work to
  * advance it, and what it advanced through was a model rather than a product.
  *
@@ -24,6 +29,10 @@ import { Bars, Line, Rows } from "./chart-kit";
  */
 
 const ROTATE_MS = 7000;
+/* how much scrolling each pane is worth once the section is pinned. Deliberately short: this
+   sits directly under another pinned section, and two long ones back to back is a lot of page
+   to take away from someone who is just trying to get past it. */
+const STEP_VH = 62;
 const M12 = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
 const M6 = ["J", "F", "M", "A", "M", "J"];
 
@@ -306,7 +315,9 @@ export function Showcase() {
   const [paused, setPaused] = useState(false);
   const [inView, setInView] = useState(false);
   const [reduced, setReduced] = useState(false);
+  const [pinned, setPinned] = useState(false);
   const root = useRef<HTMLDivElement>(null);
+  const section = useRef<HTMLDivElement>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
@@ -316,6 +327,48 @@ export function Showcase() {
     mq.addEventListener("change", set);
     return () => mq.removeEventListener("change", set);
   }, []);
+
+  /* Pinning is opt-in: server-rendered markup, the first client render, reduced motion and
+     anything under 1024px get the plain section and the clock. */
+  useEffect(() => {
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setPinned(wide.matches && !still.matches);
+    apply();
+    wide.addEventListener("change", apply);
+    still.addEventListener("change", apply);
+    return () => {
+      wide.removeEventListener("change", apply);
+      still.removeEventListener("change", apply);
+    };
+  }, []);
+
+  /* the scroll position picks the pane, one read per frame at most */
+  useEffect(() => {
+    if (!pinned) return;
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      const el = section.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const run = r.height - window.innerHeight;
+      const p = run > 0 ? -r.top / run : 0;
+      const k = Math.floor(p * PANES.length);
+      setActive(Math.min(PANES.length - 1, Math.max(0, k)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pinned]);
 
   // Only run the timer while the section is on screen. Rotating a panel nobody is looking
   // at means a visitor who scrolls back finds it somewhere they didn't leave it.
@@ -329,7 +382,8 @@ export function Showcase() {
     return () => io.disconnect();
   }, []);
 
-  const running = inView && !paused && !reduced;
+  /* The clock and the scroll cannot both own the pane. */
+  const running = inView && !paused && !reduced && !pinned;
 
   useEffect(() => {
     if (!running) return;
@@ -358,20 +412,44 @@ export function Showcase() {
     }
   }, [active]);
 
-  const onKey = useCallback((e: React.KeyboardEvent) => {
-    const delta = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-    if (!delta) return;
-    e.preventDefault();
-    setActive((i) => {
-      const next = (i + delta + PANES.length) % PANES.length;
+  /*
+   * Selecting a tab while the section is pinned has to move the page, not the state: the
+   * scroll handler would immediately overwrite anything set directly, and the tab would flick
+   * back under the reader's finger. Aim at the middle of the target pane's band so a pixel of
+   * drift either way cannot land in the neighbouring one.
+   */
+  const go = useCallback(
+    (i: number) => {
+      const el = section.current;
+      if (!pinned || !el) {
+        setActive(i);
+        return;
+      }
+      const r = el.getBoundingClientRect();
+      const run = r.height - window.innerHeight;
+      window.scrollTo({
+        top: window.scrollY + r.top + (run * (i + 0.5)) / PANES.length,
+        behavior: "smooth",
+      });
+    },
+    [pinned],
+  );
+
+  const onKey = useCallback(
+    (e: React.KeyboardEvent) => {
+      const delta = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (!delta) return;
+      e.preventDefault();
+      const next = (active + delta + PANES.length) % PANES.length;
       tabs.current[next]?.focus();
-      return next;
-    });
-  }, []);
+      go(next);
+    },
+    [active, go],
+  );
 
   const pane = PANES[active];
 
-  return (
+  const body = (
     <div
       ref={root}
       onMouseEnter={() => setPaused(true)}
@@ -401,7 +479,7 @@ export function Showcase() {
               aria-selected={on}
               aria-controls="showcase-panel"
               tabIndex={on ? 0 : -1}
-              onClick={() => setActive(i)}
+              onClick={() => go(i)}
               className={`relative shrink-0 overflow-hidden rounded-full border px-3.5 py-1.5 text-[12.5px] font-semibold transition-colors ${
                 on
                   ? "border-transparent bg-ink text-white"
@@ -444,6 +522,20 @@ export function Showcase() {
         <div key={pane.key} className="showcase-in">
           {pane.window}
         </div>
+      </div>
+    </div>
+  );
+
+  if (!pinned) return body;
+
+  return (
+    <div
+      ref={section}
+      className="relative"
+      style={{ height: `${100 + (PANES.length - 1) * STEP_VH}vh` }}
+    >
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        <div className="w-full">{body}</div>
       </div>
     </div>
   );
