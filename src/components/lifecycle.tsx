@@ -46,7 +46,7 @@ const STEPS = [
     d: "Throughput tells you a team was busy. It cannot tell you whether anyone exercised judgment, and when producing is free that is the only question left worth asking.",
     band: "var(--s1)",
     cap: "max-w-[620px]",
-    art: <EngArt />,
+    art: <EngArt note={false} />,
   },
   {
     k: "token",

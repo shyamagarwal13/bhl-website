@@ -15,12 +15,20 @@ import { useEffect, useLayoutEffect, useRef } from "react";
  * dollar enters at the left on the day it was billed, and the stack erodes as the work it
  * bought gets rewritten, until what is left at ninety days is what the month actually bought.
  *
- * The playhead is the whole animation. On its first pass it draws the chart, so the reader
- * watches the money decay rather than arriving at a finished picture; after that it keeps
- * running as a reading head, and the figure at the top is whatever is still standing on the
- * day it is sitting over. One requestAnimationFrame writes the clip, the playhead and the two
- * readouts straight to the DOM, because a React state update per frame to move a line is sixty
- * renders a second to show one number.
+ * The playhead is the whole animation, and the chart only exists behind it. The reader watches
+ * the money decay rather than arriving at a finished picture, and the figure at the top is
+ * whatever is still standing on the day the line is sitting over.
+ *
+ * It draws, holds on the finished month, then retracts and goes again. An earlier version left
+ * the chart standing after the first pass and replayed the line over it, which was wrong in the
+ * way that matters: a line crossing a chart that is already drawn is a cursor reading a result,
+ * and this line is not reading a result, it is the passage of time that produces one. The
+ * retraction is the only part of the cycle that runs backwards and it is over in half a second,
+ * so it reads as a tape resetting rather than as a glitch.
+ *
+ * One requestAnimationFrame writes the clip, the playhead and the two readouts straight to the
+ * DOM, because a React state update per frame to move a line is sixty renders a second to show
+ * one number.
  *
  * Nothing here is drawn by hand. The curves, the retained total, the per-source figures and
  * the finding at the bottom all come out of the same five rows, so the picture cannot end up
@@ -98,8 +106,10 @@ const PATHS = SOURCES.map((_, i) => bandPath(i));
 /* --- timing ---------------------------------------------------------------- */
 
 const SWEEP_MS = 3000;
-const HOLD_MS = 2600;
-const CYCLE = SWEEP_MS + HOLD_MS;
+const HOLD_MS = 2200;
+/* fast, and the only part of the cycle that runs backwards */
+const REWIND_MS = 520;
+const CYCLE = SWEEP_MS + HOLD_MS + REWIND_MS;
 
 /* slow at both ends, so the playhead settles onto ninety days rather than slamming into it */
 const ease = (p: number) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
@@ -146,33 +156,35 @@ export function SpendDecay({
 
     let frame = 0;
     let start = 0;
-    let drawn = false;
+    /* only written when it changes, so the hold marker is not restyled sixty times a second */
+    let holding = false;
 
     const tick = (now: number) => {
       if (!start) start = now;
       const phase = (now - start) % CYCLE;
-      const p = phase < SWEEP_MS ? ease(phase / SWEEP_MS) : 1;
+
+      let p: number;
+      if (phase < SWEEP_MS) p = ease(phase / SWEEP_MS);
+      else if (phase < SWEEP_MS + HOLD_MS) p = 1;
+      else p = 1 - (phase - SWEEP_MS - HOLD_MS) / REWIND_MS;
+
       const t = p * DAYS;
 
-      /*
-       * The clip only follows the playhead on the first pass. After that the chart stays drawn
-       * and the playhead is a reading head: rewinding a finished chart to nothing every six
-       * seconds would read as a glitch rather than as a replay.
-       */
-      if (!drawn && plot.current) {
+      if (plot.current) {
         plot.current.style.clipPath = `inset(0 ${((1 - p) * 100).toFixed(2)}% 0 0)`;
-        if (p === 1) {
-          drawn = true;
-          plot.current.style.clipPath = "none";
-          if (settled.current) {
-            settled.current.style.transition = "opacity 600ms ease";
-            settled.current.style.opacity = "1";
-          }
-        }
       }
       if (head.current) head.current.style.left = `${(p * 100).toFixed(2)}%`;
       if (day.current) day.current.textContent = `day ${Math.round(t)}`;
       if (live.current) live.current.textContent = money(totalAt(t));
+
+      const nowHolding = phase >= SWEEP_MS && phase < SWEEP_MS + HOLD_MS;
+      if (nowHolding !== holding) {
+        holding = nowHolding;
+        if (settled.current) {
+          settled.current.style.transition = holding ? "opacity 500ms ease" : "opacity 180ms ease";
+          settled.current.style.opacity = holding ? "1" : "0";
+        }
+      }
 
       frame = requestAnimationFrame(tick);
     };

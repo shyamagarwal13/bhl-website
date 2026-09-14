@@ -581,6 +581,55 @@ body {
   }
 }
 
+/*
+  The merge field, and the verdict arriving.
+
+  Each cell is one merged change. It sits as an empty outline while it is too recent to judge,
+  fills with its verdict as the horizon passes it, and holds that colour for most of the cycle.
+
+  Outline against fill, rather than a pale tint against a darker one. Eighty-five of the
+  hundred and twelve cells are "unremarkable" grey, so a pending colour anywhere near that grey
+  made five sixths of the field change by almost nothing and the wave read as a handful of
+  cells flickering. An empty square next to a filled one is legible at any size, and it is also
+  the more honest picture: the change exists, the verdict does not yet. Both the
+  verdict colour and the phase come in as custom properties from the component, so one pair of
+  keyframes drives a hundred and twelve cells with no JavaScript at all: the delay is negative,
+  which starts each cell partway through the same animation rather than scheduling a hundred
+  and twelve timers.
+
+  Deliberately no `both` on the fill mode. The reduced-motion block collapses the duration to
+  nothing, and a forwards fill would leave every cell parked on the last keyframe, which is the
+  pale state; with no fill the element falls back to its inline colour and a reader who asked
+  for less motion gets the finished field instead of an empty grid.
+*/
+@keyframes cell-verdict {
+  0%,
+  2% {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  7%,
+  86% {
+    background-color: var(--verdict);
+    box-shadow: inset 0 0 0 1px transparent;
+  }
+  95%,
+  100% {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+}
+
+/* the horizon itself, crossing one column of the field per 1/14th of the cycle */
+@keyframes field-scan {
+  from {
+    left: 0%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
 /* A model's score being re-read for the task that just landed. Dropping in from above rather
    than fading says the number was replaced, where a fade says it was always going to be that. */
 @keyframes score-in {
@@ -620,6 +669,12 @@ body {
   [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+
+  /* With the sweep switched off the field is simply complete, and a horizon parked at day
+     zero is a stray line across the left edge of a finished chart. */
+  .field-head {
+    display: none;
   }
 
   /* the equation terms start at opacity 0, so switching the animation off is not enough */
