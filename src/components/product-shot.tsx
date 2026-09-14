@@ -107,7 +107,7 @@ function TeamRows() {
 export function ProductShot() {
   return (
     <AppWindow
-      url="app.beholdlabs.com/ai-spend"
+      url="app.beholdlabs.dev/ai-spend"
       active="AI Spend"
       tabs={["Last 12 months", "By team", "By model"]}
     >

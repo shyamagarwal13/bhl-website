@@ -130,7 +130,7 @@ export default function Page() {
                 ))}
               </ol>
               <pre className="mt-5 overflow-x-auto rounded-lg bg-ink p-4 font-mono text-[11px] leading-relaxed text-white/80">
-                <code>{`base_url = "https://router.beholdlabs.com/v1"`}</code>
+                <code>{`base_url = "https://router.beholdlabs.dev/v1"`}</code>
               </pre>
             </Card>
           }

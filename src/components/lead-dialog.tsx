@@ -142,7 +142,7 @@ export function LeadDialog({ open, email, locked, onClose }: Props) {
       }
       setDone(true);
     } catch {
-      setError("We couldn't save that. Email hello@beholdlabs.com and we'll pick it up.");
+      setError("We couldn't save that. Email hello@beholdlabs.dev and we'll pick it up.");
     } finally {
       setBusy(false);
     }

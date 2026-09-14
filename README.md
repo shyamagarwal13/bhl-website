@@ -54,6 +54,6 @@ likewise accurate; update it when it isn't.
 
 - **Demo form** composes a `mailto:` draft so it works with no backend. Swap the submit
   handler in `demo-form.tsx` for a POST when there's a CRM; the markup won't change.
-- **Domain** — `metadataBase` in `layout.tsx` assumes `beholdlabs.com`.
+- **Domain** — `metadataBase` in `layout.tsx` assumes `beholdlabs.dev`.
 - **Legal** — Privacy and Terms in the footer are placeholders.
 - **Sign in** points at `#demo` until the app has a public login URL.

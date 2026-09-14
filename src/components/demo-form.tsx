@@ -58,7 +58,7 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
       setEmail(parsed.data);
       openContact(parsed.data);
     } catch {
-      setError("We couldn't reach the server. Try again, or email hello@beholdlabs.com.");
+      setError("We couldn't reach the server. Try again, or email hello@beholdlabs.dev.");
     } finally {
       setBusy(false);
     }

@@ -1,4 +1,4 @@
--- Leads captured from beholdlabs.com.
+-- Leads captured from beholdlabs.dev.
 --
 -- Apply once, against the Supabase project this site's DATABASE_URL points at:
 --   psql "$DATABASE_URL" -f drizzle/0000_leads.sql

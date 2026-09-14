@@ -126,7 +126,7 @@ export default function Page() {
             "Benchmarks against a named comparison set",
           ]}
           panel={
-            <AppWindow url="app.beholdlabs.com/delivery" active="Delivery" tabs={["Overview", "By team"]}>
+            <AppWindow url="app.beholdlabs.dev/delivery" active="Delivery" tabs={["Overview", "By team"]}>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Panel title="Lead time" meta="p50" value="2.1d" sub="−18%" />
                 <Panel title="Change failure" meta="90d" value="7.4%" sub="+2.1pt" subBad />

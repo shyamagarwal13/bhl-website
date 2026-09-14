@@ -22,7 +22,7 @@ const COLUMNS = [
     links: [
       { l: "Research", href: "/#approach" },
       { l: "Get in touch", href: "/#demo" },
-      { l: "Contact", href: "mailto:hello@beholdlabs.com" },
+      { l: "Contact", href: "mailto:hello@beholdlabs.dev" },
     ],
   },
 ];
@@ -73,10 +73,10 @@ export function Footer() {
               Terms
             </a>
             <a
-              href="mailto:hello@beholdlabs.com"
+              href="mailto:hello@beholdlabs.dev"
               className="text-xs text-white/40 transition-colors hover:text-white/70"
             >
-              hello@beholdlabs.com
+              hello@beholdlabs.dev
             </a>
           </div>
         </div>

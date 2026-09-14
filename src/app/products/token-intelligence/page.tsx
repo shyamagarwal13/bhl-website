@@ -69,7 +69,7 @@ export default function Page() {
             "Cost per surviving change, by agent and by task type",
           ]}
           panel={
-            <AppWindow url="app.beholdlabs.com/agents" active="AI Spend" tabs={["Runs", "By agent"]}>
+            <AppWindow url="app.beholdlabs.dev/agents" active="AI Spend" tabs={["Runs", "By agent"]}>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Panel title="Runs this week" meta="all agents" value="3,910" sub="+22%" />
                 <Panel title="Cost per run" meta="mean" value="$1.24" sub="−9%" />

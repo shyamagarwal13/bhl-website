@@ -49,7 +49,7 @@ const description =
   "Every dashboard measures how much more you shipped. That's just more AI slop. Behold measures the judgment behind the work: what plausible-looking output costs after it merges, and where a person is still the most valuable thing in the room. Engineering and token intelligence, routing, review and agent observability included.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://beholdlabs.com"),
+  metadataBase: new URL("https://beholdlabs.dev"),
   title: {
     default: title,
     template: "%s · Behold",

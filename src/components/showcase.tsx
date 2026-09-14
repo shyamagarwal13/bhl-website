@@ -64,7 +64,7 @@ const PANES: Pane[] = [
       "Delivery measured end to end, from the moment work is picked up to the moment a customer can use it, with the time each stage actually consumed.",
     window: (
       <AppWindow
-        url="app.beholdlabs.com/delivery"
+        url="app.beholdlabs.dev/delivery"
         active="Delivery"
         tabs={["Last 6 months", "By team", "By stage"]}
       >
@@ -110,7 +110,7 @@ const PANES: Pane[] = [
       "Every dollar of model spend attributed to the team, the repository and the piece of work that caused it, then broken down by which model did the work.",
     window: (
       <AppWindow
-        url="app.beholdlabs.com/ai-spend"
+        url="app.beholdlabs.dev/ai-spend"
         active="AI Spend"
         tabs={["Last 12 months", "By model", "By repo"]}
       >
@@ -160,7 +160,7 @@ const PANES: Pane[] = [
       "Where the week actually goes, priced. Friction is measured in hours and then converted to dollars, so it competes for budget against everything else.",
     window: (
       <AppWindow
-        url="app.beholdlabs.com/devex"
+        url="app.beholdlabs.dev/devex"
         active="DevEx"
         tabs={["Per engineer / week", "By team", "Trend"]}
       >
@@ -206,7 +206,7 @@ const PANES: Pane[] = [
       "The cheapest model that still clears your bar for the task, chosen per request. Spend falls and the pass rate does not, which is the only version of this worth shipping.",
     window: (
       <AppWindow
-        url="app.beholdlabs.com/routing"
+        url="app.beholdlabs.dev/routing"
         active="Routing"
         tabs={["Since enabled", "By task", "By model"]}
         action="Configure"
@@ -257,7 +257,7 @@ const PANES: Pane[] = [
       "Most of what we ship started as something a team could not get anywhere else. If the measurement you need does not exist yet, that is the interesting case.",
     window: (
       <AppWindow
-        url="app.beholdlabs.com/custom"
+        url="app.beholdlabs.dev/custom"
         active="Custom"
         tabs={["Built to order", "Live", "Draft"]}
         action="New"
