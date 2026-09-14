@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { EngArt, TokenArt } from "./product/art";
 import { Reveal } from "./reveal";
@@ -44,7 +43,6 @@ const STEPS = [
     n: "Engineering intelligence",
     t: "Know whether the work was any good.",
     d: "Throughput tells you a team was busy. It cannot tell you whether anyone exercised judgment, and when producing is free that is the only question left worth asking.",
-    href: "/products/engineering-intelligence",
     band: "var(--s1)",
     cap: "max-w-[620px]",
     art: <EngArt />,
@@ -54,7 +52,6 @@ const STEPS = [
     n: "Token intelligence",
     t: "Every AI dollar, and what it actually bought.",
     d: "Your provider can tell you what you spent. Nobody but you can tell you what it was worth, because the return shows up somewhere the invoice never looks.",
-    href: "/products/token-intelligence",
     band: "var(--s3)",
     cap: "max-w-[620px]",
     art: <TokenArt />,
@@ -64,7 +61,6 @@ const STEPS = [
     n: "Optimization",
     t: "Not every request needs the expensive model.",
     d: "The hard part is not saving money. It is proving that quality held while you did, which takes measuring the work rather than the latency.",
-    href: "/products/router",
     band: "var(--s5)",
     /* the reel caps itself at 1080; this only stops it stretching past the measure */
     cap: "max-w-full",
@@ -88,13 +84,6 @@ function Copy({ s }: { s: (typeof STEPS)[number] }) {
       <p className="mx-auto mt-3 max-w-2xl text-pretty text-[14px] leading-relaxed text-ink-3">
         {s.d}
       </p>
-      <Link
-        href={s.href}
-        className="group mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink"
-      >
-        {s.n}
-        <span className="transition-transform group-hover:translate-x-0.5">&#8594;</span>
-      </Link>
     </div>
   );
 }
