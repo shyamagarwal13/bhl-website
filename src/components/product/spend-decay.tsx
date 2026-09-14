@@ -26,9 +26,9 @@ import { useEffect, useLayoutEffect, useRef } from "react";
  * retraction is the only part of the cycle that runs backwards and it is over in half a second,
  * so it reads as a tape resetting rather than as a glitch.
  *
- * One requestAnimationFrame writes the clip, the playhead and the two readouts straight to the
- * DOM, because a React state update per frame to move a line is sixty renders a second to show
- * one number.
+ * One requestAnimationFrame writes the clip, the playhead, the two readouts and the five
+ * per-tool figures straight to the DOM. A React state update per frame to move a line would be
+ * sixty renders a second to change eight numbers, and every one of those numbers is a leaf.
  *
  * Nothing here is drawn by hand. The curves, the retained total, the per-source figures and
  * the finding at the bottom all come out of the same five rows, so the picture cannot end up
@@ -140,6 +140,8 @@ export function SpendDecay({
   const day = useRef<HTMLSpanElement>(null);
   const live = useRef<HTMLSpanElement>(null);
   const settled = useRef<HTMLDivElement>(null);
+  /* one per source, so the legend reads the same day the playhead is sitting on */
+  const rows = useRef<(HTMLSpanElement | null)[]>([]);
 
   useBeforePaint(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -176,6 +178,10 @@ export function SpendDecay({
       if (head.current) head.current.style.left = `${(p * 100).toFixed(2)}%`;
       if (day.current) day.current.textContent = `day ${Math.round(t)}`;
       if (live.current) live.current.textContent = money(totalAt(t));
+      for (let k = 0; k < SOURCES.length; k++) {
+        const cell = rows.current[k];
+        if (cell) cell.textContent = money(valueAt(SOURCES[k], t));
+      }
 
       const nowHolding = phase >= SWEEP_MS && phase < SWEEP_MS + HOLD_MS;
       if (nowHolding !== holding) {
@@ -309,7 +315,7 @@ export function SpendDecay({
       </div>
 
       <ul className="mt-6 grid gap-x-7 gap-y-2.5 border-t border-line pt-5 sm:grid-cols-2 lg:grid-cols-3">
-        {SOURCES.map((s) => (
+        {SOURCES.map((s, k) => (
           <li key={s.k} className="flex items-center gap-2.5 text-[12.5px]">
             <span
               className="h-2 w-2 shrink-0 rounded-[2px]"
@@ -320,7 +326,12 @@ export function SpendDecay({
               {money(s.spend)}
             </span>
             <span className="shrink-0 font-mono text-[11px] text-ink-4">&#8594;</span>
+            {/* The billed figure is fixed; this one is whatever is left of it on the day the
+                playhead is over, so the legend and the chart never disagree about the date. */}
             <span
+              ref={(el) => {
+                rows.current[k] = el;
+              }}
               className="tabular w-[54px] shrink-0 text-right font-mono text-[11px]"
               style={{ color: "var(--t3)" }}
             >

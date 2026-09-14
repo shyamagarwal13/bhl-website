@@ -14,38 +14,42 @@
 /* --- Engineering intelligence: every change, sorted ----------------------- */
 
 /*
- * An 8x14 field where each cell is one merged change, and a horizon that sweeps it.
+ * An 8x14 field where each cell is one merged change, turning over to show its verdict.
  *
- * The still version of this said the useful half: most changes are unremarkable, a few are
- * slop, a few carry real judgment, and the product is the claim that those are different
- * things. What it could not say is the half that actually matters, which is that none of it is
- * knowable on the day the change merges. The verdict arrives weeks later, in what gets
- * rewritten and what survives.
+ * The still version said the useful half: most changes are unremarkable, a few are slop, a few
+ * carry real judgment, and the product is the claim that those are different things. What it
+ * could not say is the half that actually matters, which is that none of it is knowable on the
+ * day the change merges. So the field starts grey, which is everything anyone knows at merge
+ * time, and the cells turn over one by one until the quarter has been judged. Then it stops,
+ * because a quarter is judged once.
  *
- * So the field is read by a horizon. Cells ahead of it are pale: merged, too recent to judge.
- * As it crosses a column the cells in that column take their verdict, top to bottom, and hold
- * it for the rest of the lap. Nothing resets, because the horizon is on a loop rather than a
- * run: the pale band is always the newest work, wherever it currently is.
+ * The order is scattered rather than swept. An earlier pass ran a horizon across the grid, and
+ * a straight line crossing a field says the verdicts arrive in column order, which is a claim
+ * about the calendar rather than about the work. Verdicts on unrelated changes arrive whenever
+ * the rewriting happens to catch up with them.
  *
- * It is the same idiom as the decay plot on the token page, and deliberately so. Both products
- * are arguments about the same thing, which is that the reading you want is not available at
- * the moment you want it.
- *
- * All of it runs on two sets of keyframes and a per-cell custom property. No timers, no state,
- * nothing per frame from JavaScript.
- *
- * The pattern is fixed rather than random so the page renders identically on the server and
- * the client: a Math.random() field hydrates into a different arrangement and React complains.
+ * Both the pattern and the scatter are arithmetic rather than random, so the server and the
+ * client render the same field: a Math.random() anywhere in here hydrates into a different
+ * arrangement, and a float hash built on Math.sin can differ between engines. Integer
+ * multiplication and a modulo cannot.
  */
 const COLS = 14;
 const ROWS = 8;
 const CELLS = COLS * ROWS;
 const SLOP = new Set([3, 9, 17, 24, 31, 38, 46, 52, 59, 67, 71, 80, 88, 93, 101, 108]);
 const JUDGED = new Set([6, 14, 22, 35, 44, 57, 63, 76, 85, 97, 104]);
-const LAP = 7200;
+
+/** how long the whole field takes to turn over, after the card has settled into view */
+const SPREAD = 1500;
+const LEAD_IN = 160;
 
 const verdictOf = (i: number) =>
   SLOP.has(i) ? "var(--s5)" : JUDGED.has(i) ? "var(--t3)" : "var(--paper-2)";
+
+/* Knuth's multiplicative hash, kept in integers the whole way. i * 2654435761 stays under
+   2^53 for a field this size, so the result is exact and identical wherever it runs. */
+const turnAt = (i: number) =>
+  LEAD_IN + Math.round((((i + 1) * 2654435761) % 4294967296) / 4294967296 * SPREAD);
 
 export function EngArt({ note = true }: { note?: boolean } = {}) {
   return (
@@ -57,56 +61,32 @@ export function EngArt({ note = true }: { note?: boolean } = {}) {
         <span className="tabular text-[13px] font-extrabold text-ink">{CELLS}</span>
       </div>
 
-      <div className="relative mt-4">
-        <div
-          className="grid gap-[5px]"
-          style={{ gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))` }}
-          aria-hidden="true"
-        >
-          {Array.from({ length: CELLS }, (_, i) => {
-            /*
-             * Column-major, so time runs left to right the way it does on every other chart on
-             * this site rather than wrapping line by line like text.
-             *
-             * The delay is negative and counted back from a full lap, which is what puts the
-             * horizon in front of the colour instead of behind it: at `-(1 - p)` a cell is one
-             * tick past its own zero exactly as the horizon reaches its column, so colour
-             * follows the line and pale leads it.
-             */
-            const col = i % COLS;
-            const row = Math.floor(i / COLS);
-            const p = (col * ROWS + row) / CELLS;
-            const verdict = verdictOf(i);
-            return (
-              <span
-                key={i}
-                className="aspect-square rounded-[3px]"
-                style={{
-                  backgroundColor: verdict,
-                  ["--verdict" as string]: verdict,
-                  animation: `cell-verdict ${LAP}ms linear infinite`,
-                  animationDelay: `${-(1 - p) * LAP}ms`,
-                }}
-              />
-            );
-          })}
-        </div>
-
-        {/* the horizon */}
-        <span
-          aria-hidden="true"
-          className="field-head pointer-events-none absolute -inset-y-1 w-px"
-          style={{
-            background: "var(--ink-4)",
-            animation: `field-scan ${LAP}ms linear infinite`,
-          }}
-        >
-          {/* the same head the decay plot carries, so the two instruments read as one family */}
-          <span
-            className="absolute -top-1 h-1.5 w-1.5 -translate-x-[3px] rounded-full"
-            style={{ background: "var(--ink-4)" }}
-          />
-        </span>
+      <div
+        className="mt-4 grid gap-[5px]"
+        style={{
+          gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))`,
+          /* enough for the turn to have a near edge and a far one, not so much that a 38px
+             square looks like it is falling away from the reader */
+          perspective: "420px",
+        }}
+        aria-hidden="true"
+      >
+        {Array.from({ length: CELLS }, (_, i) => {
+          const verdict = verdictOf(i);
+          return (
+            <span
+              key={i}
+              className="cell-flip aspect-square rounded-[3px]"
+              style={{
+                /* the settled state, and what anyone without the animation sees */
+                backgroundColor: verdict,
+                ["--verdict" as string]: verdict,
+                ["--start" as string]: "var(--paper-2)",
+                ["--d" as string]: `${turnAt(i)}ms`,
+              }}
+            />
+          );
+        })}
       </div>
 
       <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-4">
