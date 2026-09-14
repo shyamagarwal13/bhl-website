@@ -1,10 +1,10 @@
 /*
  * The routing table, and the one rule that reads it.
  *
- * Kept in its own module because two figures draw from it: the reel on the Optimization page
- * and the compact price card in the lifecycle walkthrough on the home page. Two copies of a
- * table like this drift, and the moment they do the site is showing two different answers to
- * the same question on two different pages.
+ * Kept out of the component that draws it. The reel renders this table twice on the site, on
+ * the Optimization page and again in the walkthrough on the home page, and a second copy of
+ * the numbers living next to a second copy of the drawing is how the two end up answering the
+ * same question differently.
  */
 
 /* ordered by price, which is the only ordering the routing policy needs */
