@@ -78,18 +78,23 @@ const EASE = "cubic-bezier(0.22, 0.61, 0.36, 1)";
 
 function Copy({ s }: { s: (typeof STEPS)[number] }) {
   return (
-    <div className="grid gap-x-14 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] lg:items-end">
-      <h3 className="h2 text-balance text-[1.6rem] text-ink sm:text-[1.9rem]">{s.t}</h3>
-      <div>
-        <p className="text-[13.5px] leading-relaxed text-ink-3">{s.d}</p>
-        <Link
-          href={s.href}
-          className="group mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink"
-        >
-          {s.n}
-          <span className="transition-transform group-hover:translate-x-0.5">&#8594;</span>
-        </Link>
-      </div>
+    <div className="text-center">
+      <h3 className="h2 mx-auto max-w-3xl text-balance text-[1.6rem] text-ink sm:text-[1.9rem]">
+        {s.t}
+      </h3>
+      {/* `text-pretty` rather than `text-balance`: balancing a three-line paragraph evens the
+          line lengths and leaves a ragged middle, where this only needs the last line kept off
+          an orphan. */}
+      <p className="mx-auto mt-3 max-w-2xl text-pretty text-[14px] leading-relaxed text-ink-3">
+        {s.d}
+      </p>
+      <Link
+        href={s.href}
+        className="group mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink"
+      >
+        {s.n}
+        <span className="transition-transform group-hover:translate-x-0.5">&#8594;</span>
+      </Link>
     </div>
   );
 }
@@ -156,12 +161,12 @@ export function Lifecycle() {
           {STEPS.map((s) => (
             <Reveal key={s.k}>
               <div>
-                <div className="flex items-center gap-2.5 pb-4">
+                <div className="flex items-center justify-center gap-2.5 pb-5">
                   <span className="h-1.5 w-1.5 rounded-full" style={{ background: s.band }} />
                   <span className="text-[13px] font-semibold text-ink">{s.n}</span>
                 </div>
                 <Copy s={s} />
-                <div className={`mt-9 w-full min-w-0 ${s.cap}`}>{s.art}</div>
+                <div className={`mx-auto mt-9 w-full min-w-0 ${s.cap}`}>{s.art}</div>
               </div>
             </Reveal>
           ))}
@@ -182,7 +187,7 @@ export function Lifecycle() {
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
         <div className="mx-auto w-full max-w-[var(--maxw)] px-6">
           {/* the rail: the three, with the live one taking the ink */}
-          <div className="flex flex-wrap items-center gap-x-9 gap-y-2 border-b border-line pb-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-9 gap-y-2 border-b border-line pb-4">
             {STEPS.map((s, k) => {
               const on = k === i;
               return (
@@ -203,9 +208,6 @@ export function Lifecycle() {
                 </span>
               );
             })}
-            <span className="tabular ml-auto font-mono text-[11px] text-ink-4">
-              {i + 1} / {STEPS.length}
-            </span>
           </div>
 
           {/*
@@ -246,7 +248,7 @@ export function Lifecycle() {
                   <div
                     key={s.k}
                     aria-hidden={!on}
-                    className={`w-full min-w-0 ${s.cap}`}
+                    className={`mx-auto w-full min-w-0 ${s.cap}`}
                     style={{
                       gridArea: "1 / 1",
                       opacity: on ? 1 : 0,
