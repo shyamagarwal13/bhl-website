@@ -104,7 +104,7 @@ export async function POST(req: Request) {
     return ok();
   } catch (err) {
     console.error("lead capture failed", err);
-    return bad("Something went wrong. Please email hello@beholdlabs.dev.", 500);
+    return bad("Something went wrong. Please email shyamaga@andrew.cmu.edu.", 500);
   }
 }
 
@@ -150,6 +150,6 @@ export async function PATCH(req: Request) {
     return ok();
   } catch (err) {
     console.error("lead details failed", err);
-    return bad("Something went wrong. Please email hello@beholdlabs.dev.", 500);
+    return bad("Something went wrong. Please email shyamaga@andrew.cmu.edu.", 500);
   }
 }

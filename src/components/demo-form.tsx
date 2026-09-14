@@ -58,7 +58,10 @@ export function DemoForm({ tone = "light" }: { tone?: "light" | "dark" }) {
       setEmail(parsed.data);
       openContact(parsed.data);
     } catch {
-      setError("We couldn't reach the server. Try again, or email hello@beholdlabs.dev.");
+      /* Deliberately a personal address rather than the one in the footer. This is the path
+         a reader takes when the form has already failed them, so it has to reach a mailbox
+         that certainly exists; beholdlabs.dev has no MX records yet and mail to it bounces. */
+      setError("We couldn't reach the server. Try again, or email shyamaga@andrew.cmu.edu.");
     } finally {
       setBusy(false);
     }
