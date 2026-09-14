@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { EngArt, TokenArt } from "./product/art";
+import { EngArt } from "./product/art";
+import { SpendDecay } from "./product/spend-decay";
 import { Reveal } from "./reveal";
 import { RouterFlow } from "./router-flow";
 import { SectionHead } from "./section-head";
@@ -53,8 +54,9 @@ const STEPS = [
     t: "Every AI dollar, and what it actually bought.",
     d: "Your provider can tell you what you spent. Nobody but you can tell you what it was worth, because the return shows up somewhere the invoice never looks.",
     band: "var(--s3)",
-    cap: "max-w-[620px]",
-    art: <TokenArt />,
+    /* the decay plot is a journey across ninety days and wants the measure, like the reel */
+    cap: "max-w-full",
+    art: <SpendDecay note={false} />,
   },
   {
     k: "router",
@@ -204,7 +206,7 @@ export function Lifecycle() {
             cell so every cell is as tall as its own tallest member. Nothing here is measured
             and nothing moves when the step changes.
           */}
-          <div className="mt-8 grid">
+          <div className="mt-7 grid">
             {STEPS.map((s, k) => {
               const on = k === i;
               return (
@@ -230,7 +232,7 @@ export function Lifecycle() {
               released by a `[data-reveal="in"]` ancestor. Without one the merge grid renders
               as an empty card. */}
           <Reveal>
-            <div className="mt-10 grid">
+            <div className="mt-8 grid">
               {STEPS.map((s, k) => {
                 const on = k === i;
                 return (

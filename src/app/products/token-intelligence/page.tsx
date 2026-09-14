@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AppWindow, Panel } from "@/components/app-window";
-import { TokenArt } from "@/components/product/art";
+import { SpendDecay } from "@/components/product/spend-decay";
 import {
   AlsoSee,
   Band,
@@ -24,7 +24,8 @@ export default function Page() {
         eyebrow="Token intelligence"
         title="Every AI dollar, and what it actually bought."
         lead="Your provider can tell you what you spent. Nobody but you can tell you what it was worth, because the return shows up somewhere the invoice never looks: in what the work cost to keep."
-        art={<TokenArt />}
+        wideArt
+        art={<SpendDecay />}
       />
 
       <Band>
