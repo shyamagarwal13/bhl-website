@@ -22,7 +22,7 @@ const COLUMNS = [
     links: [
       { l: "Research", href: "/#approach" },
       { l: "Get in touch", href: "/#demo" },
-      { l: "Contact", href: "mailto:hello@beholdlabs.dev" },
+      { l: "Contact", href: "mailto:shyamaga@andrew.cmu.edu" },
     ],
   },
 ];
@@ -71,12 +71,6 @@ export function Footer() {
             </a>
             <a href="#" className="text-xs text-white/40 transition-colors hover:text-white/70">
               Terms
-            </a>
-            <a
-              href="mailto:hello@beholdlabs.dev"
-              className="text-xs text-white/40 transition-colors hover:text-white/70"
-            >
-              hello@beholdlabs.dev
             </a>
           </div>
         </div>
