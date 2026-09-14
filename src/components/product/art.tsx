@@ -20,8 +20,10 @@
  * carry real judgment, and the product is the claim that those are different things. What it
  * could not say is the half that actually matters, which is that none of it is knowable on the
  * day the change merges. So the field starts grey, which is everything anyone knows at merge
- * time, and the cells turn over one by one until the quarter has been judged. Then it stops,
- * because a quarter is judged once.
+ * time, and the cells turn over one by one to show what was underneath. The field stands
+ * complete for a beat, turns back to grey, and goes again: work does not stop merging at the
+ * end of a quarter, and the same cycle of fill, hold and clear runs on the token page next
+ * door.
  *
  * The order is scattered rather than swept. An earlier pass ran a horizon across the grid, and
  * a straight line crossing a field says the verdicts arrive in column order, which is a claim
@@ -39,9 +41,16 @@ const CELLS = COLS * ROWS;
 const SLOP = new Set([3, 9, 17, 24, 31, 38, 46, 52, 59, 67, 71, 80, 88, 93, 101, 108]);
 const JUDGED = new Set([6, 14, 22, 35, 44, 57, 63, 76, 85, 97, 104]);
 
-/** how long the whole field takes to turn over, after the card has settled into view */
-const SPREAD = 1500;
-const LEAD_IN = 160;
+/*
+ * One lap: the field fills, stands, clears and goes again.
+ *
+ * STAGGER has to stay well under the span the keyframes hold the verdict for, or no two cells
+ * are ever showing their verdict at the same time and the whole thing decays into a shimmer
+ * with no settled state. A fifth of the lap is comfortably inside it.
+ */
+const LAP = 6400;
+const STAGGER = 1280;
+const LEAD_IN = 120;
 
 const verdictOf = (i: number) =>
   SLOP.has(i) ? "var(--s5)" : JUDGED.has(i) ? "var(--t3)" : "var(--paper-2)";
@@ -49,7 +58,7 @@ const verdictOf = (i: number) =>
 /* Knuth's multiplicative hash, kept in integers the whole way. i * 2654435761 stays under
    2^53 for a field this size, so the result is exact and identical wherever it runs. */
 const turnAt = (i: number) =>
-  LEAD_IN + Math.round((((i + 1) * 2654435761) % 4294967296) / 4294967296 * SPREAD);
+  LEAD_IN + Math.round((((i + 1) * 2654435761) % 4294967296) / 4294967296 * STAGGER);
 
 export function EngArt({ note = true }: { note?: boolean } = {}) {
   return (
@@ -83,6 +92,7 @@ export function EngArt({ note = true }: { note?: boolean } = {}) {
                 ["--verdict" as string]: verdict,
                 ["--start" as string]: "var(--paper-2)",
                 ["--d" as string]: `${turnAt(i)}ms`,
+                ["--lap" as string]: `${LAP}ms`,
               }}
             />
           );

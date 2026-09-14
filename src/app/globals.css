@@ -584,50 +584,61 @@ body {
 /*
   The merge field, and the verdict arriving.
 
-  Each cell is one merged change. The field starts grey, because on the day a change merges
-  that is all anyone knows about it, and then the cells turn over one by one and the verdicts
-  are underneath. It settles and stays settled: this is a quarter being judged, not a loop.
+  Each cell is one merged change. Every cell begins grey, because on the day a change merges
+  that is all anyone knows about it, and turns over to show its verdict underneath. The colour
+  swaps at ninety degrees, where the cell has no height and the change cannot be seen
+  happening: that is the whole trick of a split-flap board.
 
   A turn rather than a fade. Eighty-five of the hundred and twelve cells are "unremarkable"
   grey and end the same colour they started, so a cross-fade would leave five sixths of the
-  field doing nothing at all and the reveal would read as a handful of cells flickering. Every
-  cell turns, and what is on the other side is the news.
+  field doing nothing at all. Every cell turns, and what is on the other side is the news.
 
-  The colour swaps at ninety degrees, where the cell has no height and the change cannot be
-  seen happening. That is the whole trick of a split-flap, and it is why the order is scattered
-  rather than swept: verdicts on unrelated changes do not arrive in column order.
+  The cycle is fill, hold, clear, repeat, the same shape as the decay plot on the token page.
+  Getting the hold out of a per-cell stagger is an arithmetic constraint rather than a style
+  choice: the delays spread across a fifth of the lap, so for every cell to be showing its
+  verdict at the same moment, the verdict has to occupy more than that fifth with room either
+  side. It runs from 5% to 62%, which leaves the whole field standing for about two and a half
+  seconds, and grey together for about eight tenths of one. Widen the stagger past those
+  margins and the field never fully settles; it goes back to being a trickle.
+
+  The scatter is what keeps it from reading as a sweep: verdicts on unrelated changes do not
+  arrive in column order.
 */
 @keyframes cell-flip {
   0% {
     transform: rotateX(0deg);
     background-color: var(--start);
   }
-  48% {
+  2% {
     transform: rotateX(90deg);
     background-color: var(--start);
   }
-  52% {
+  2.6% {
     transform: rotateX(90deg);
     background-color: var(--verdict);
   }
-  100% {
+  5%,
+  62% {
     transform: rotateX(0deg);
     background-color: var(--verdict);
   }
+  64% {
+    transform: rotateX(90deg);
+    background-color: var(--verdict);
+  }
+  64.6% {
+    transform: rotateX(90deg);
+    background-color: var(--start);
+  }
+  67%,
+  100% {
+    transform: rotateX(0deg);
+    background-color: var(--start);
+  }
 }
 
-/*
-  Fail open, like everything else that animates on this site. A cell's markup carries its
-  verdict colour, so with no JavaScript, no reveal, or reduced motion the field is simply
-  complete; the animation only exists once the section is in view, and it runs backwards from
-  that finished state rather than towards it. The other way round leaves a crawler looking at a
-  grid of grey squares.
-
-  Each cell holds its own delay, so one rule staggers a hundred and twelve of them without a
-  single timer.
-*/
 [data-reveal="in"] .cell-flip {
-  animation: cell-flip 620ms cubic-bezier(0.4, 0, 0.2, 1) var(--d, 0ms) both;
+  animation: cell-flip var(--lap, 5600ms) linear var(--d, 0ms) infinite both;
 }
 
 /* A model's score being re-read for the task that just landed. Dropping in from above rather
