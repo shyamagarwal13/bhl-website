@@ -41,3 +41,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Internal working material: the outreach list, strategy notes, drafts. Kept on disk,
+# never in a public repo.
+docs/
