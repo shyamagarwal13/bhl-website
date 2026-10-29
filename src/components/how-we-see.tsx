@@ -16,7 +16,7 @@ import { Reveal } from "./reveal";
 
 /* The terms, in the order you would say them. What each is for is already said in the
    paragraph above, so the equation does not repeat it. */
-const TERMS = ["Telemetry", "Surveys", "Experts"];
+const TERMS = ["Telemetry", "Surveys", "Science"];
 
 export function HowWeSee() {
   return (
@@ -71,8 +71,10 @@ export function HowWeSee() {
           So there is a great deal to account for now, and no single instrument reaches all of
           it. We use telemetry to establish what happened, and we ask people directly where the
           answer only exists in their heads. Then the part that actually decides the outcome:
-          every organization adopts this differently enough that a reading taken from one does
-          not transfer to another.
+          it is a system, not a pipeline. AI tools, AI rules, review capacity, CI, legacy code,
+          team structure and token spend mix differently in every company, so a reading taken
+          from one does not transfer to another. The answer has to come from causal analysis of
+          your own data.
         </p>
       </Reveal>
 

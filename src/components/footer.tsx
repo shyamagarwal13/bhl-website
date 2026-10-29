@@ -13,7 +13,7 @@ const COLUMNS = [
     h: "The argument",
     links: [
       { l: "Two readings of a quarter", href: "/#slop" },
-      { l: "How we measure", href: "/#how-we-see" },
+      { l: "How it works", href: "/#how-it-works" },
       { l: "Use cases", href: "/#use-cases" },
     ],
   },
@@ -35,8 +35,8 @@ export function Footer() {
           <div>
             <Wordmark tone="white" />
             <p className="mt-4 max-w-xs text-[13.5px] leading-relaxed text-white/45">
-              A small research group measuring what AI-assisted engineering actually costs to
-              keep. Creativity is the new productivity.
+              Carnegie Mellon researchers building AI agents that tell engineering leaders
+              what&apos;s actually working, backed by causal science.
             </p>
           </div>
 

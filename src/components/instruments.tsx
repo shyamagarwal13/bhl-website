@@ -168,7 +168,7 @@ export function Instruments() {
       <SectionHead
           width="wide"
           title={<>We answer the right questions.</>}
-          lead={<>Scientifically curated, and built to measure what actually determines the outcome rather than what happens to be easy to count.</>}
+          lead={<>Beyond whether AI is paying off, the agents measure what dashboards can&apos;t see: what AI-written work costs after it merges, and where a person&apos;s judgment still decides the outcome.</>}
         />
 
       <div className="mt-12 grid items-stretch gap-5 lg:grid-cols-2">

@@ -20,7 +20,7 @@ import { useEffect, useRef, useState } from "react";
 const LEAD =
   "AI adoption in SDLC workflows is near-universal, but most organizations have no way to study how it is impacting their software.";
 const BODY =
-  "That gap is not a tooling problem. Every organization has different constraints, and no single metric can tell you how yours is performing. We are researchers and practitioners with more than a decade in developer productivity and software engineering. Closing that gap is our work.";
+  "That gap is not a tooling problem. Every organization has different constraints, and no single metric can tell you how yours is performing. It takes causal analysis, run on your own data and re-run as tools and models change. We have spent more than a decade doing this science by hand. Behold's agents do it for every team.";
 
 const WORDS = `${LEAD} ${BODY}`.split(" ");
 const LEAD_COUNT = LEAD.split(" ").length;

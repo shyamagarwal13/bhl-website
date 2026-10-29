@@ -13,6 +13,7 @@ import { TwoDashboards } from "@/components/two-dashboards";
 import { Instruments } from "@/components/instruments";
 import { Lifecycle } from "@/components/lifecycle";
 import { HowWeSee } from "@/components/how-we-see";
+import { HowItWorks } from "@/components/how-it-works";
 
 function Section({
   id,
@@ -53,30 +54,30 @@ function Hero() {
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 py-1.5 pl-2 pr-3.5 backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-ink" />
               <span className="text-[12.5px] font-semibold tracking-tight text-ink-2">
-                Creativity is the new productivity
+                Your team is more than metrics
               </span>
             </span>
           </Reveal>
 
           <Reveal delay={80}>
-            {/* Sized to hold each sentence on a single line from lg up; it still wraps
-                on narrow screens, where two balanced lines read better than 20px type. */}
+            {/* Sized to hold each line on a single line from lg up; it still wraps on narrow
+                screens, where two balanced lines read better than 20px type. */}
             <h1 className="display mx-auto mt-6 max-w-[19ch] text-[2.05rem] sm:max-w-none sm:text-[2.6rem] lg:text-[2.85rem]">
               <span className="block text-balance">
-                Every dashboard measures how much more you shipped.
+                AI agents that tell engineering leaders
               </span>
-              {/* two sentences now, so the second opens capitalised. The refraction lands on
-                  "AI slop", which is the phrase the rest of the page is built around. */}
+              {/* The refraction lands on the promise, which is what the rest of the page
+                  has to pay off. */}
               <span className="refract block text-balance">
-                That&apos;s just more AI slop!
+                what&apos;s actually working.
               </span>
             </h1>
           </Reveal>
 
           <Reveal delay={160}>
             {/*
-                Two marks, not four: the action and the unit. Marking the middle clauses
-                too made the paragraph read as a page of someone else's revision notes —
+                Two marks, not four: the method and what you walk away with. Marking the
+                middle clauses too made the paragraph read as someone else's revision notes —
                 when everything is emphasized, nothing is.
 
                 Both in the same amber. A real highlighter is one color; two different
@@ -84,20 +85,20 @@ function Hero() {
                 expected to decode, and there's nothing to decode here.
             */}
             <p className="mx-auto mt-8 max-w-xl text-[1.0625rem] leading-[1.95] text-ink-3">
-              When writing is free, volume stops being an achievement. Behold measures the{" "}
+              Existing dashboards measure what you shipped. That&apos;s just more AI slop.
+              Behold&apos;s agents learn how your team works, measure what creates value, and run{" "}
               <span
                 className="mark whitespace-nowrap font-semibold text-ink"
                 style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
               >
-                judgment
+                causal analysis
               </span>{" "}
-              behind the work: what it costs you to keep the slop, and where a person is still
-              the most valuable thing in the room. All of it in{" "}
+              on your own data, so every answer comes with{" "}
               <span
-                className="mark whitespace-nowrap font-extrabold text-ink"
+                className="mark whitespace-nowrap font-semibold text-ink"
                 style={{ background: "color-mix(in srgb, var(--s4) 32%, transparent)" }}
               >
-                $$$
+                what to change
               </span>
               .
             </p>
@@ -231,8 +232,8 @@ function Cta() {
               Bring evidence to the next budget conversation.
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-white/70">
-              We&apos;re working with a small number of engineering organizations to get this
-              right. Connect a repository and see your own numbers.
+              We&apos;re working with a small number of engineering organizations. Bring one
+              question about your AI rollout, and we&apos;ll answer it from your own data.
             </p>
             <div id="demo" className="mt-9 flex scroll-mt-32 justify-center">
               <DemoForm tone="dark" />
@@ -254,13 +255,15 @@ export default function Home() {
         Section order is the argument, and the background bands alternate across it so no
         two adjacent sections share a ground:
 
-          problem → why nothing existing sees it → our two numbers → the full surface,
-          stated then shown → who uses it → who we are → the evidence → ask.
+          problem → how the agents answer it, on a real example → why the answer is
+          company-specific → questions we answer → the full surface, stated then
+          shown → who uses it → who we are → the evidence → ask.
       */}
       <main>
         <Hero />
         <ReadsFrom />
         <TwoDashboards />
+        <HowItWorks />
         <HowWeSee />
         <Instruments />
         <Lifecycle />

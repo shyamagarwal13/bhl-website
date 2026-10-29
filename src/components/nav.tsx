@@ -215,10 +215,10 @@ export function Nav() {
                   a list of parity features with no point of view */}
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line bg-paper/70 px-7 py-4">
                 <span className="text-[12.5px] font-semibold text-ink">
-                  Creativity is the new productivity.
+                  Your team is more than metrics.
                 </span>
                 <span className="text-[12.5px] text-ink-3">
-                  Measurement you can act on, and the researchers to read it with you.
+                  Agents run causal analysis on your own data and tell you what to change.
                 </span>
               </div>
             </div>

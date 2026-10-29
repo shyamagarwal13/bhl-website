@@ -44,9 +44,9 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const title = "Behold: creativity is the new productivity";
+const title = "Behold: AI agents that tell engineering leaders what's actually working";
 const description =
-  "Every dashboard measures how much more you shipped. That's just more AI slop. Behold measures the judgment behind the work: what plausible-looking output costs after it merges, and where a person is still the most valuable thing in the room. Engineering and token intelligence, routing, review and agent observability included.";
+  "Existing dashboards measure what you shipped, which is just more AI slop. Behold's agents learn how your team works, measure value-oriented metrics, and run causal, science-backed analysis on your own data, so every answer comes with what to change. Built by Carnegie Mellon researchers.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://beholdlabs.dev"),
@@ -56,8 +56,9 @@ export const metadata: Metadata = {
   },
   description,
   keywords: [
-    "AI slop",
+    "AI impact measurement",
     "engineering intelligence",
+    "AI coding ROI",
     "AI code quality",
     "developer productivity",
     "AI spend monitoring",

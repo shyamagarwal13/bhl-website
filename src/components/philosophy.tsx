@@ -69,7 +69,7 @@ export function NumberIsNotAnAnswer() {
         <Affiliations />
 
         <div className="mt-16">
-          <SectionHead width="wide" title={<>Our selected work.</>} />
+          <SectionHead width="wide" title={<>The research our agents are built on.</>} />
         </div>
 
         <Reveal delay={80}>
